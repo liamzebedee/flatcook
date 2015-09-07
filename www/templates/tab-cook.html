@@ -1,0 +1,42 @@
+<ion-view view-title="Cook">
+ <button class="button button-clear button-positive">Edit</button>
+
+  <ion-content>
+
+  <ion-list class="">
+
+  <!--  only text -->
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">What are you cooking?</span>
+      <input type="text" placeholder="Spaghetti Bolognaise">
+    </label>
+
+<!-- integer -->
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">How much?</span>
+      <input type="tel" step=1 value=3 min=2 max=20 placeholder="Suhr"> meals
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Roughly when?</span>
+          <input type="time" ng-model="model.time2" formatted-time>
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Where's your flat?</span>
+      <input type="text" placeholder="Gumal 501">
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">What's the cost per person?</span>
+      <input type="tel" min=0 max=100 step=1>
+    </label>
+
+
+    <button class="button button-full button-positive">
+      Post invite!
+    </button>
+</ion-list>
+    
+  </ion-content>
+</ion-view>
