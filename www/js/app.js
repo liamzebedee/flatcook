@@ -32,27 +32,39 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
 
-  // Each tab has its own nav history stack:
-
-  .state('tab.eat', {
-    url: '/eat',
-    views: {
-      'tab-eat': {
-        templateUrl: 'templates/tab-eat.html',
-        controller: 'EatCtrl'
-      },
-      'tab-eat-selected': {
-        templateUrl: 'templates/tab-eat-selected.html',
-        controller: 'EatSelectedCtrl'
-      }
+$stateProvider.state('tab.eat', {
+  abstract: true,
+  url: '/eat',
+  views: {
+    eat: {
+      template: '<ion-nav-view></ion-nav-view>'
     }
-  })
+  }
+})
+
+$stateProvider.state('tab.eat.index', {
+  url: '',
+  templateUrl: 'templates/tab-eat.html',
+  controller: 'EatCtrl'
+})
+
+$stateProvider.state('tab.eat.detail', {
+  url: '/{id:[0-9]*}',
+  templateUrl: 'templates/tab-eat-detail.html',
+  controller: 'EatDetailCtrl'
+})
+
+$stateProvider.state('tab.eat.eating', {
+  url: '/eating',
+  templateUrl: 'templates/tab-eat-eating.html',
+  controller: 'EatingCtrl'
+})
 
   .state('tab.cook', {
       url: '/cook',
@@ -63,15 +75,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         }
       }
     })
-    /*.state('tab.cook-detail', {
-      url: '/chats/:chatId',
-      views: {
-        'tab-chats': {
-          templateUrl: 'templates/chat-detail.html',
-          controller: 'ChatDetailCtrl'
-        }
-      }
-    })*/
 
   .state('tab.profile', {
     url: '/profile',

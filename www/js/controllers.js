@@ -1,20 +1,58 @@
+var meals = [
+    {
+      id: 0,
+      name: 'Spaghetti Bolognaise',
+      price: 5.50,
+      servedAt: "5pm",
+      image: 'img/example-spagbol.jpg',
+      chef: {
+        name: "Liam",
+        location: "Gumal 501",
+        avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+      },
+      guests: ['Nick', 'Alec', 'Cristina']
+    },
+    {
+      id: 1,
+      name: 'Pizza',
+      price: 4.10,
+      servedAt: "10pm",
+      image: 'img/example-pizza.jpeg',
+      chef: {
+        name: "Liam",
+        location: "Gumal 207",
+        avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+      },
+      guests: ['Dave', 'Sofe']
+    }
+  ];
+
 angular.module('starter.controllers', [])
 
-.controller('EatCtrl', function($scope) {
-  $scope.mealOffers = ['spagbol', 'pizza', 'cake'];
+.controller('EatCtrl', function($scope, $state) {
+  $scope.meals = meals;
 
+  $scope.selectMeal = function(id) {
+    $state.go('tab.eat.detail', { id: id });
+  };
 })
 
-.controller('EatSelectedCtrl', function($scope) {
-  $scope.selectEat = function(){
+.controller('EatDetailCtrl', function($scope, $state, $stateParams) {
+  $scope.meal = meals[$stateParams.id];
 
+  $scope.joinMeal = function(){
+    $state.go('tab.eat.eating', { id: $stateParams.id });
   };
+})
 
+.controller('EatingCtrl', function($scope, $stateParams) {
+  $scope.meal = meals[$stateParams.id];
+  console.log($stateParams);
 })
 
 .controller('LoginWelcomeCtrl', function($scope, $state) {
   $scope.login = function() {
-    $state.go('tab.eat');
+    $state.go('tab.eat.index');
   };
 
 })
