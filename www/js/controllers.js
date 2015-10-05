@@ -27,6 +27,18 @@ var meals = [
     }
   ];
 
+var users = [
+  {
+    id: 0,
+    name: "Liam",
+    fbid: 123123123,
+    stripeToken: "13212dcadsf3rfqr3",
+    location: "",
+    avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+  },
+];
+
+
 angular.module('starter.controllers', [])
 
 .controller('EatCtrl', function($scope, $state) {
@@ -47,7 +59,6 @@ angular.module('starter.controllers', [])
 
 .controller('EatingCtrl', function($scope, $stateParams) {
   $scope.meal = meals[$stateParams.id];
-  console.log($stateParams);
 })
 
 .controller('LoginWelcomeCtrl', function($scope, $state) {

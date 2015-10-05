@@ -38,33 +38,33 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     templateUrl: 'templates/tabs.html'
   })
 
-$stateProvider.state('tab.eat', {
-  abstract: true,
-  url: '/eat',
-  views: {
-    eat: {
-      template: '<ion-nav-view></ion-nav-view>'
+  $stateProvider.state('tab.eat', {
+    abstract: true,
+    url: '/eat',
+    views: {
+      eat: {
+        template: '<ion-nav-view></ion-nav-view>'
+      }
     }
-  }
-})
+  })
 
-$stateProvider.state('tab.eat.index', {
-  url: '',
-  templateUrl: 'templates/tab-eat.html',
-  controller: 'EatCtrl'
-})
+  $stateProvider.state('tab.eat.index', {
+    url: '',
+    templateUrl: 'templates/tab-eat.html',
+    controller: 'EatCtrl'
+  })
 
-$stateProvider.state('tab.eat.detail', {
-  url: '/{id:[0-9]*}',
-  templateUrl: 'templates/tab-eat-detail.html',
-  controller: 'EatDetailCtrl'
-})
+  $stateProvider.state('tab.eat.detail', {
+    url: '/{id:[0-9]*}',
+    templateUrl: 'templates/tab-eat-detail.html',
+    controller: 'EatDetailCtrl'
+  })
 
-$stateProvider.state('tab.eat.eating', {
-  url: '/eating',
-  templateUrl: 'templates/tab-eat-eating.html',
-  controller: 'EatingCtrl'
-})
+  $stateProvider.state('tab.eat.eating', {
+    url: '/eating',
+    templateUrl: 'templates/tab-eat-eating.html',
+    controller: 'EatingCtrl'
+  })
 
   .state('tab.cook', {
       url: '/cook',
