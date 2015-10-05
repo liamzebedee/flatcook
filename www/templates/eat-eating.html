@@ -1,0 +1,85 @@
+<ion-view view-title="Eating!">
+<ion-nav-buttons side="secondary">
+</ion-nav-buttons>
+<ion-content>
+
+
+<article class='card'>
+  <div class="row">
+    <span>In (two hours) @ (6pm)</span>
+  </div>
+
+  <div class="row">
+    <span><i class='ion-icon ion-icon-location'></i> Gumal 501 . 6km</span>
+  </div>
+</article>
+
+<div class="list">
+
+  <label class="item item-radio">
+    <input type="radio" name="group">
+    <div class="item-content">
+      Chilling out
+    </div>
+    <i class="radio-icon ion-checkmark"></i>
+  </label>
+
+  <label class="item item-radio">
+    <input type="radio" name="group">
+    <div class="item-content">
+      On my way
+    </div>
+    <i class="radio-icon ion-checkmark"></i>
+  </label>
+
+</div>
+
+
+<div class='list'>
+<a class="item item-icon-left item-icon-right" ng-click="openStatusChooserModal()">Status:</a>
+</div>
+
+
+<button class="button button-full button-positive">
+  Cancel meal with others
+</button>
+
+
+<div class='card'>
+      <div class="row">
+            <div class="col col-67">
+              <h4>{{ meal.name }}</h4>
+            </div>
+            <div class='col col-33' style='text-align:right!important;font-size:120%'>
+              <p>
+                <a href="#" class="subdued" style='padding-right:0'><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a> <br>
+                <a href="#" class="subdued"><i class='ion-icon ion-ios-clock'></i> {{ meal.servedAt }}</a>
+              </p>
+              </div>
+          </div>
+
+
+          <div class="item item-image">
+            <img src="{{ meal.image }}">
+          </div>
+
+
+          <div class="item item-avatar item-text-wrap">
+            <img src="{{ meal.chef.avatarUrl }}" />
+                <h2><span class="subdued">Chef</span> {{ meal.chef.name }}</h2>
+
+                <p>
+                  <a href="#" class="subdued">{{ meal.chef.location }}</a>
+                  <a href="#" class="subdued">{{ meal.guests.length }} guests</a>
+                </p>
+          </div>
+
+</div>
+
+<div class="item item-divider">
+          Dinner for (num) with:
+        </div>
+
+
+</ion-content>
+</ion-view>

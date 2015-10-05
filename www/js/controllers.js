@@ -41,18 +41,19 @@ var users = [
 
 angular.module('starter.controllers', [])
 
-.controller('EatCtrl', function($scope, $state) {
+.controller('MealsIndexCtrl', function($scope, $state) {
   $scope.meals = meals;
 
   $scope.selectMeal = function(id) {
-    $state.go('tab.eat.detail', { id: id });
+    $state.go('tab.eat.mealDetail', { id: id });
   };
 })
 
-.controller('EatDetailCtrl', function($scope, $state, $stateParams) {
+.controller('MealDetailCtrl', function($scope, $state, $stateParams) {
   $scope.meal = meals[$stateParams.id];
 
   $scope.joinMeal = function(){
+    // erase history now
     $state.go('tab.eat.eating', { id: $stateParams.id });
   };
 })
@@ -61,14 +62,7 @@ angular.module('starter.controllers', [])
   $scope.meal = meals[$stateParams.id];
 })
 
-.controller('LoginWelcomeCtrl', function($scope, $state) {
-  $scope.login = function() {
-    $state.go('tab.eat.index');
-  };
-
-})
-
-.controller('CookCtrl', function($scope, Chats) {
+.controller('NewMealCtrl', function($scope) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -76,15 +70,16 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
 })
 
 .controller('ProfileCtrl', function($scope, $state) {
   $scope.signOut = function(){
-    $state.go('loginWelcome');
+    $state.go('login');
+  };
+})
+
+.controller('LoginCtrl', function($scope, $state) {
+  $scope.login = function() {
+    $state.go('tab.eat.mealsIndex');
   };
 });
