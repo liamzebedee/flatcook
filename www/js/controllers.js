@@ -1,3 +1,8 @@
+var numbersAsWords = ['','one','two','three','four', 'five','six','seven','eight','nine','ten'];
+function numberInWords(num) {
+  return numbersAsWords[num];
+}
+
 var meals = [
     {
       id: 0,
@@ -10,7 +15,32 @@ var meals = [
         location: "Gumal 501",
         avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
       },
-      guests: ['Nick', 'Alec', 'Cristina']
+      guests: [
+        {
+          id: 0,
+          name: "Liam",
+          fbid: 123123123,
+          stripeToken: "13212dcadsf3rfqr3",
+          location: "",
+          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+        },
+        {
+          id: 0,
+          name: "Liam",
+          fbid: 123123123,
+          stripeToken: "13212dcadsf3rfqr3",
+          location: "",
+          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+        },
+        {
+          id: 0,
+          name: "Liam",
+          fbid: 123123123,
+          stripeToken: "13212dcadsf3rfqr3",
+          location: "",
+          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+        }
+      ]
     },
     {
       id: 1,
@@ -36,6 +66,22 @@ var users = [
     location: "",
     avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
   },
+  {
+    id: 1,
+    name: "Liam",
+    fbid: 123123123,
+    stripeToken: "13212dcadsf3rfqr3",
+    location: "",
+    avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+  },
+  {
+    id: 2,
+    name: "Liam",
+    fbid: 123123123,
+    stripeToken: "13212dcadsf3rfqr3",
+    location: "",
+    avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+  },
 ];
 
 
@@ -54,15 +100,37 @@ angular.module('starter.controllers', [])
 
   $scope.joinMeal = function(){
     // erase history now
-    $state.go('tab.eat.eating', { id: $stateParams.id });
+    $state.go('tab.eat.eating', { id: $scope.meal.id });
   };
 })
 
-.controller('EatingCtrl', function($scope, $stateParams) {
-  $scope.meal = meals[$stateParams.id];
+.controller('EatingCtrl', function($scope, $stateParams, $ionicModal) {
+  $scope.meal = meals[0];
+  $scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
+
+
+  $ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.statusChooserModal = modal
+  });
+
+  $scope.openStatusChooserModal = function(){
+    $scope.statusChooserModal.show();
+  };
+
+  $scope.closeStatusChooserModal = function() {
+    $scope.statusChooserModal.hide();
+  };
+
+  $scope.$on('$destroy', function() {
+    $scope.statusChooserModal.remove();
+  });
 })
 
 .controller('NewMealCtrl', function($scope) {
+
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),

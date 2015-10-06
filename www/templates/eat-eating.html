@@ -4,81 +4,69 @@
 <ion-content>
 
 
-<article class='card'>
-  <div class="row">
-    <span>In (two hours) @ (6pm)</span>
+<article class='card' style="text-align:center;text-transform:uppercase;font-weight:300">
+  <div class="row" >
+    <h3><i class="ion-icon ion-ios-clock"></i> In two hours @ 6pm</h3>
   </div>
 
   <div class="row">
-    <span><i class='ion-icon ion-icon-location'></i> Gumal 501 . 6km</span>
+    <h3><i class="ion-icon ion-location"></i> Gumal 501 - 3.5km</h3>
   </div>
 </article>
 
-<div class="list">
 
-  <label class="item item-radio">
-    <input type="radio" name="group">
-    <div class="item-content">
-      Chilling out
-    </div>
-    <i class="radio-icon ion-checkmark"></i>
-  </label>
-
-  <label class="item item-radio">
-    <input type="radio" name="group">
-    <div class="item-content">
-      On my way
-    </div>
-    <i class="radio-icon ion-checkmark"></i>
-  </label>
-
-</div>
 
 
 <div class='list'>
-<a class="item item-icon-left item-icon-right" ng-click="openStatusChooserModal()">Status:</a>
+<a class="item item-icon-left" ng-click="openStatusChooserModal()">
+          <i class="icon ion-mic-a"></i>
+          Status
+          <span class="item-note">
+            On my way
+          </span>
+        </a>
+<div class='card'>
+  <header class="row">
+        
+  </header>
+
+  <article class="item item-image">
+    <img src="{{ meal.image }}">
+  </article>
 </div>
 
 
-<button class="button button-full button-positive">
-  Cancel meal with others
-</button>
 
 
-<div class='card'>
-      <div class="row">
-            <div class="col col-67">
-              <h4>{{ meal.name }}</h4>
-            </div>
-            <div class='col col-33' style='text-align:right!important;font-size:120%'>
-              <p>
-                <a href="#" class="subdued" style='padding-right:0'><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a> <br>
-                <a href="#" class="subdued"><i class='ion-icon ion-ios-clock'></i> {{ meal.servedAt }}</a>
-              </p>
-              </div>
-          </div>
 
+  <footer class="item row">
+    <span class="col col-67">
+      <h3>{{ meal.name }}</h3>
+    </span>
+    <span class='col col-33' style='text-align:right!important;'>
+        <a href="#" class="subdued"><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a>
+    </span>
 
-          <div class="item item-image">
-            <img src="{{ meal.image }}">
-          </div>
-
-
-          <div class="item item-avatar item-text-wrap">
-            <img src="{{ meal.chef.avatarUrl }}" />
-                <h2><span class="subdued">Chef</span> {{ meal.chef.name }}</h2>
-
-                <p>
-                  <a href="#" class="subdued">{{ meal.chef.location }}</a>
-                  <a href="#" class="subdued">{{ meal.guests.length }} guests</a>
-                </p>
-          </div>
-
+  </footer>
 </div>
 
 <div class="item item-divider">
-          Dinner for (num) with:
-        </div>
+  Dinner for {{ meal.numberOfGuestsInWords }} with:
+  
+  <ion-scroll direction="x" class="wide-as-needed">
+    <div ng-repeat="guest in meal.guests" class="item item-avatar mini-avatar">
+      <img src="{{ guest.avatarUrl }}">
+      <h2>{{ guest.name }}</h2>
+      <p>November 05, 1955</p>
+    </div>
+  </ion-scroll>
+
+</div>
+
+
+<button class="button button-full button-assertive ion-icon ion-close-circled">
+  Cancel meal with others
+</button>
 
 
 </ion-content>
