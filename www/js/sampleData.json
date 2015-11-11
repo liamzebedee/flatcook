@@ -1,0 +1,88 @@
+angular.callbacks._0({
+
+
+  meals: [
+    {
+      id: 0,
+      name: 'Spaghetti Bolognaise',
+      price: 5.50,
+      servedAt: "5pm",
+      image: 'img/example-spagbol.jpg',
+      chef: {
+        name: "Liam",
+        location: "Gumal 501",
+        avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+      },
+      guests: [
+        {
+          id: 0,
+          name: "Liam",
+          fbid: 123123123,
+          stripeToken: "13212dcadsf3rfqr3",
+          location: "",
+          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+        },
+        {
+          id: 0,
+          name: "Liam",
+          fbid: 123123123,
+          stripeToken: "13212dcadsf3rfqr3",
+          location: "",
+          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+        },
+        {
+          id: 0,
+          name: "Liam",
+          fbid: 123123123,
+          stripeToken: "13212dcadsf3rfqr3",
+          location: "",
+          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+        }
+      ]
+    },
+    {
+      id: 1,
+      name: 'Pizza',
+      price: 4.10,
+      servedAt: "10pm",
+      image: 'img/example-pizza.jpeg',
+      chef: {
+        name: "Liam",
+        location: "Gumal 207",
+        avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+      },
+      guests: ['Dave', 'Sofe']
+    }
+  ],
+
+
+
+  users: [
+    {
+      id: 0,
+      name: "Liam",
+      fbid: 123123123,
+      stripeToken: "13212dcadsf3rfqr3",
+      location: "",
+      avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+    },
+    {
+      id: 1,
+      name: "Liam",
+      fbid: 123123123,
+      stripeToken: "13212dcadsf3rfqr3",
+      location: "",
+      avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+    },
+    {
+      id: 2,
+      name: "Liam",
+      fbid: 123123123,
+      stripeToken: "13212dcadsf3rfqr3",
+      location: "",
+      avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg'
+    },
+  ]
+
+  
+})

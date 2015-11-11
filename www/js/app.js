@@ -1,4 +1,4 @@
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
