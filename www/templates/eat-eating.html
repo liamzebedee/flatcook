@@ -18,7 +18,7 @@
 
 
 <div class='list'>
-<a class="item item-icon-left" ng-click="openStatusChooserModal()">
+<a class="item item-icon-left" ng-click="openStatusChooser()">
           <i class="icon ion-mic-a"></i>
           Status
           <span class="item-note">
@@ -31,7 +31,7 @@
   </header>
 
   <article class="item item-image">
-    <img src="{{ meal.image }}">
+    <img ng-src="{{ meal.image }}">
   </article>
 </div>
 
@@ -55,7 +55,7 @@
   
   <ion-scroll direction="x" class="wide-as-needed">
     <div ng-repeat="guest in meal.guests" class="item item-avatar mini-avatar">
-      <img src="{{ guest.avatarUrl }}">
+      <img ng-src="{{ guest.avatarUrl }}">
       <h2>{{ guest.name }}</h2>
       <p>November 05, 1955</p>
     </div>

@@ -3,9 +3,20 @@
 
   <ion-content>
 
-  <ion-list class="">
+  <ion-slide-box on-slide-changed="slideHasChanged($index)">
+  <ion-slide>
+    <div class="box blue"><h1>BLUE</h1></div>
+  </ion-slide>
+  <ion-slide>
+    <div class="box yellow"><h1>YELLOW</h1></div>
+  </ion-slide>
+  <ion-slide>
+    <div class="box pink"><h1>PINK</h1></div>
+  </ion-slide>
+</ion-slide-box>
 
-  <!--  only text -->
+<!--   <ion-list class="">
+
     <label class="item item-input item-stacked-label">
       <span class="input-label">What are you cooking?</span>
       <input type="text" placeholder="Spaghetti Bolognaise">
@@ -44,7 +55,7 @@
     <button class="button button-full button-positive">
       Post invite!
     </button>
-  </ion-list>
+  </ion-list> -->
     
   </ion-content>
 </ion-view>

@@ -4,6 +4,10 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
+    var FB_APP_ID = '956199011086032';
+    if (window.cordova && window.cordova.platformId == "browser") {
+      $cordovaFacebookProvider.browserInit(appID, "");
+    }
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);

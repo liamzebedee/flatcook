@@ -1,6 +1,3 @@
-
-
-
 angular.module('flatcook.controllers', ['flatcook.services'])
 
 
@@ -19,14 +16,16 @@ angular.module('flatcook.controllers', ['flatcook.services'])
 
 
 
-
-.controller('MealDetailCtrl', function($scope, $state, $stateParams, MealsService) {
+.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, MealsService) {
   $scope.$on('$ionicView.enter', function(e) {
-    $scope.meal = MealsService.getMeal($stateParams.id);
+    MealsService.getMeal($stateParams.id).then(function(meal){
+      $scope.meal = meal;
+    });
   });
 
   $scope.joinMeal = function(){
     // erase history now
+    MealsService.joinMeal($scope.meal.id);
     $state.go('tab.eat.eating', { id: $scope.meal.id });
   };
 })
@@ -37,24 +36,30 @@ angular.module('flatcook.controllers', ['flatcook.services'])
   $scope.optionsForStatusChooser = ["Chilling out", 'On my way'];
 
   $scope.$on('$ionicView.enter', function(e) {
-    $scope.meal = MealsService.getMeal(0);
-    $scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
-    $scope.meal.userStatus = $scope.optionsForStatusChooser[0];
+    MealsService.getMeal(MealsService.currentMealID).then(function(meal){
+      $scope.meal = meal;
+      $scope.meal.numberOfGuestsInWords = numberInWords(meal.guests.length);
+      $scope.meal.userStatus = $scope.optionsForStatusChooser[0];
 
-    $ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.statusChooserModal = modal;
-    });
+      $ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+      }).then(function(modal) {
+        $scope.statusChooserModal = modal;
+      });
+    })
   });
 
-  $scope.openStatusChooserModal = function(){
+  $scope.openStatusChooser = function(){
     $scope.statusChooserModal.show();
   };
 
-  $scope.closeStatusChooserModal = function() {
+  $scope.closeStatusChooser = function() {
     $scope.statusChooserModal.hide();
+  };
+
+  $scope.doRefresh = function() {
+    $scope.$broadcast('scroll.refreshComplete');
   };
 
   $scope.$on('$destroy', function() {
@@ -62,10 +67,14 @@ angular.module('flatcook.controllers', ['flatcook.services'])
   });
 })
 
+
+
 .controller('NewMealCtrl', function($scope) {
   $scope.$on('$ionicView.enter', function(e) {
   }); 
 })
+
+
 
 .controller('ProfileCtrl', function($scope, $state) {
   $scope.signOut = function(){
@@ -73,8 +82,17 @@ angular.module('flatcook.controllers', ['flatcook.services'])
   };
 })
 
+
+
 .controller('LoginCtrl', function($scope, $state) {
   $scope.login = function() {
     $state.go('tab.eat.mealsIndex');
+    // $cordovaFacebook.login(["public_profile", "email", "user_friends"])
+    // .then(function(success) {
+      
+    // }, function (error) {
+    //   
+    // });
+
   };
 });

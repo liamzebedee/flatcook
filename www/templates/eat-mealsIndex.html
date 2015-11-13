@@ -1,6 +1,15 @@
 <ion-view view-title="Find meals">
+  <ion-nav-buttons side="secondary">
+    <button ng-click="doRefresh()" class="button button-icon icon ion-ios-refresh-empty"></button>
+  </ion-nav-buttons>
+
   <ion-content>
-    
+
+    <ion-refresher
+      pulling-text="Find more meals..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
+
     <h2 class="item">
     Meals near you!
     </h2>
@@ -28,12 +37,12 @@
 
 
           <div class="item item-image">
-            <img src="{{ meal.image }}">
+            <img ng-src="{{ meal.image }}">
           </div>
 
 
           <div class="item item-avatar item-text-wrap">
-            <img src="{{ meal.chef.avatarUrl }}" />
+            <img ng-src="{{ meal.chef.avatarUrl }}" />
                 <h2><span class="subdued">Chef</span> {{ meal.chef.name }}</h2>
 
                 <p>

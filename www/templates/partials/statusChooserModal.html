@@ -5,10 +5,9 @@
     <ion-content>
       
     <div class="list">
-      <ion-radio ng-repeat="option in optionsForStatusChooser" ng-value="option" ng-model="meal.userStatus" ng-click="$this.hide()">
+      <ion-radio ng-repeat="option in optionsForStatusChooser" ng-value="option" ng-model="meal.userStatus" ng-click="closeStatusChooser()">
         {{ option }}
       </ion-radio>
-
     </div>
 
 
