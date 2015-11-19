@@ -14,3 +14,10 @@ Ionic/Angular notes:
   listen for the $ionicView.enter event:
 
 http://mcgivery.com/ionic-master-detail-pattern/
+
+
+Bower:
+
+"devDependencies": {
+    "ionic": "driftyco/ionic-bower#1.1.0"
+  }

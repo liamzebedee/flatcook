@@ -150,29 +150,32 @@ angular.module('flatcook.services', [])
 
 	usersService.login = function() {
 		
-		// function register(userData) {
-		// 	// POST to http://api.flatcook.com/1.0/registerAndLogin with access_token
-		// 	// they then use access_token to get user details if don't exist
-		// 	// return the user object
-		// 	var response = {};
-		// 	if(response.error) {
-		// 		throw new Error(error); // TODO
-		// 	} else {
+		function register(userData) {
+			// POST to http://api.flatcook.com/1.0/registerAndLogin with access_token
+			// they then use access_token to get user details if don't exist
+			// return the user object
+			var response = {};
+			if(response.error) {
+				throw new Error(error); // TODO
+			} else {
 
-		// 	}
-		// }
-		// function subscribeToUserNotifications() {
-		// }
+			}
+		}
+		function subscribeToUserNotifications() {
+		}
 
-		// $cordovaFacebook.login(["public_profile", "email", "user_friends"])
-	 //    .then(function(success) {
-	 //    	// post register to server
-	 //    	usersService.loggedInUser = register();
-	 //    	subscribeToUserNotifications();
+		$cordovaFacebook.login(["public_profile", "email", "user_friends"])
+	    .then(function(success) {
 
-	 //    }, function (error) {
-		// 	throw new Error(error); // TODO
-	 //    });
+	    	debugger;
+	    	// post register to server
+	    	usersService.loggedInUser = register();
+	    	subscribeToUserNotifications();
+
+	    }, function (error) {
+	    	debugger;
+			throw new Error(error); // TODO
+	    });
 		
 		return feignRequestingDataFromNetwork($q, sampleData.users[0]);
 	}
