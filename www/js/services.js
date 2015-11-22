@@ -1,3 +1,9 @@
+VALID_CHEF_STATUSES = ['Waiting on guests', 'Cooking', 'Meal ready!'];
+VALID_GUEST_STATUSES = ['Chilling', 'On my way'];
+
+VALID_FRIENDLINESS_RATINGS = ['Excellent'];
+VALID_COOK_RATINGS = ['Excellent'];
+
 sampleData = {
 	meals: [
 	    {
@@ -15,7 +21,9 @@ sampleData = {
 	        address: "",
 	        avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 	        cookRating: 'Excellent',
-	        friendlinessRating: 'Excellent'
+	        friendlinessRating: 'Excellent',
+
+	        status: VALID_CHEF_STATUSES[1]
 	      },
 	      guests: [
 	        {
@@ -27,7 +35,10 @@ sampleData = {
 	          address: "",
 	          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 	          cookRating: 'N/A',
-	          friendlinessRating: 'Excellent'
+	          friendlinessRating: 'Excellent',
+
+	          status: VALID_GUEST_STATUSES[1]
+
 	        }
 	      ]
 	    },
@@ -47,7 +58,9 @@ sampleData = {
 	        address: "",
 	        avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 	        cookRating: 'Excellent',
-	        friendlinessRating: 'Excellent'
+	        friendlinessRating: 'Excellent',
+
+	        status: VALID_CHEF_STATUSES[1]
 	      },
 	      guests: [
 	        {
@@ -59,13 +72,13 @@ sampleData = {
 	          address: "",
 	          avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 	          cookRating: 'N/A',
-	          friendlinessRating: 'Excellent'
+	          friendlinessRating: 'Excellent',
+
+	          status: VALID_GUEST_STATUSES[1]
 	        }
 	      ]
 	    }
 	  ],
-
-
 
 	  users: [
 	    {
@@ -98,13 +111,12 @@ function feignRequestingDataFromNetwork($q, data) {
 angular.module('flatcook.services', [])
 
 .factory('MealsService', function($http, $q) {	
-	mealsService = {
+	var mealsService = {
 		currentMealID: null
 	};
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
 	mealsService.getMeals = function(user, currentPosition) {
-		console.log(currentPosition);
 		return feignRequestingDataFromNetwork($q, sampleData.meals);
 	}
 
@@ -114,30 +126,33 @@ angular.module('flatcook.services', [])
 
 	mealsService.joinMeal = function(mealID) {
 		mealsService.currentMealID = mealID;
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
 
 	mealsService.getGuestStatuses = function(mealID) {
-
+		var guests = sampleData.meals[parseInt(mealID)].guests;
+		return feignRequestingDataFromNetwork($q, guests);
 	}
 
 	mealsService.cancelAttending = function(mealID) {
-
+		mealsService.currentMealID = null;
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
 
 	mealsService.updateStatus = function(mealID) {
-
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
 
 	mealsService.createMeal = function(mealData) {
-
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
 
 	mealsService.cancelCooking = function(mealID) {
-
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
 
 	mealsService.serveMeal = function(mealID) {
-
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
 
 	return mealsService
@@ -149,7 +164,6 @@ angular.module('flatcook.services', [])
 	};
 
 	usersService.login = function() {
-		
 		function register(userData) {
 			// POST to http://api.flatcook.com/1.0/registerAndLogin with access_token
 			// they then use access_token to get user details if don't exist
@@ -166,8 +180,6 @@ angular.module('flatcook.services', [])
 
 		$cordovaFacebook.login(["public_profile", "email", "user_friends"])
 	    .then(function(success) {
-
-	    	debugger;
 	    	// post register to server
 	    	usersService.loggedInUser = register();
 	    	subscribeToUserNotifications();
@@ -190,16 +202,13 @@ angular.module('flatcook.services', [])
 	}
 
 	usersService.postRating = function(ratingData) {
-
+		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}
-
 
 	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
 		return userService.loggedInUser.paymentID == null;
 	}
-
-
 
 	return usersService;
 });

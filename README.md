@@ -1,7 +1,10 @@
 flatcook
 ========
 
-Copyright 2015 Liam Edwards-Playne and Nathan Wilson.
+Copyright 2015 Liam Edwards-Playne and Nathan Wilson (when he adds the code he's written).
+
+## Notes on MVC
+Ionic and Angular JS is used. The model is principally kept within the Angular controller. Only modal state that is required between different controllers is implemented in the service. 
 
 
 
