@@ -1,7 +1,5 @@
 {
-  "name": "HelloIonic",
+  "name": "Flatcook",
   "private": "true",
-  "dependencies": {
-    "facebook-connect-plugin": "https://cdn.rawgit.com/Wizcorp/phonegap-facebook-plugin/master/facebookConnectPlugin.js"
-	}
+  
 }

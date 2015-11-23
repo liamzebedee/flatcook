@@ -163,33 +163,30 @@ angular.module('flatcook.services', [])
 		loggedInUser: null
 	};
 
-	usersService.login = function() {
-		function register(userData) {
-			// POST to http://api.flatcook.com/1.0/registerAndLogin with access_token
-			// they then use access_token to get user details if don't exist
-			// return the user object
-			var response = {};
-			if(response.error) {
-				throw new Error(error); // TODO
-			} else {
+	usersService.authenticateWithFacebook = function() {
+		return $cordovaFacebook.login(["public_profile", "email", "user_friends"]);
+	}
 
+	usersService.loginOrRegister = function(facebookData) {
+		var dfd = $q.defer();
+
+		setTimeout(function(){
+			// Fake register on server
+			usersService.loggedInUser = register();
+			function register() {
+				return {
+				};
 			}
-		}
+
+			dfd.resolve(true)
+		}, 500);
+
+
+		subscribeToUserNotifications();
 		function subscribeToUserNotifications() {
 		}
-
-		$cordovaFacebook.login(["public_profile", "email", "user_friends"])
-	    .then(function(success) {
-	    	// post register to server
-	    	usersService.loggedInUser = register();
-	    	subscribeToUserNotifications();
-
-	    }, function (error) {
-	    	debugger;
-			throw new Error(error); // TODO
-	    });
 		
-		return feignRequestingDataFromNetwork($q, sampleData.users[0]);
+		return dfd.promise;
 	}
 
 	usersService.getUser = function(userID) {

@@ -1,16 +1,12 @@
+IsServingBrowserFromIonicServe = !window.cordova;
+
+
 angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
-    var FB_APP_ID = '956199011086032';
-    var FB_VERSION = ""; // I don't care.
-    if (window.cordova && window.cordova.platformId == "browser") {
-      $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION);
-    }
-
-
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       cordova.plugins.Keyboard.disableScroll(true);
@@ -18,10 +14,14 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
     if (window.StatusBar) {
       StatusBar.styleLightContent();
     }
+
+
+    
+
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
   // Routing
   // -------
@@ -111,4 +111,14 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
   $ionicConfigProvider.scrolling.jsScrolling(false); // more native scrolling
   $ionicConfigProvider.views.transition("ios");
+
+
+  // Facebook
+  // --------
+    var FB_APP_ID = '956199011086032';
+    var FB_VERSION = ""; // I don't care.
+    if (IsServingBrowserFromIonicServe) {
+      window.fbAsyncInit = function(){ $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION) };
+    }
+
 });

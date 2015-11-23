@@ -100,11 +100,31 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 
 
 
-.controller('LoginCtrl', function($scope, $state, UsersService) {
+.controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
+  $scope.statusMessage = '';
+
   $scope.login = function() {
     try {
-      UsersService.login();
-      $state.go('tab.eat.mealsIndex');
+     $ionicLoading.show({
+        content: 'Signing in with FB...'
+      });
+
+      UsersService.authenticateWithFacebook().then(function(data){
+       $ionicLoading.show({
+          content: 'Signing up...'
+        });
+       console.log(data);
+
+       UsersService.loginOrRegister().then(function(res){
+          console.log('logged in '+res);
+       });
+
+      }, function(err) {
+
+
+
+      });
+      // $state.go('tab.eat.mealsIndex');
     } catch(ex) {
       throw ex;
     }
