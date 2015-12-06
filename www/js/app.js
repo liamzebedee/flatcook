@@ -1,9 +1,11 @@
 IsServingBrowserFromIonicServe = !window.cordova;
 
 
-angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'])
+angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services', 'ui.router.stateHelper'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope) {
+  $rootScope.$on("$stateChangeError", console.log.bind(console));
+
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -15,13 +17,10 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
       StatusBar.styleLightContent();
     }
 
-
-    
-
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
+.config(function($stateProvider, stateHelperProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
   // Routing
   // -------
@@ -48,7 +47,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   })
 
   .state('tab.eat.mealsIndex', {
-    url: '/index',
+    url: '',
     templateUrl: 'templates/eat-mealsIndex.html',
     controller: 'MealsIndexCtrl'
   })
@@ -67,16 +66,51 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
 
 
-
   .state('tab.cook', {
+    abstract: true,
     url: '/cook',
     views: {
       'tab-cook': {
-        templateUrl: 'templates/cook.html',
-        controller: 'NewMealCtrl'
+        template: "<ion-nav-view></ion-nav-view>"
       }
     }
   })
+
+  .state('tab.cook.newMeal', {
+    abstract: true,
+    controller: 'NewMealCtrl',
+    views: {
+      'newMealForm': {
+        template: '<ion-nav-view></ion-nav-view>'
+      }
+    }
+  })
+
+  .state('tab.cook.newMeal.intro', {
+    url: '/intro',
+    templateUrl: 'templates/cook-newMeal.html'
+  })
+  .state('tab.cook.newMeal.step1', {
+    url: '/step1',
+    templateUrl: 'templates/cook-newMeal-step1.html'
+  })
+  .state('tab.cook.newMeal.step2', {
+    url: '/step2',
+    templateUrl: 'templates/cook-newMeal-step2.html'
+  })
+  .state('tab.cook.newMeal.step3', {
+    url: '/step3',
+    templateUrl: 'templates/cook-newMeal-step3.html'
+  })
+
+
+  .state('tab.cook.cooking', {
+    url: '/cooking',
+    templateUrl: 'templates/cook-cooking.html',
+    controller: 'CookingCtrl'
+  })
+
+
 
 
 
@@ -104,6 +138,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
 
   $urlRouterProvider.otherwise('/login');
+
 
 
   // Config

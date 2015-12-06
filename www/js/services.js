@@ -83,9 +83,9 @@ sampleData = {
 	  users: [
 	    {
 	      id: 0,
-	      name: "Liam",
+	      name: "Test User",
 	      facebookID: 123123123,
-	      balance: 0.0,
+	      balance: 10.0,
 	      paymentID: "13212dcadsf3rfqr3",
 	      address: "",
 	      avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
@@ -159,27 +159,40 @@ angular.module('flatcook.services', [])
 })
 
 .factory('UsersService', function($http, $q, $cordovaFacebook) {
+	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
-		loggedInUser: null
+		loggedInUser: null,
+		_facebookData: null
 	};
 
+	if(IsServingBrowserFromIonicServe) {
+		usersService.loggedInUser = sampleData.users[0];
+	}
+
 	usersService.authenticateWithFacebook = function() {
-		return $cordovaFacebook.login(["public_profile", "email", "user_friends"]);
+		return $cordovaFacebook.login(FACEBOOK_PERMISSIONS);
 	}
 
 	usersService.loginOrRegister = function(facebookData) {
-		var dfd = $q.defer();
+		//authResponse
+		// accessToken
+		// userID
 
-		setTimeout(function(){
-			// Fake register on server
-			usersService.loggedInUser = register();
+		var dfd = $q.defer();
+    	$cordovaFacebook.api('me?fields=email,name,friends', FACEBOOK_PERMISSIONS).then(function(data){
+    		usersService.loggedInUser = register();
 			function register() {
-				return {
-				};
+				var user = sampleData.users[0];
+				user.name = data.name;
+				user.email = data.email;
+				user.facebookID = data.id;
+				
+				usersService._facebookData = facebookData; // debugging, who knows when we'll need it
+				return user;
 			}
 
-			dfd.resolve(true)
-		}, 500);
+			dfd.resolve(true);
+    	});
 
 
 		subscribeToUserNotifications();
@@ -204,7 +217,7 @@ angular.module('flatcook.services', [])
 
 	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
-		return userService.loggedInUser.paymentID == null;
+		return usersService.loggedInUser.paymentID == null;
 	}
 
 	return usersService;

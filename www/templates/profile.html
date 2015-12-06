@@ -1,28 +1,27 @@
-<ion-view view-title="My profile">
-<ion-nav-buttons side="secondary">
-      <button class="button" ng-click="signOut()">Sign out</button>
-    </ion-nav-buttons>
+<ion-view>
+
+<ion-nav-buttons class="bar bar-header">
+  <button class="button" ng-click="signOut()">Sign out</button>
+  <div class="h1 title">My profile</div>
+  <button class="button button-neutral" ng-click="edit()">Edit</button>
+</ion-nav-buttons>
 
   <ion-content>
 
 
 <div class="profile">
-          <img id="profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
+    <img id="profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
 
-<div style="text-align:center;padding-top:1em">
-          <h3 id="profile-name">Max</h3>
-          <h4>$10.40 - Flat 501</h4>
-</div>
-        </div>
+    <div style="text-align:center;padding-top:1em">
+              <h3 id="profile-name">{{user.name}}</h3>
+              <h4>${{user.balance}} - {{user.address}}</h4>
+    </div>
+    </div>
 
-    <ion-list>
-
-
+<ion-list>
   <div class="item">
     Payment details <i class='ion-icon ion-icon-caret-right'>
   </div>
-
-
 </ion-list>
 
   </ion-content>

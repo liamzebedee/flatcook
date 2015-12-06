@@ -4,49 +4,64 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 
 .controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, $q) {
   $scope.$on('$ionicView.beforeEnter', function(e) {
+  	$scope.user = UsersService.loggedInUser;
 
-    // var position = navigator.geolocation.getCurrentPosition(
-    //   function(position){
-    //     // Finding meals near you
-    //     MealsService.getMeals(UsersService.usersService, position).then(function(meals){
-    //       $scope.meals = meals;
-    //     });
-    //   },
-      
-    //   function(error){
-    //     throw new Error(error); // TODO
-    //   }, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }
-    // );
+	var position = navigator.geolocation.getCurrentPosition(
+	  function(position){
+	    // Finding meals near you
+	    MealsService.getMeals(UsersService.usersService, position).then(function(meals){
+	      $scope.meals = meals;
+	    });
+	  },
+	  
+	  function(error){
+	    throw new Error(error); // TODO
+	  }, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }
+	);
 
   });
 
   $scope.selectMeal = function(id) {
-    $state.go('tab.eat.mealDetail', { id: id });
+	$state.go('tab.eat.mealDetail', { id: id });
   };
 
   $scope.doRefresh = function() {
-    $scope.$broadcast('scroll.refreshComplete');
+	$scope.$broadcast('scroll.refreshComplete');
   };
 })
 
 
 
-.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, MealsService, UsersService) {
+.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup, 
+	MealsService, UsersService) {
+
   $scope.$on('$ionicView.beforeEnter', function(e) {
-    MealsService.getMeal($stateParams.id).then(function(meal){
-      $scope.meal = meal;
-    });
+	MealsService.getMeal($stateParams.id).then(function(meal){
+	  $scope.meal = meal;
+	});
   });
 
   $scope.joinMeal = function(){
-    if(UsersService.userNeedsToLinkPaymentMethod()) {
-      // show link payment method dialog
-      // wait on auth
-    }
+	  	var confirmPopup = $ionicPopup.confirm({
+	     title: 'Consume Join Meal',
+	     template: 'Are you sure you can commit to coming?'
+	   });
+	   confirmPopup.then(function(yes) {
+	     if(yes) {
+	     	if(UsersService.userNeedsToLinkPaymentMethod()) {
+				  // show link payment method dialog
+				  // wait on auth
+				}
 
-    MealsService.joinMeal($scope.meal.id);
-    // erase history now
-    $state.go('tab.eat.eating');
+				MealsService.joinMeal($scope.meal.id);
+				// erase history now
+				$state.go('tab.eat.eating');
+	     } else {
+	       
+	     }
+	   });
+
+	
   };
 })
 
@@ -56,77 +71,104 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
   $scope.optionsForStatusChooser = ["Chilling out", 'On my way'];
 
   $scope.$on('$ionicView.beforeEnter', function(e) {
-    MealsService.getMeal(MealsService.currentMealID).then(function(meal){
-      $scope.meal = meal;
-      $scope.meal.numberOfGuestsInWords = numberInWords(meal.guests.length);
-      $scope.meal.userStatus = $scope.optionsForStatusChooser[0];
+	MealsService.getMeal(MealsService.currentMealID).then(function(meal){
+	  $scope.meal = meal;
+	  $scope.meal.numberOfGuestsInWords = numberInWords(meal.guests.length);
+	  $scope.meal.userStatus = $scope.optionsForStatusChooser[0];
 
-      $ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-      }).then(function(modal) {
-        $scope.statusChooserModal = modal;
-      });
-    })
+	  $ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	  }).then(function(modal) {
+		$scope.statusChooserModal = modal;
+	  });
+	})
   });
 
   $scope.openStatusChooser = function(){
-    $scope.statusChooserModal.show();
+	$scope.statusChooserModal.show();
   };
 
   $scope.closeStatusChooser = function() {
-    $scope.statusChooserModal.hide();
+	$scope.statusChooserModal.hide();
   };
 
   $scope.$on('$destroy', function() {
-    $scope.statusChooserModal.remove();
+	$scope.statusChooserModal.remove();
   });
 })
 
 
 
-.controller('NewMealCtrl', function($scope) {
+.controller('NewMealCtrl', function($scope, $state) {
+	$scope.formData = {};
+	$scope.startForm = function(){
+		$state.go('tab.cook.newMeal.step1')
+	};
+
   $scope.$on('$ionicView.enter', function(e) {
   }); 
 })
 
 
 
-.controller('ProfileCtrl', function($scope, $state) {
+
+
+.controller('CookingCtrl', function($scope) {
+  $scope.$on('$ionicView.enter', function(e) {
+  }); 
+})
+
+
+
+.controller('ProfileCtrl', function($scope, $state, UsersService) {
+  $scope.$on('$ionicView.beforeEnter', function(e) {
+	$scope.user = UsersService.loggedInUser;
+  });
+
   $scope.signOut = function(){
-    $state.go('login');
+  	UsersService.signOut().then(function(){
+  		$state.go('login');
+  	});
+  };
+
+  $scope.configurePaymentMethod = function(){
+  	throw new Error("Not Impl");
   };
 })
 
 
 
 .controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
-  $scope.statusMessage = '';
+	$scope.loginAsTesting = function(){
+		if(IsServingBrowserFromIonicServe) {
+			$state.go('tab.eat.mealsIndex');
+		}
+	};
 
   $scope.login = function() {
-    try {
-     $ionicLoading.show({
-        content: 'Signing in with FB...'
-      });
+	try {
+	  $ionicLoading.show({
+		template: 'Signing in with FB...'
+	  });
 
-      UsersService.authenticateWithFacebook().then(function(data){
-       $ionicLoading.show({
-          content: 'Signing up...'
-        });
-       console.log(data);
+	  UsersService.authenticateWithFacebook().then(function(facebookData){
+	    $ionicLoading.show({
+		  template: 'Creating your profile...'
+		});
 
-       UsersService.loginOrRegister().then(function(res){
-          console.log('logged in '+res);
-       });
+		UsersService.loginOrRegister(facebookData).then(function(success){
+			if(success) {
+				$ionicLoading.hide();
+				$state.go('tab.eat.mealsIndex');
+			}
+		});
 
-      }, function(err) {
+	  }, function(err) {
+	  });
 
-
-
-      });
-      // $state.go('tab.eat.mealsIndex');
-    } catch(ex) {
-      throw ex;
-    }
+	} catch(ex) {
+	  throw ex;
+	}
   };
 });
