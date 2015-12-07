@@ -88,40 +88,6 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
         controller: 'EatingCtrl'
       })
 
-
-/* 
- * How the router works.
- * 
- * State - a state is 
- * View
- * Tab - a tab is simply yet another view that doesn't change
- * Page - a page consists of various views that make it up
- * 
-
- State
-   View A
-   View B
-
-
-Home page.
-
-How do multiple nested states work?
-
-
-have to reconcile:
-a) controller (JS)
-b) template (HTML)
-
-Open cooking page
-if(cookingCurrently) {
-  controller: foo
-  template: bar 
-} else {
-  
-}
- */
-
-
     //
     //  Cooking tab
     //
@@ -153,10 +119,6 @@ if(cookingCurrently) {
         url: '/newMeal',
         controller: 'NewMealCtrl',
         template: "<ion-nav-view></ion-nav-view>"
-        // 'newMealForm': {
-          
-        // }
-        // template: "<ion-nav-view></ion-nav-view>"
       })
 
         .state('tab.cook.newMeal.intro', {
@@ -183,10 +145,9 @@ if(cookingCurrently) {
         controller: 'CookingCtrl'
       })
 
-
-
-
-
+    //
+    //  Profile tab
+    //
 
     .state('tab.profile', {
       url: '/profile',
@@ -199,7 +160,9 @@ if(cookingCurrently) {
     })
 
 
-
+  //
+  //  Login splash
+  //
 
   .state('login', {
     url: '/login',
@@ -209,17 +172,14 @@ if(cookingCurrently) {
 
 
 
-
-  // $urlRouterProvider.otherwise('/tab/eat');
-
-  // These are to help with testing.
-  // Should never be encountered in end product.
   if(IsServingBrowserFromIonicServe) {
     $urlRouterProvider.otherwise(function($injector, $location){
+      console.error("Navigated to a state that didn't exist - uh oh, spaghettios!");
       console.log($injector)
       console.log($location)
     })
     $urlRouterProvider.when('', '/tab/eat');
+
   } else {
     $urlRouterProvider.otherwise('/login');
   }
