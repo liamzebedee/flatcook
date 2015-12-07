@@ -34,27 +34,16 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
 .config(function($stateProvider, stateHelperProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
-  // stateHelperProvider.state({
-  //   name: 'tab',
-  //   url: '/tab',
-  //   abstract: true,
-  //   templateUrl: 'templates/tabs.html',
-  //   children: [
-  //     {
-  //       abstract: true,
-  //       url: '/eat',
-  //       views: {
-  //         'tab-eat': {
-  //           template: "<ion-nav-view></ion-nav-view>"
-  //         }
-  //       }
-  //     }
-  //   ]
-
-  // })
-
   // Routing
   // -------
+  // 
+  // Be warned: Ionic's routing, which uses ui-router, has no useful documentation for anything but a simple TODO app.
+  // Visit these links:
+  // - https://medium.com/@gabescholz/effectively-maintaing-state-in-angularjs-applications-716738aaf5f4#.dopxalwaa
+  // - https://forum.ionicframework.com/t/nested-states-3-level/1137/16
+  // - http://robferguson.org/2015/01/07/ionics-sidemenu-template-and-nested-states/
+  // - http://ionicframework.com/docs/api/directive/ionNavView/
+  // 
 
   $stateProvider
 
@@ -146,30 +135,34 @@ if(cookingCurrently) {
         }
       },
       dynamicallySelectState: function() {
-        if(false) {
+        // $ionicHistory.nextViewOptions({
+        //   disableBack: true
+        // });
+        var weAreGoingOnABearHunt = false;
+        if(weAreGoingOnABearHunt) {
+          // I don't care.
           return 'tab.cook.cooking';
         } else {
-          return 'tab.cook.newMeal';
+          return 'tab.cook.newMeal.intro';
         };
       }
     })
 
       .state('tab.cook.newMeal', {
+        abstract: true,
         url: '/newMeal',
-        templateUrl: 'templates/cook-newMeal.html',
         controller: 'NewMealCtrl',
-        // views: {
-        //   'newMealFormx': {
-            
-        //     template: "<ion-nav-view></ion-nav-view>"
-        //   }
-        // },
+        template: "<ion-nav-view></ion-nav-view>"
+        // 'newMealForm': {
+          
+        // }
+        // template: "<ion-nav-view></ion-nav-view>"
       })
 
-        // .state('tab.cook.newMeal.intro', {
-        //   url: '',
-        //   templateUrl: 'templates/cook-newMeal.html'
-        // })
+        .state('tab.cook.newMeal.intro', {
+          url: '',
+          templateUrl: 'templates/cook-newMeal.html'
+        })
         .state('tab.cook.newMeal.step1', {
           url: '/step1',
           templateUrl: 'templates/cook-newMeal-step1.html'
@@ -219,10 +212,17 @@ if(cookingCurrently) {
 
   // $urlRouterProvider.otherwise('/tab/eat');
 
-$urlRouterProvider.otherwise(function($injector, $location){
-  console.log($injector)
-  console.log($location)
-})
+  // These are to help with testing.
+  // Should never be encountered in end product.
+  if(IsServingBrowserFromIonicServe) {
+    $urlRouterProvider.otherwise(function($injector, $location){
+      console.log($injector)
+      console.log($location)
+    })
+    $urlRouterProvider.when('', '/tab/eat');
+  } else {
+    $urlRouterProvider.otherwise('/login');
+  }
 
   // Config
   // ------
