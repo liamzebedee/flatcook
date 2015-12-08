@@ -85,10 +85,14 @@ sampleData = {
 	      id: 0,
 	      name: "Test User",
 	      facebookID: 123123123,
+	      
 	      balance: 10.0,
 	      paymentID: "13212dcadsf3rfqr3",
-	      address: "",
+
+	      address: "", // where the meal is hosted
+	      lastLocation: [],
 	      avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+
 	      cookRating: 'N/A',
 	      friendlinessRating: 'Excellent'
 	    }
@@ -171,6 +175,10 @@ angular.module('flatcook.services', [])
 
 	usersService.authenticateWithFacebook = function() {
 		return $cordovaFacebook.login(FACEBOOK_PERMISSIONS);
+	}
+
+	usersService.signOut = function() {
+		return;
 	}
 
 	usersService.loginOrRegister = function(facebookData) {

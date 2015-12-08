@@ -1,6 +1,10 @@
 angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 
 
+.controller('TabsController', function($scope, $state) {
+	$scope.hideTabsCss = 'xtabs-item-hide';
+})
+
 
 .controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, $q) {
   $scope.$on('$ionicView.beforeEnter', function(e) {
@@ -101,13 +105,49 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 
 
 .controller('NewMealCtrl', function($scope, $state) {
-	$scope.formData = {};
-	$scope.startForm = function(){
-		$state.go('tab.cook.newMeal.step1')
+	$scope.formData = {
+		description: "",
+
+		numberOfMeals: 0,
+		costPerMeal: 0,
+		totalCost: 0
 	};
 
-  $scope.$on('$ionicView.enter', function(e) {
-  }); 
+	$scope.step1 = { 
+		wordsLeft: 20,
+		maxLengthOfDescription: 120
+	}
+
+	$scope.step2 = {
+	}
+
+	$scope.startForm = function(){
+		$scope.formData = {};
+		$state.go('tab.cook.newMeal.step1')
+	};
+	$scope.navToStep2 = function(){
+		$state.go('tab.cook.newMeal.step2');
+	}
+	$scope.navToStep3 = function(){
+		$state.go('tab.cook.newMeal.step3');
+	}
+
+	$scope.$watch('formData.numberOfMeals', recalcTotalCost);
+	$scope.$watch('formData.costPerMeal', recalcTotalCost);
+	$scope.$watch('formData.totalCost', recalcCostPerMeal);
+
+	function recalcCostPerMeal(newVal, oldVal) {
+		if(newVal == oldVal) return;
+		$scope.formData.costPerMeal = $scope.formData.totalCost / $scope.formData.numberOfMeals;
+	}
+	function recalcTotalCost(newVal, oldVal) {
+		if(newVal == oldVal) return;
+		$scope.formData.totalCost = $scope.formData.costPerMeal * $scope.formData.numberOfMeals;
+	}
+
+  	$scope.$on('$ionicView.enter', function(e) {
+  		recalcTotalCost();
+  	}); 
 })
 
 

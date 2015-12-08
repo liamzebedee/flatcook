@@ -1,43 +1,23 @@
-<ion-view>
+<ion-view view-title='New meal (3/3)'>
+
 <ion-content>
-	When n where
----
 
-When
-Where
+<div class="list">
+  <h2 class='padding'>When and where?</h2>
 
- <label class="item item-input item-stacked-label">
-      <span class="input-label">What are you cooking?</span>
-      <input type="text" placeholder="Spaghetti Bolognaise">
-    </label>
-
-      <label class="item item-input item-select">
-    <div class="input-label">
-      How much?
-    </div>
-    <select>
-      <option value=2>Two meals</option>
-      <option value=3>Three meals</option>
-      <option value=4>Four meals (nearing a party)</option>
-      <option value=5>Five meals (it's a feast)</option>
-      <option value=6>Six meals</option>
-    </select>
+  <label class="item item-input item-stacked-label">
+    <span class='input-label'>When will food be served?</span>
+    <input type="time" ng-model="model.time2" formatted-time>
   </label>
 
+  <label class="item item-input item-stacked-label">
+    <span class='input-label'>Where should guests come to?</span>
+    <input type="text" placeholder="e.g. 501 Gumal">
+  </label>
+</div>
 
-    <label class="item item-input">
-      <span class="input-label">Roughly when?</span>
-      <input type="time" ng-model="model.time2" formatted-time>
-    </label>
+<!-- Senecha -->
+<a class="button button-full icon-right button-energized" ng-click="postMeal()">Post meal invite!</a>
 
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">Where's your flat?</span>
-      <input type="text" placeholder="Gumal 501">
-    </label>
-
-    <label class="item item-input item-stacked-label">
-      <span class="input-label">What's the cost per person?</span>
-      <input type="number" min=0 max=100 step=1>
-    </label>
 </ion-content>
 </ion-view>

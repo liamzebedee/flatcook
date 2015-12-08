@@ -1,14 +1,31 @@
-<ion-view>
+<ion-view view-title='New meal (2/3)'>
 
 <ion-content>
-	How much?
----
 
-3 meals
-for $5 each
-= $25 total
+<div class="list">
+  <h2 class='padding'>How much are you cooking?</h2>
 
-<button>When and where? -></button>
+  <div class="list">
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">How many meals?</span>
+      <input type="tel" ng-model="formData.numberOfMeals">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">How much per meal?</span>
+      <input type="tel" ng-model="formData.costPerMeal">
+    </label>
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">How much in total?</span>
+      <input type="tel" ng-model="formData.totalCost">
+    </label>
+  </div>
+
+  <a class="button button-full icon-right ion-chevron-right button-energized" ng-click="navToStep3()">When and where?</a>
+</div>
+
+
 </ion-content>
+
+
 
 </ion-view>
