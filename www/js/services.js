@@ -214,8 +214,10 @@ angular.module('flatcook.services', [])
 		if(userID == usersService.loggedInUser.id) {
 			return usersService.loggedInUser; // TODO
 		} else {
-			// GET http://api.flatcook.com/v1.0/user/{id}
-			throw new Error("Not Impl");
+			 $.getJSON('/user/id/' + userID)
+                .success(function (response) {
+                    return response.user;
+                });
 		}
 	}
 
