@@ -214,7 +214,7 @@ angular.module('flatcook.services', [])
 		if(userID == usersService.loggedInUser.id) {
 			return usersService.loggedInUser; // TODO
 		} else {
-			 $.getJSON('/user/id/' + userID)
+			 $.getJSON('http://localhost:52509/user/id/' + userID)
                 .success(function (response) {
                     return response.user;
                 });
