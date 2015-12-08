@@ -1,7 +1,7 @@
 IsServingBrowserFromIonicServe = !window.cordova;
 
 
-angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services', 'ui.router.stateHelper'])
+angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'])
 
 .run(function($ionicPlatform, $rootScope, $state) {
 
@@ -32,7 +32,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   });
 })
 
-.config(function($stateProvider, stateHelperProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
 
   // Routing
   // -------
