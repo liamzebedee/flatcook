@@ -8,6 +8,7 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	$scope.loadingMeals = false;
 	$scope.lastUpdated = new Date();
 
+
 	$scope.$on('$ionicView.beforeEnter', function(e) {
 		$scope.user = UsersService.loggedInUser;
 
@@ -29,9 +30,9 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 				MealsService.getMeals(UsersService.usersService, position).then(function(meals) {
 					$scope.meals = meals;
 					$scope.loadingMeals = false;
-					$scope.$broadcast('scroll.refreshComplete');
 					$scope.lastUpdated = new Date();
-					$scope.$apply()
+					$scope.$broadcast('scroll.refreshComplete');
+
 				});
 			},
 

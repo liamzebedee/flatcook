@@ -1,4 +1,4 @@
-<ion-view view-title="">
+<ion-view view-title="My profile">
 
 <ion-nav-buttons class="bar bar-header">
   <button class="button" ng-click="signOut()">Sign out</button>
@@ -7,6 +7,11 @@
 </ion-nav-buttons>
 
   <ion-content>
+
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="xx()">
+    </ion-refresher>
 
 <div class="profile">
     <img id="profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
