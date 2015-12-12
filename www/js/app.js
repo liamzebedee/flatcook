@@ -48,7 +48,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   $stateProvider
 
   // setup an abstract state for the tabs directive
-  .state('tab', {
+    .state('tab', {
     url: '/tab',
     controller: 'TabsController',
     abstract: true,
@@ -57,108 +57,108 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
 
 
-    //
-    //  Eating tab
-    //
+  //
+  //  Eating tab
+  //
 
-    .state('tab.eat', {
-      abstract: true,
-      url: '/eat',
-      views: {
-        'tab-eat': {
-          template: "<ion-nav-view></ion-nav-view>"
-        }
-      }
-    })
-
-      .state('tab.eat.mealsIndex', {
-        url: '',
-        templateUrl: 'templates/eat-mealsIndex.html',
-        controller: 'MealsIndexCtrl'
-      })
-
-      .state('tab.eat.mealDetail', {
-        url: '/meal/{id:[0-9]*}',
-        templateUrl: 'templates/eat-mealDetail.html',
-        controller: 'MealDetailCtrl'
-      })
-
-      .state('tab.eat.eating', {
-        url: '/eating',
-        templateUrl: 'templates/eat-eating.html',
-        controller: 'EatingCtrl'
-      })
-
-    //
-    //  Cooking tab
-    //
-
-    .state('tab.cook', {
-      abstract: false,
-      url: '/cook',
-      views: {
-        'tab-cook': {
-          template: "<ion-nav-view></ion-nav-view>"
-        }
-      },
-      dynamicallySelectState: function() {
-        // $ionicHistory.nextViewOptions({
-        //   disableBack: true
-        // });
-        var weAreGoingOnABearHunt = false;
-        if(weAreGoingOnABearHunt) {
-          // I don't care.
-          return 'tab.cook.cooking';
-        } else {
-          return 'tab.cook.newMeal.intro';
-        };
-      }
-    })
-
-      .state('tab.cook.newMeal', {
-        abstract: true,
-        url: '/newMeal',
-        controller: 'NewMealCtrl',
+  .state('tab.eat', {
+    abstract: true,
+    url: '/eat',
+    views: {
+      'tab-eat': {
         template: "<ion-nav-view></ion-nav-view>"
-      })
-
-        .state('tab.cook.newMeal.intro', {
-          url: '',
-          templateUrl: 'templates/cook-newMeal.html'
-        })
-        .state('tab.cook.newMeal.step1', {
-          url: '/step1',
-          templateUrl: 'templates/cook-newMeal-step1.html'
-        })
-        .state('tab.cook.newMeal.step2', {
-          url: '/step2',
-          templateUrl: 'templates/cook-newMeal-step2.html'
-        })
-        .state('tab.cook.newMeal.step3', {
-          url: '/step3',
-          templateUrl: 'templates/cook-newMeal-step3.html'
-        })
-
-
-      .state('tab.cook.cooking', {
-        url: '/cooking',
-        templateUrl: 'templates/cook-cooking.html',
-        controller: 'CookingCtrl'
-      })
-
-    //
-    //  Profile tab
-    //
-
-    .state('tab.profile', {
-      url: '/profile',
-      views: {
-        'tab-profile': {
-          templateUrl: 'templates/profile.html',
-          controller: 'ProfileCtrl'
-        }
       }
+    }
+  })
+
+  .state('tab.eat.mealsIndex', {
+    url: '',
+    templateUrl: 'templates/eat-mealsIndex.html',
+    controller: 'MealsIndexCtrl'
+  })
+
+  .state('tab.eat.mealDetail', {
+    url: '/meal/{id:[0-9]*}',
+    templateUrl: 'templates/eat-mealDetail.html',
+    controller: 'MealDetailCtrl'
+  })
+
+  .state('tab.eat.eating', {
+    url: '/eating',
+    templateUrl: 'templates/eat-eating.html',
+    controller: 'EatingCtrl'
+  })
+
+  //
+  //  Cooking tab
+  //
+
+  .state('tab.cook', {
+    abstract: false,
+    url: '/cook',
+    views: {
+      'tab-cook': {
+        template: "<ion-nav-view></ion-nav-view>"
+      }
+    },
+    dynamicallySelectState: function() {
+      // $ionicHistory.nextViewOptions({
+      //   disableBack: true
+      // });
+      var weAreGoingOnABearHunt = false;
+      if (weAreGoingOnABearHunt) {
+        // I don't care.
+        return 'tab.cook.cooking';
+      } else {
+        return 'tab.cook.newMeal.intro';
+      };
+    }
+  })
+
+  .state('tab.cook.newMeal', {
+    abstract: true,
+    url: '/newMeal',
+    controller: 'NewMealCtrl',
+    template: "<ion-nav-view></ion-nav-view>"
+  })
+
+  .state('tab.cook.newMeal.intro', {
+      url: '',
+      templateUrl: 'templates/cook-newMeal.html'
     })
+    .state('tab.cook.newMeal.step1', {
+      url: '/step1',
+      templateUrl: 'templates/cook-newMeal-step1.html'
+    })
+    .state('tab.cook.newMeal.step2', {
+      url: '/step2',
+      templateUrl: 'templates/cook-newMeal-step2.html'
+    })
+    .state('tab.cook.newMeal.step3', {
+      url: '/step3',
+      templateUrl: 'templates/cook-newMeal-step3.html'
+    })
+
+
+  .state('tab.cook.cooking', {
+    url: '/cooking',
+    templateUrl: 'templates/cook-cooking.html',
+    controller: 'CookingCtrl'
+  })
+
+  //
+  //  Profile tab
+  //
+
+  .state('tab.profile', {
+    url: '/profile',
+    views: {
+      'tab-profile': {
+        templateUrl: 'templates/profile.html',
+        controller: 'ProfileCtrl'
+      }
+    }
+  })
 
 
   //
@@ -173,8 +173,8 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
 
 
-  if(IsServingBrowserFromIonicServe) {
-    $urlRouterProvider.otherwise(function($injector, $location){
+  if (IsServingBrowserFromIonicServe) {
+    $urlRouterProvider.otherwise(function($injector, $location) {
       console.error("Navigated to a state that didn't exist - uh oh, spaghettios!");
       console.log($injector)
       console.log($location)
@@ -194,10 +194,12 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
 
   // Facebook
   // --------
-    var FB_APP_ID = '956199011086032';
-    var FB_VERSION = ""; // I don't care.
-    if (IsServingBrowserFromIonicServe) {
-      window.fbAsyncInit = function(){ $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION) };
-    }
+  var FB_APP_ID = '956199011086032';
+  var FB_VERSION = ""; // I don't care.
+  if (IsServingBrowserFromIonicServe) {
+    window.fbAsyncInit = function() {
+      $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION)
+    };
+  }
 
 });
