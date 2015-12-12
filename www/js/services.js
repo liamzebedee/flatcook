@@ -114,9 +114,9 @@ function feignRequestingDataFromNetwork($q, data) {
 
 angular.module('flatcook.services', [])
 
-.factory('MealsService', function($http, $q) {	
+.factory('MealsService', function($http, $q) {
 	var mealsService = {
-		currentMealID: null
+		currentMealID: 0
 	};
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
