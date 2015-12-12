@@ -29,8 +29,9 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 				MealsService.getMeals(UsersService.usersService, position).then(function(meals) {
 					$scope.meals = meals;
 					$scope.loadingMeals = false;
-					// $scope.$broadcast('scroll.refreshComplete');
+					$scope.$broadcast('scroll.refreshComplete');
 					$scope.lastUpdated = new Date();
+					$scope.$apply()
 				});
 			},
 
