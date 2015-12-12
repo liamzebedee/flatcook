@@ -213,6 +213,17 @@ angular.module('flatcook.services', [])
 		return dfd.promise;
 	}
 
+	usersService.getUser = function(userID) {
+		if(userID == usersService.loggedInUser.id) {
+			return usersService.loggedInUser; // TODO
+		} else {
+			 $.getJSON('http://localhost:52509/user/id/' + userID)
+                .success(function (response) {
+                    return response.user;
+                });
+		}
+	}
+
 	usersService.postRating = function(ratingData) {
 		return feignRequestingDataFromNetwork($q, { status: 'success' });
 	}

@@ -8,11 +8,6 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 .controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, $q, $ionicLoading) {
 	$scope.loadingMeals = true;
 
-
-	$scope.$on('scroll.refreshComplete', function(){
-		$scope.isRefreshing = false;
-	});
-
   $scope.$on('$ionicView.enter', function(e) {
   	$scope.user = UsersService.loggedInUser;
 
@@ -30,10 +25,10 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	  function(position){
 	    // Finding meals near you
 	    MealsService.getMeals(UsersService.usersService, position).then(function(meals){
-	      $scope.meals = meals;
-
 		  	$scope.loadingMeals = false;
 			$scope.$broadcast('scroll.refreshComplete');
+
+	      $scope.meals = meals;
 	    });
 	  },
 	  
