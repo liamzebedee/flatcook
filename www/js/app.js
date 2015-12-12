@@ -179,7 +179,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
       console.log($injector)
       console.log($location)
     })
-    $urlRouterProvider.when('', '/tab/eat');
+    $urlRouterProvider.when('', '/login');
 
   } else {
     $urlRouterProvider.otherwise('/login');

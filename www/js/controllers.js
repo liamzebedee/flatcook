@@ -5,15 +5,35 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 })
 
 
-.controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, $q) {
-  $scope.$on('$ionicView.beforeEnter', function(e) {
+.controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, $q, $ionicLoading) {
+	$scope.loadingMeals = true;
+
+
+	$scope.$on('scroll.refreshComplete', function(){
+		$scope.isRefreshing = false;
+	});
+
+  $scope.$on('$ionicView.enter', function(e) {
   	$scope.user = UsersService.loggedInUser;
 
-	var position = navigator.geolocation.getCurrentPosition(
+	$scope.doRefresh();
+  });
+
+  $scope.selectMeal = function(id) {
+	$state.go('tab.eat.mealDetail', { id: id });
+  };
+
+  $scope.doRefresh = function() {
+  	$scope.loadingMeals = true;
+
+  	var position = navigator.geolocation.getCurrentPosition(
 	  function(position){
 	    // Finding meals near you
 	    MealsService.getMeals(UsersService.usersService, position).then(function(meals){
 	      $scope.meals = meals;
+
+		  	$scope.loadingMeals = false;
+			$scope.$broadcast('scroll.refreshComplete');
 	    });
 	  },
 	  
@@ -22,14 +42,6 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	  }, { maximumAge: 3000, timeout: 5000, enableHighAccuracy: true }
 	);
 
-  });
-
-  $scope.selectMeal = function(id) {
-	$state.go('tab.eat.mealDetail', { id: id });
-  };
-
-  $scope.doRefresh = function() {
-	$scope.$broadcast('scroll.refreshComplete');
   };
 })
 
@@ -42,6 +54,10 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	MealsService.getMeal($stateParams.id).then(function(meal){
 	  $scope.meal = meal;
 	});
+
+	$scope.doRefresh = function() {
+		$scope.$broadcast('scroll.refreshComplete');
+	}
   });
 
   $scope.joinMeal = function(){
@@ -72,6 +88,11 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 
 .controller('EatingCtrl', function($scope, $stateParams, $ionicModal, MealsService) {
   $scope.optionsForStatusChooser = ["Chilling out", 'On my way'];
+
+
+	$scope.doRefresh = function() {
+		$scope.$broadcast('scroll.refreshComplete');
+	}
 
   $scope.$on('$ionicView.beforeEnter', function(e) {
 	MealsService.getMeal(MealsService.currentMealID).then(function(meal){

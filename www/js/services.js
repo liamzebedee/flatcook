@@ -181,7 +181,7 @@ angular.module('flatcook.services', [])
 	usersService.signOut = function() {
 		var dfd = $q.defer();
 		dfd.resolve(true);
-		return;
+		return dfd.promise;
 	}
 
 	usersService.loginOrRegister = function(facebookData) {
