@@ -6,15 +6,15 @@
   <ion-content>
 
     <ion-refresher
+      pulling-text="Pull to refresh..."
       on-refresh="doRefresh()">
     </ion-refresher>
 
     <ion-list>
 
-
-    <div class="item" ng-show='!loadingMeals'>
-      <small>Last updated 3 minutes ago</small>
-    </div>
+      <div class="item" ng-show='!loadingMeals'>
+        <small>Last updated <span am-time-ago="lastUpdated"></span></small>
+      </div>
 
       <div class='item' ng-show='loadingMeals'>
         Loading meals...
@@ -22,7 +22,7 @@
       </div>
 
 
-      <div ng-show='meals.length == 0'>
+      <div class='item' ng-show='meals.length == 0'>
         No meals found!
       </div>
 
@@ -58,8 +58,6 @@
             </div>
 
         </div>
-
-
 
   </ion-list>
 

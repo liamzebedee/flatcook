@@ -1,7 +1,7 @@
 IsServingBrowserFromIonicServe = !window.cordova;
 
 
-angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'])
+angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services', 'angularMoment'])
 
 .run(function($ionicPlatform, $rootScope, $state) {
 

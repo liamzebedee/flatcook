@@ -219,7 +219,7 @@ angular.module('flatcook.services', [])
 		} else {
 			 $.getJSON('http://localhost:52509/user/id/' + userID)
                 .success(function (response) {
-                    return response.user;
+                    // return response.user;
                 });
 		}
 	}
