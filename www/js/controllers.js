@@ -1,8 +1,7 @@
-angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
+angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatcook.directives'])
 
 
 .controller('TabsController', function($scope, $state) {
-	$scope.hideTabsCss = 'xtabs-item-hide';
 })
 
 
@@ -47,7 +46,7 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 
   $scope.joinMeal = function(){
 	  	var confirmPopup = $ionicPopup.confirm({
-	     title: 'Consume Join Meal',
+	     title: 'Confirm Join Meal',
 	     template: 'Are you sure you can commit to coming?'
 	   });
 	   confirmPopup.then(function(yes) {
@@ -109,8 +108,11 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 		description: "",
 
 		numberOfMeals: 0,
-		costPerMeal: 0,
-		totalCost: 0
+		costPerMeal: 0.0,
+		totalCost: 0.0,
+
+		whenServed: null,
+		location: ""
 	};
 
 	$scope.step1 = { 
@@ -126,10 +128,15 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 		$state.go('tab.cook.newMeal.step1')
 	};
 	$scope.navToStep2 = function(){
+
 		$state.go('tab.cook.newMeal.step2');
 	}
 	$scope.navToStep3 = function(){
+		
 		$state.go('tab.cook.newMeal.step3');
+	}
+	$scope.submitForm = function(){
+
 	}
 
 	$scope.$watch('formData.numberOfMeals', recalcTotalCost);
@@ -138,11 +145,11 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services'])
 
 	function recalcCostPerMeal(newVal, oldVal) {
 		if(newVal == oldVal) return;
-		$scope.formData.costPerMeal = $scope.formData.totalCost / $scope.formData.numberOfMeals;
+		$scope.formData.costPerMeal = ($scope.formData.totalCost / $scope.formData.numberOfMeals) || 0;
 	}
 	function recalcTotalCost(newVal, oldVal) {
 		if(newVal == oldVal) return;
-		$scope.formData.totalCost = $scope.formData.costPerMeal * $scope.formData.numberOfMeals;
+		$scope.formData.totalCost = ($scope.formData.costPerMeal * $scope.formData.numberOfMeals) || 0;
 	}
 
   	$scope.$on('$ionicView.enter', function(e) {

@@ -166,6 +166,7 @@ angular.module('flatcook.services', [])
 	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
 		loggedInUser: null,
+		flatcookAPISessionKey: null,
 		_facebookData: null
 	};
 
@@ -178,6 +179,8 @@ angular.module('flatcook.services', [])
 	}
 
 	usersService.signOut = function() {
+		var dfd = $q.defer();
+		dfd.resolve(true);
 		return;
 	}
 
@@ -208,15 +211,6 @@ angular.module('flatcook.services', [])
 		}
 		
 		return dfd.promise;
-	}
-
-	usersService.getUser = function(userID) {
-		if(userID == usersService.loggedInUser.id) {
-			return usersService.loggedInUser; // TODO
-		} else {
-			// GET http://api.flatcook.com/v1.0/user/{id}
-			throw new Error("Not Impl");
-		}
 	}
 
 	usersService.postRating = function(ratingData) {

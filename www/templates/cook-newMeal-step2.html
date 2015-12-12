@@ -8,15 +8,15 @@
   <div class="list">
     <label class="item item-input item-stacked-label">
       <span class="input-label">How many meals?</span>
-      <input type="tel" ng-model="formData.numberOfMeals">
+      <input type="tel" ng-model="formData.numberOfMeals" input-number-int>
     </label>
     <label class="item item-input item-stacked-label">
       <span class="input-label">How much per meal?</span>
-      <input type="tel" ng-model="formData.costPerMeal">
+      <input type="number" ng-model="formData.costPerMeal" input-money>
     </label>
     <label class="item item-input item-stacked-label">
       <span class="input-label">How much in total?</span>
-      <input type="tel" ng-model="formData.totalCost">
+      <input type="number" ng-model="formData.totalCost" input-money/>
     </label>
   </div>
 
