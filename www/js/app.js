@@ -32,7 +32,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider, MealsServiceProvider) {
 
   // Routing
   // -------
@@ -102,16 +102,11 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
       }
     },
     dynamicallySelectState: function() {
-      // $ionicHistory.nextViewOptions({
-      //   disableBack: true
-      // });
-      var weAreGoingOnABearHunt = false;
-      if (weAreGoingOnABearHunt) {
-        // I don't care.
+      if (MealsServiceProvider.currentlyCooking) {
         return 'tab.cook.cooking';
       } else {
         return 'tab.cook.newMeal.intro';
-      };
+      }
     }
   })
 

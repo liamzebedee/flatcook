@@ -12,15 +12,19 @@
 
     <ion-list>
 
-      <div class="item" ng-show='!loadingMeals'>
+      <div class='item' ng-show='loadingMeals'>
+        <ion-spinner></ion-spinner>
+        <small>Loading meals...</small>
+      </div>
+
+      <div class="item" ng-show='!loadingMeals && !errorLoadingMeals'>
         <small>Last updated <span am-time-ago="lastUpdated"></span></small>
       </div>
 
-      <div class='item' ng-show='loadingMeals'>
-        Loading meals...
-        <ion-spinner></ion-spinner>
+      <div class='item item-icon-left' ng-show='!loadingMeals && errorLoadingMeals' ng-click='doRefresh()'>
+        <i class="icon ion-ios-refresh-empty"></i>
+        Try again ({{errorLoadingMeals}})
       </div>
-
 
       <div class='item' ng-show='meals.length == 0'>
         No meals found!

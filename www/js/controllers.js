@@ -4,14 +4,17 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 .controller('TabsController', function($scope, $state) {})
 
 
-.controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService) {
+.controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, LocationService) {
 	$scope.loadingMeals = false;
 	$scope.lastUpdated = new Date();
+	$scope.errorLoadingMeals = null;
 
-
+	$scope.$on('$ionicView.loaded', function(){
+		$scope.user = UsersService.loggedInUser;
+		$scope.doRefresh();
+	})
 	$scope.$on('$ionicView.beforeEnter', function(e) {
 		$scope.user = UsersService.loggedInUser;
-
 		$scope.doRefresh();
 	});
 
@@ -24,24 +27,23 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	$scope.doRefresh = function() {
 		$scope.loadingMeals = true;
 
-		var position = navigator.geolocation.getCurrentPosition(
+		var position = LocationService.getCurrentPosition(
 			function(position) {
+				$scope.errorLoadingMeals = "";
 				// Finding meals near you
 				MealsService.getMeals(UsersService.usersService, position).then(function(meals) {
+					$scope.errorLoadingMeals = null;
 					$scope.meals = meals;
 					$scope.loadingMeals = false;
 					$scope.lastUpdated = new Date();
 					$scope.$broadcast('scroll.refreshComplete');
-
 				});
 			},
 
 			function(error) {
-				throw new Error(error); // TODO
-			}, {
-				maximumAge: 3000,
-				timeout: 5000,
-				enableHighAccuracy: true
+				$scope.loadingMeals = false;
+				$scope.$broadcast('scroll.refreshComplete');
+				$scope.errorLoadingMeals = "couldn't get location"
 			}
 		);
 
@@ -57,11 +59,13 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 		MealsService.getMeal($stateParams.id).then(function(meal) {
 			$scope.meal = meal;
 		});
-
 	});
 
 	$scope.doRefresh = function() {
-		$scope.$broadcast('scroll.refreshComplete');
+		MealsService.getMeal($stateParams.id).then(function(meal) {
+			$scope.meal = meal;
+			$scope.$broadcast('scroll.refreshComplete');
+		});
 	}
 
 	$scope.joinMeal = function() {
@@ -77,14 +81,14 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 				}
 
 				MealsService.joinMeal($scope.meal.id);
-				// erase history now
+				$ionicHistory.nextViewOptions({
+			    	disableBack: true
+			    });
 				$state.go('tab.eat.eating');
 			} else {
 
 			}
 		});
-
-
 	};
 })
 
@@ -127,7 +131,7 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 
 
 
-.controller('NewMealCtrl', function($scope, $state) {
+.controller('NewMealCtrl', function($scope, $state, $ionicPopup, $ionicHistory, MealsService) {
 	$scope.formData = {
 		description: "",
 
@@ -159,7 +163,22 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 		$state.go('tab.cook.newMeal.step3');
 	}
 	$scope.submitForm = function() {
-
+		var confirmPopup = $ionicPopup.confirm({
+			title: 'Confirm Post Meal',
+			template: 'Ready to cook?'
+		});
+		confirmPopup.then(function(yes) {
+			if (yes) {
+				MealsService.createMeal($scope.formData).then(function(){
+					$ionicHistory.nextViewOptions({
+				    	disableBack: true
+				    });
+					$state.go('tab.cook');
+				}, function(){
+					// something went wrong
+				});
+			}
+		});
 	}
 
 	$scope.$watch('formData.numberOfMeals', recalcTotalCost);

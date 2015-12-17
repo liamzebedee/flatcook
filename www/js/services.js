@@ -109,7 +109,8 @@ angular.module('flatcook.services', [])
 
 .factory('MealsService', function($http, $q) {
 	var mealsService = {
-		currentMealID: 0
+		currentMealID: 0,
+		currentlyCooking: false
 	};
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
@@ -147,6 +148,7 @@ angular.module('flatcook.services', [])
 	}
 
 	mealsService.createMeal = function(mealData) {
+		mealsService.currentlyCooking = true;
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -242,4 +244,22 @@ angular.module('flatcook.services', [])
 	}
 
 	return usersService;
+})
+
+.factory('LocationService', function() {
+	var geolocationOptions = {
+		maximumAge: 3000,
+		timeout: 5000,
+		enableHighAccuracy: true
+	}
+	if(IsServingBrowserFromIonicServe) {
+		geolocationOptions.timeout = 100
+	}
+
+	var locationService = {};
+	locationService.getCurrentPosition = function(success, failure) {
+		return navigator.geolocation.getCurrentPosition(success, failure, geolocationOptions);
+	}
+
+	return locationService;
 });
