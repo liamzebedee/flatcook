@@ -48,7 +48,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   $stateProvider
 
   // setup an abstract state for the tabs directive
-    .state('tab', {
+  .state('tab', {
     url: '/tab',
     controller: 'TabsController',
     abstract: true,
@@ -164,8 +164,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
-  });
-
+  })
 
 
   if (IsServingBrowserFromIonicServe) {

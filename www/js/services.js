@@ -85,7 +85,7 @@ sampleData = {
 
 		address: "", // where the meal is hosted
 		lastLocation: [],
-		avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+		displayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 
 		cookRating: 'N/A',
 		friendlinessRating: 'Excellent'
@@ -96,7 +96,7 @@ sampleData = {
 // Will remove in future.
 function feignRequestingDataFromNetwork($q, data) {
 	var dfd = $q.defer()
-	var networkDelayMS = 100;
+	var networkDelayMS = 300;
 
 	setTimeout(function() {
 		dfd.resolve(data)
@@ -246,19 +246,22 @@ angular.module('flatcook.services', [])
 	return usersService;
 })
 
-.factory('LocationService', function() {
+.factory('LocationService', function($q) {
 	var geolocationOptions = {
 		maximumAge: 3000,
-		timeout: 5000,
+		timeout: 3000,
 		enableHighAccuracy: true
-	}
-	if(IsServingBrowserFromIonicServe) {
-		geolocationOptions.timeout = 100
 	}
 
 	var locationService = {};
 	locationService.getCurrentPosition = function(success, failure) {
-		return navigator.geolocation.getCurrentPosition(success, failure, geolocationOptions);
+		if(IsServingBrowserFromIonicServe) {
+			var testPosition = void(0); // TODO
+
+			setTimeout(success.bind(testPosition), 300); 
+		} else {
+			navigator.geolocation.getCurrentPosition(success, failure, geolocationOptions);
+		}
 	}
 
 	return locationService;

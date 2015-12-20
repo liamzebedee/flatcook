@@ -1,5 +1,11 @@
 angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatcook.directives'])
 
+.controller('AppController', function($scope, $state) {
+	// load data from storage (localStorage, SQLite DB)
+	// important state:
+	// - currently cooking
+	// - currently eating
+})
 
 .controller('TabsController', function($scope, $state) {})
 
@@ -52,7 +58,7 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 
 
 
-.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup,
+.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, 
 	MealsService, UsersService) {
 
 	$scope.$on('$ionicView.beforeEnter', function(e) {
@@ -173,7 +179,7 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 					$ionicHistory.nextViewOptions({
 				    	disableBack: true
 				    });
-					$state.go('tab.cook');
+					$state.go('tab.cook.cooking');
 				}, function(){
 					// something went wrong
 				});
@@ -200,10 +206,28 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	});
 })
 
+.controller('RatingCtrl', function($scope) {
+	$scope.something = 'dasdasd';
+})
 
 
-.controller('CookingCtrl', function($scope) {
+.controller('CookingCtrl', function($scope, $state, $ionicModal) {
+	$ionicModal.fromTemplateUrl('/templates/partials/ratingModal.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.ratingModal = modal;
+	});
+
 	$scope.$on('$ionicView.enter', function(e) {});
+
+	$scope.doRefresh = function() {
+		$scope.$broadcast('scroll.refreshComplete');
+	}
+
+	$scope.finishMeal = function() {
+		$scope.ratingModal.show();
+	}
 })
 
 
@@ -212,6 +236,10 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 	$scope.$on('$ionicView.beforeEnter', function(e) {
 		$scope.user = UsersService.loggedInUser;
 	});
+
+	$scope.doRefresh = function() {
+		$scope.$broadcast('scroll.refreshComplete');
+	}
 
 	$scope.signOut = function() {
 		UsersService.signOut().then(function() {
