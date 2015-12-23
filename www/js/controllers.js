@@ -1,13 +1,11 @@
-angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatcook.directives'])
+var controllers = angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatcook.directives']);
 
-.controller('AppController', function($scope, $state) {
+controllers.controller('AppController', function($scope, $state) {
 	// load data from storage (localStorage, SQLite DB)
 	// important state:
 	// - currently cooking
 	// - currently eating
 })
-
-.controller('TabsController', function($scope, $state) {})
 
 
 .controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, LocationService) {
@@ -58,8 +56,7 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 
 
 
-.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, 
-	MealsService, UsersService) {
+.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, MealsService, UsersService) {
 
 	$scope.$on('$ionicView.beforeEnter', function(e) {
 		MealsService.getMeal($stateParams.id).then(function(meal) {
@@ -97,44 +94,6 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 		});
 	};
 })
-
-
-
-.controller('EatingCtrl', function($scope, $stateParams, $ionicModal, MealsService) {
-	$scope.optionsForStatusChooser = ["Chilling out", 'On my way'];
-
-	$scope.doRefresh = function() {
-		$scope.$broadcast('scroll.refreshComplete');
-	}
-
-	$ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.statusChooserModal = modal;
-	});
-
-	$scope.$on('$ionicView.enter', function(e) {
-		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
-			$scope.meal = meal;
-			$scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
-			$scope.meal.userStatus = $scope.optionsForStatusChooser[0];
-		})
-	});
-
-	$scope.openStatusChooser = function() {
-		$scope.statusChooserModal.show();
-	};
-
-	$scope.closeStatusChooser = function() {
-		$scope.statusChooserModal.hide();
-	};
-
-	$scope.$on('$destroy', function() {
-		$scope.statusChooserModal.remove();
-	});
-})
-
 
 
 .controller('NewMealCtrl', function($scope, $state, $ionicPopup, $ionicHistory, MealsService) {
@@ -209,27 +168,6 @@ angular.module('flatcook.controllers', ['ngCordova', 'flatcook.services', 'flatc
 .controller('RatingCtrl', function($scope) {
 	$scope.something = 'dasdasd';
 })
-
-
-.controller('CookingCtrl', function($scope, $state, $ionicModal) {
-	$ionicModal.fromTemplateUrl('/templates/partials/ratingModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.ratingModal = modal;
-	});
-
-	$scope.$on('$ionicView.enter', function(e) {});
-
-	$scope.doRefresh = function() {
-		$scope.$broadcast('scroll.refreshComplete');
-	}
-
-	$scope.finishMeal = function() {
-		$scope.ratingModal.show();
-	}
-})
-
 
 
 .controller('ProfileCtrl', function($scope, $state, UsersService) {

@@ -50,7 +50,7 @@ angular.module('flatcook', ['ionic', 'flatcook.controllers', 'flatcook.services'
   // setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',
-    controller: 'TabsController',
+    // controller: 'TabsController',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })

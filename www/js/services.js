@@ -1,5 +1,4 @@
-VALID_CHEF_STATUSES = ['Waiting on guests', 'Cooking', 'Meal ready!'];
-VALID_GUEST_STATUSES = ['Chilling', 'On my way'];
+
 
 VALID_FRIENDLINESS_RATINGS = ['Excellent'];
 VALID_COOK_RATINGS = ['Excellent'];
@@ -22,7 +21,7 @@ sampleData = {
 				cookRating: 'Excellent',
 				friendlinessRating: 'Excellent',
 
-				status: VALID_CHEF_STATUSES[1]
+				cookingStatus: ''
 			},
 			guests: [{
 				id: 0,
@@ -35,9 +34,10 @@ sampleData = {
 				cookRating: 'N/A',
 				friendlinessRating: 'Excellent',
 
-				status: VALID_GUEST_STATUSES[1]
+				eatingStatus: ''
+			}],
 
-			}]
+			userStatus: ''
 		},
 
 		{
@@ -57,7 +57,7 @@ sampleData = {
 				cookRating: 'Excellent',
 				friendlinessRating: 'Excellent',
 
-				status: VALID_CHEF_STATUSES[1]
+				cookingStatus: ''
 			},
 			guests: [{
 				id: 0,
@@ -70,8 +70,10 @@ sampleData = {
 				cookRating: 'N/A',
 				friendlinessRating: 'Excellent',
 
-				status: VALID_GUEST_STATUSES[1]
-			}]
+				eatingStatus: ''
+			}],
+
+			userStatus: ''
 		}
 	],
 
@@ -110,7 +112,10 @@ angular.module('flatcook.services', [])
 .factory('MealsService', function($http, $q) {
 	var mealsService = {
 		currentMealID: 0,
-		currentlyCooking: false
+		currentlyCooking: false,
+
+		VALID_CHEF_STATUSES: ['Waiting on guests', 'Cooking', 'Meal ready!'],
+		VALID_GUEST_STATUSES: ['Chilling', 'On my way']
 	};
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
@@ -265,4 +270,4 @@ angular.module('flatcook.services', [])
 	}
 
 	return locationService;
-});
+})
