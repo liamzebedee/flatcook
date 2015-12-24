@@ -1,5 +1,3 @@
-
-
 VALID_FRIENDLINESS_RATINGS = ['Excellent'];
 VALID_COOK_RATINGS = ['Excellent'];
 
@@ -115,7 +113,8 @@ angular.module('flatcook.services', [])
 		currentlyCooking: false,
 
 		VALID_CHEF_STATUSES: ['Waiting on guests', 'Cooking', 'Meal ready!'],
-		VALID_GUEST_STATUSES: ['Chilling', 'On my way']
+		VALID_GUEST_STATUSES: ['Chilling', 'On my way'],
+		VALID_COOK_RATINGS: ['Excellent', 'Pretty good', 'Bad']
 	};
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation

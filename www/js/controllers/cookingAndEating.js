@@ -38,8 +38,20 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 
 
 .controller('CookingCtrl', function($scope, $state, $ionicModal, MealsService) {
+	$scope.rating = {
+		meal: {
+			date: null,
+			peopleInvolved: null
+		},
+		experience: MealsService.VALID_COOK_RATINGS[0],
+		feedback: ''
+	};
+
 	$scope.chefStatusChooser = {
 		options: MealsService.VALID_CHEF_STATUSES
+	}
+	$scope.chefRatingChooser = {
+		options: MealsService.VALID_COOK_RATINGS
 	}
 
 	$ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
@@ -61,6 +73,10 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 			$scope.meal = meal;
 			$scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
 			$scope.meal.userStatus = $scope.chefStatusChooser.options[0];
+
+			$scope.rating.meal = meal;
+			$scope.rating.meal.date = yesterday();
+			$scope.rating.meal.peopleInvolved = arrayToList(['Dave', 'John', 'Jessie']);
 		})
 	});
 
@@ -85,3 +101,5 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 		$scope.chefStatusChooserModal.remove();
 	});
 })
+
+.controller('ChefRatingModalCtrl', function(){})

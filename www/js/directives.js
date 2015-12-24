@@ -13,7 +13,23 @@ function sanitizeKeyboardInput(element, pattern) {
 
 
 
-angular.module('flatcook.directives', [])
+angular.module('flatcook.directives', ['angularMoment'])
+
+.filter('dateAsDaysAgo', function (amTimeAgoFilter, amEndOfFilter, angularMomentConfig, amLocalFilter) {
+        function dateAsDaysAgoFilter(value) {
+          var val = amTimeAgoFilter(amLocalFilter(amEndOfFilter(value, 'day')));
+          if(/hours|minutes|seconds/.test(val)) {
+            return ''; // TODO HACK
+          } else {
+            return val;
+          }
+        }
+
+        dateAsDaysAgoFilter.$stateful = angularMomentConfig.statefulFilters;
+
+        return dateAsDaysAgoFilter;
+      })
+
 
 .directive('inputMoney', function() {
   return {
