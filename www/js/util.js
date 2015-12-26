@@ -16,5 +16,5 @@ function arrayToList(array) {
 }
 
 function yesterday() {
-	return new Date(new Date() - 35*60*60*1000)
+	return new Date(new Date() - 24*60*60*1000)
 }

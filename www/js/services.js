@@ -270,3 +270,10 @@ angular.module('flatcook.services', [])
 
 	return locationService;
 })
+
+.service('PopupService', function() {
+	this.something = function(){
+		console.log('hi')
+	}
+	return this
+})

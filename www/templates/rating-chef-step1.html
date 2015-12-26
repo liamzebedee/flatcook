@@ -1,0 +1,14 @@
+<ion-view view-title="How was your meal?">
+    <ion-content>
+
+      <div class="list">
+        <h3 class='padding'>How was your meal <time>{{ rating.date | dateAsDaysAgo }}</time> with {{ rating.peopleInvolved }}?</h3>
+
+        <ion-list>
+          <ion-radio ng-repeat="option in experienceOptions" ng-model="rating.experience" ng-value="option" ng-click="chooseExperience()">{{ option }}</ion-radio>
+        </ion-list>
+
+      </div>
+
+    </ion-content>
+</ion-view>

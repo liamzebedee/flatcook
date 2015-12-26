@@ -100,13 +100,6 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
       'tab-cook': {
         template: "<ion-nav-view></ion-nav-view>"
       }
-    },
-    dynamicallySelectState: function() {
-      if (MealsServiceProvider.currentlyCooking) {
-        return 'tab.cook.cooking';
-      } else {
-        return 'tab.cook.newMeal.intro';
-      }
     }
   })
 
@@ -157,7 +150,7 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
 
 
   //
-  //  Login splash
+  //  Other tabs
   //
 
   .state('login', {
@@ -167,11 +160,38 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
   })
 
 
+
+  .state('rating', {
+    abstract: true,
+    url: '/rating',
+    template: "<ion-nav-view></ion-nav-view>"
+  })
+
+  .state('rating.chefs', {
+    abstract: false,
+    url: '/chefs',
+    controller: 'ChefRatingCtrl',
+    template: "<ion-nav-view></ion-nav-view>"
+  })
+
+  .state('rating.chefs.step1', {
+    url: '/step1',
+    templateUrl: 'templates/rating-chef-step1.html'
+  })
+
+  .state('rating.chefs.step2', {
+    url: '/step2',
+    templateUrl: 'templates/rating-chef-step2.html'
+  })
+
+
+
   if (IsServingBrowserFromIonicServe) {
     $urlRouterProvider.otherwise(function($injector, $location) {
       console.error("Navigated to a state that didn't exist - uh oh, spaghettios!");
       console.log($injector)
       console.log($location)
+      debugger
     })
     $urlRouterProvider.when('', '/login');
 
