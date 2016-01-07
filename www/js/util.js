@@ -3,11 +3,14 @@ function numberInWords(num) {
   return numbersAsWords[num];
 }
 
-function arrayToList(array) {
+function humanizeArray(array) {
 	var str = '';
 	for (var i = 0, el; el = array[i]; i++) {
 		if(i != (array.length - 1)) {
-			str += el + ', ';
+			str += el;
+			if(i != (array.length - 2)) {
+				str += ', ';
+			}
 		} else {
 			str += ' and ' + el;
 		}

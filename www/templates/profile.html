@@ -3,7 +3,7 @@
 <ion-nav-buttons class="bar bar-header">
   <button class="button" ng-click="signOut()">Sign out</button>
   <div class="h1 title">My profile</div>
-  <button class="button button-neutral" ng-click="edit()">Edit</button>
+  <!-- <button class="button button-neutral" ng-click="edit()">Edit</button> -->
 </ion-nav-buttons>
 
 <ion-content>
@@ -20,12 +20,16 @@
       <p>${{user.balance}} - {{user.address}}</p>
     </div>
 
-  <div class="item">
-    Payment details <i class='ion-icon ion-icon-caret-right'>
+  <div class="item item-icon-left item-icon-right" ng-click="openPaymentDetails()">
+    <i class='icon ion-card'></i>
+    Payment details 
+    <i class='icon ion-ios-arrow-right'></i>
   </div>
 
-  <div class="item">
-    History <i class='ion-icon ion-icon-history'>
+  <div class="item item-icon-left item-icon-right" ng-click='openHistory()'>
+    <i class='icon ion-ios-list-outline'></i>
+    History 
+    <i class='icon ion-ios-arrow-right'></i>
   </div>
 </ion-list>
 

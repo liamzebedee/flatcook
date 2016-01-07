@@ -1,0 +1,26 @@
+<ion-view view-title="History">
+  <ion-content>
+
+    <div class='list'>
+
+    <div ng-show="mealHistory.length == 0" class='padding'>
+      <h3>You haven't shared any meals yet!</h3>
+    </div>
+
+    <div ng-repeat="meal in mealHistory">
+      <div class="item item-divider">
+        <time am-time-ago="meal.date"></time>
+      </div>
+
+      <div class="item item-avatar">
+        <img ng-src="{{meal.hostDisplayPicUrl}}">
+        <h2><strong>{{meal.name}}</strong> for ${{meal.cost}}</h2>
+        <p>With {{humanizeArray(meal.guestNames)}} at {{meal.location}}.</p>
+      </div>
+    </div>
+
+
+    </div>
+
+  </ion-content>
+</ion-view>

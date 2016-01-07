@@ -98,7 +98,13 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     url: '/cook',
     views: {
       'tab-cook': {
-        template: "<ion-nav-view></ion-nav-view>"
+        template: "<ion-nav-view></ion-nav-view>",
+        // XXX TODO
+        // controller: function($state, $ionicHistory) {
+
+        //   $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: true });
+        //   $state.go('tab.cook.newMeal.intro')
+        // }
       }
     }
   })
@@ -134,18 +140,31 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     controller: 'CookingCtrl'
   })
 
+
   //
   //  Profile tab
   //
 
   .state('tab.profile', {
+    abstract: true,
     url: '/profile',
     views: {
       'tab-profile': {
-        templateUrl: 'templates/profile.html',
-        controller: 'ProfileCtrl'
+        template: "<ion-nav-view></ion-nav-view>"
       }
     }
+  })
+
+  .state('tab.profile.main', {
+    url: '',
+    templateUrl: 'templates/profile.html',
+    controller: 'ProfileCtrl'
+  })
+
+  .state('tab.profile.history', {
+    url: '/history',
+    templateUrl: 'templates/profile-history.html',
+    controller: 'ProfileHistoryCtrl'
   })
 
 

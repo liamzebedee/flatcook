@@ -7,6 +7,8 @@ Copyright 2015 Liam Edwards-Playne and Nathan Wilson (when he adds the code he's
 Ionic and Angular JS is used. The model is principally kept within the Angular controller. Only modal state that is required between different controllers is implemented in the service. 
 
 
+The pull-to-refresh only works when the viewport is that of a mobile size. i.e. it won't appear to work in a fullscreen desktop browser
+
 
 Ionic/Angular notes:
 
@@ -24,3 +26,6 @@ Bower:
 "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.1.0"
   }
+
+
+

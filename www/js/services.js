@@ -88,8 +88,19 @@ sampleData = {
 		displayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 
 		cookRating: 'N/A',
-		friendlinessRating: 'Excellent'
-	}]
+		friendlinessRating: 'Excellent',
+
+		mealHistory: [
+			{
+				date: moment().subtract(2, 'd'),
+				name: 'Pizza',
+				cost: 7.5,
+				location: '501',
+				hostDisplayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+				guestNames: ['Bobby', 'Dave', 'Patrice']
+			}
+		]
+	}],
 };
 
 // Only for testing
@@ -240,6 +251,10 @@ angular.module('flatcook.services', [])
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
+	}
+
+	usersService.getHistory = function() {
+		return feignRequestingDataFromNetwork($q, sampleData.users[0].mealHistory);
 	}
 
 	// Non-API mappings.

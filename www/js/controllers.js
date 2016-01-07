@@ -84,9 +84,7 @@ controllers.controller('AppController', function($scope, $state) {
 				}
 
 				MealsService.joinMeal($scope.meal.id);
-				$ionicHistory.nextViewOptions({
-			    	disableBack: true
-			    });
+				$ionicHistory.nextViewOptions({ disableBack: true });
 				$state.go('tab.eat.eating');
 			} else {
 
@@ -185,9 +183,23 @@ controllers.controller('AppController', function($scope, $state) {
 		});
 	};
 
-	$scope.configurePaymentMethod = function() {
+	$scope.openHistory = function() {
+		$state.go('tab.profile.history');
+	}
+
+	$scope.openPaymentDetails = function() {
 		throw new Error("Not Impl");
 	};
+})
+
+.controller('ProfileHistoryCtrl', function($scope, UsersService) {
+	$scope.humanizeArray = humanizeArray;
+
+	$scope.$on('$ionicView.beforeEnter', function(e) {
+		UsersService.getHistory().then(function(history){
+			$scope.mealHistory = history;
+		})
+	});
 })
 
 

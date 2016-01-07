@@ -18,7 +18,7 @@
       </div>
 
       <div class="item" ng-show='!loadingMeals && !errorLoadingMeals'>
-        <small>Last updated <span am-time-ago="lastUpdated"></span></small>
+        <small>Last updated <time am-time-ago="lastUpdated"></time></small>
       </div>
 
       <div class='item item-icon-left' ng-show='!loadingMeals && errorLoadingMeals' ng-click='doRefresh()'>

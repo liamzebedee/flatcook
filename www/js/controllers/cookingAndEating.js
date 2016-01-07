@@ -1,18 +1,7 @@
 controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal, MealsService) {
-	$scope.guestStatusChooser = {
-		options: MealsService.VALID_GUEST_STATUSES
-	};
-
 	$scope.doRefresh = function() {
 		$scope.$broadcast('scroll.refreshComplete');
 	}
-
-	$ionicModal.fromTemplateUrl('/templates/partials/guestRatingModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.guestStatusChooserModal = modal;
-	});
 
 	$scope.$on('$ionicView.enter', function(e) {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
@@ -38,25 +27,6 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 
 
 .controller('CookingCtrl', function($scope, $stateParams, $ionicModal, MealsService) {
-	$scope.chefStatusChooser = {
-		options: MealsService.VALID_CHEF_STATUSES
-	}
-
-
-	$ionicModal.fromTemplateUrl('/templates/partials/statusChooserModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.chefStatusChooserModal = modal;
-	});
-
-	$ionicModal.fromTemplateUrl('/templates/partials/chefRatingModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.ratingModal = modal;
-	});
-
 	$scope.$on('$ionicView.enter', function(e) {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
@@ -88,11 +58,10 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 })
 
 .controller('ChefRatingCtrl', function($scope, $state, $ionicModal, MealsService) {
-
 	$scope.rating = {
 		meal: $scope.meal,
 		date: yesterday(),
-		peopleInvolved: arrayToList(['Dave', 'John', 'Jessie']),
+		peopleInvolved: humanizeArray(['Dave', 'John', 'Jessie']),
 		experience: MealsService.VALID_COOK_RATINGS[0]
 	}
 	$scope.experienceOptions = MealsService.VALID_COOK_RATINGS;
