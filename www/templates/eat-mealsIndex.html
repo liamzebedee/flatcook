@@ -6,62 +6,64 @@
   <ion-content>
 
     <ion-refresher
-      pulling-text="Find more meals..."
+      pulling-text="Pull to refresh..."
       on-refresh="doRefresh()">
     </ion-refresher>
 
-    <h3 class="item">{{user.name}} {{user.email}} {{user.facebookID}}</h3>
-
-    <h2 class="item">
-
-    <ion-spinner>Finding meals near you...</ion-spinner>
-    Meals near you!
-    <small>Last updated 3 minutes ago</small>
-    </h2>
-
-
     <ion-list>
-  	
+
+      <div class='item' ng-show='loadingMeals'>
+        <ion-spinner></ion-spinner>
+        <small>Loading meals...</small>
+      </div>
+
+      <div class="item" ng-show='!loadingMeals && !errorLoadingMeals'>
+        <small>Last updated <time am-time-ago="lastUpdated"></time></small>
+      </div>
+
+      <div class='item item-icon-left' ng-show='!loadingMeals && errorLoadingMeals' ng-click='doRefresh()'>
+        <i class="icon ion-ios-refresh-empty"></i>
+        Try again ({{errorLoadingMeals}})
+      </div>
+
+      <div class='item' ng-show='meals.length == 0'>
+        No meals found!
+      </div>
+
 
         <div class="list card" ng-repeat="meal in meals" ng-click='selectMeal(meal.id)'>
 
-          <div class="row">
-            <div class="col col-67">
-              <h4>{{ meal.name }}</h4>
-            </div>
-            <div class='col col-33' style='text-align:right!important;font-size:120%'>
-              <p>
-                <a href="#" class="subdued" style='padding-right:0'><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a> <br>
-                <a href="#" class="subdued"><i class='ion-icon ion-ios-clock'></i> {{ meal.servedAt }}</a>
-              </p>
+            <div class="row">
+              <div class="col col-67">
+                <h4>{{ meal.name }}</h4>
               </div>
-          </div>
-
-
-          <div class="item item-image">
-            <img ng-src="{{ meal.image }}">
-          </div>
-
-
-          <div class="item item-avatar item-text-wrap">
-            <img ng-src="{{ meal.chef.avatarUrl }}" />
-                <h2><span class="subdued">Chef</span> {{ meal.chef.name }}</h2>
-
+              <div class='col col-33' style='text-align:right!important;font-size:120%'>
                 <p>
-                  <a href="#" class="subdued">{{ meal.chef.location }}</a>
-                  <a href="#" class="subdued">{{ meal.guests.length }} guests</a>
+                  <a href="#" class="subdued" style='padding-right:0'><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a> <br>
+                  <a href="#" class="subdued"><i class='ion-icon ion-ios-clock'></i> {{ meal.servedAt }}</a>
                 </p>
-          </div>
-          
+                </div>
+            </div>
+
+
+            <div class="item item-image">
+              <img ng-src="{{ meal.image }}">
+            </div>
+
+
+            <div class="item item-avatar item-text-wrap">
+              <img ng-src="{{ meal.chef.avatarUrl }}" />
+                  <h2><span class="subdued">Chef</span> {{ meal.chef.name }}</h2>
+
+                  <p>
+                    <a href="#" class="subdued">{{ meal.chef.location }}</a>
+                    <a href="#" class="subdued">{{ meal.guests.length }} guests</a>
+                  </p>
+            </div>
 
         </div>
 
-
-
-
-
-
-	</ion-list>
+  </ion-list>
 
   </ion-content>
 

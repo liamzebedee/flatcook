@@ -1,0 +1,32 @@
+<ion-view view-title="How was your meal?">
+    <ion-content>
+
+      <section ng-show="rating.experience == 'Bad'">
+        <h2 class='padding'>What happened?</h2>
+
+        <label class="item item-input">
+        <textarea rows=10 placeholder="What happened?" ng-model="rating.whatHappened"></textarea>
+        </label>
+        
+        <small>We will listen to and read every complaint to make sure this never happens again.</small>
+
+        <h3>Was it anyone in particular</h3>
+        {meal.guests}
+      </section>
+
+      <section ng-show="rating.experience == 'Good'">
+        <h2 class='padding'>What happened?</h2>
+        <label class="item item-input">
+        <textarea rows=10 placeholder="Have any suggestions to make it better...?"></textarea>
+        </label>
+      </section>
+
+      <section ng-show="rating.experience == 'Excellent'">
+        <h2 class='padding'>What happened?</h2>
+        <label class="item item-input">
+        <textarea rows=10 placeholder="Have any feedback/ideas...?"></textarea>
+        </label>
+      </section>
+
+    </ion-content>
+</ion-view>

@@ -1,25 +1,35 @@
-<ion-view view-title="">
+<ion-view view-title="My profile">
 
 <ion-nav-buttons class="bar bar-header">
   <button class="button" ng-click="signOut()">Sign out</button>
   <div class="h1 title">My profile</div>
-  <button class="button button-neutral" ng-click="edit()">Edit</button>
+  <!-- <button class="button button-neutral" ng-click="edit()">Edit</button> -->
 </ion-nav-buttons>
 
-  <ion-content>
+<ion-content>
 
-<div class="profile">
-    <img id="profile-image" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/94311/me.png">
-
-    <div style="text-align:center;padding-top:1em">
-              <h3 id="profile-name">{{user.name}}</h3>
-              <h4>${{user.balance}} - {{user.address}}</h4>
-    </div>
-    </div>
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="doRefresh()">
+    </ion-refresher>
 
 <ion-list>
-  <div class="item">
-    Payment details <i class='ion-icon ion-icon-caret-right'>
+    <div class="item item-avatar" href="#">
+      <img src="{{ user.displayPicUrl }}">
+      <h2>{{ user.name }}</h2>
+      <p>${{user.balance}} - {{user.address}}</p>
+    </div>
+
+  <div class="item item-icon-left item-icon-right" ng-click="openPaymentDetails()">
+    <i class='icon ion-card'></i>
+    Payment details 
+    <i class='icon ion-ios-arrow-right'></i>
+  </div>
+
+  <div class="item item-icon-left item-icon-right" ng-click='openHistory()'>
+    <i class='icon ion-ios-list-outline'></i>
+    History 
+    <i class='icon ion-ios-arrow-right'></i>
   </div>
 </ion-list>
 
