@@ -24,3 +24,7 @@ Bower:
 "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.1.0"
   }
+
+  $8N-oeaLiG
+
+  arn:aws:iam::409184774652:role/CodeDeployServiceRole
