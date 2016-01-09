@@ -7,7 +7,6 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
 			$scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
-			$scope.meal.userStatus = $scope.guestStatusChooser.options[0];
 		})
 	});
 
@@ -31,7 +30,6 @@ controllers.controller('EatingCtrl', function($scope, $stateParams, $ionicModal,
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
 			$scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
-			$scope.meal.userStatus = $scope.chefStatusChooser.options[0];
 		})
 	});
 

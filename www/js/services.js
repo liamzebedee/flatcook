@@ -1,6 +1,3 @@
-VALID_FRIENDLINESS_RATINGS = ['Excellent'];
-VALID_COOK_RATINGS = ['Excellent'];
-
 sampleData = {
 	meals: [{
 			id: 0,
@@ -118,7 +115,18 @@ function feignRequestingDataFromNetwork($q, data) {
 
 angular.module('flatcook.services', [])
 
-.factory('MealsService', function($http, $q) {
+.factory('$localStorage', function($window) {
+  return {
+    set: function(key, value) {
+      $window.localStorage[key] = JSON.stringify(value);
+    },
+    get: function(key) {
+      return JSON.parse($window.localStorage[key] || '{}');
+    }
+  }
+})
+
+.factory('MealsService', function($http, $q, $localStorage) {
 	var mealsService = {
 		currentMealID: 0,
 		currentlyCooking: false,
@@ -127,6 +135,21 @@ angular.module('flatcook.services', [])
 		VALID_GUEST_STATUSES: ['Chilling', 'On my way'],
 		VALID_COOK_RATINGS: ['Excellent', 'Pretty good', 'Bad']
 	};
+
+	mealsService.loadState = function(state) {
+		Object.assign(mealsService, $localStorage.get('MealsService'));
+	}
+	mealsService.loadState()
+
+	mealsService.saveState = function() {
+		var state = {
+			currentMealID: mealsService.currentMealID,
+			currentlyCooking: mealsService.currentlyCooking
+		}
+		$localStorage.set('MealsService', state);
+	}
+
+
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
 	mealsService.getMeals = function(user, currentPosition) {
@@ -139,6 +162,7 @@ angular.module('flatcook.services', [])
 
 	mealsService.joinMeal = function(mealID) {
 		mealsService.currentMealID = mealID;
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -151,12 +175,14 @@ angular.module('flatcook.services', [])
 
 	mealsService.cancelAttending = function(mealID) {
 		mealsService.currentMealID = null;
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
 	}
 
 	mealsService.updateStatus = function(mealID) {
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -164,18 +190,21 @@ angular.module('flatcook.services', [])
 
 	mealsService.createMeal = function(mealData) {
 		mealsService.currentlyCooking = true;
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
 	}
 
 	mealsService.cancelCooking = function(mealID) {
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
 	}
 
 	mealsService.serveMeal = function(mealID) {
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -184,7 +213,7 @@ angular.module('flatcook.services', [])
 	return mealsService
 })
 
-.factory('UsersService', function($http, $q, $cordovaFacebook) {
+.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage) {
 	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
 		loggedInUser: null,
@@ -193,8 +222,24 @@ angular.module('flatcook.services', [])
 	};
 
 	if (IsServingBrowserFromIonicServe) {
+		usersService.flatcookAPISessionKey = 'TESTING123';
 		usersService.loggedInUser = sampleData.users[0];
 	}
+
+	usersService.loadState = function(state) {
+		Object.assign(usersService, $localStorage.get('UsersService'));
+	}
+	usersService.loadState()
+
+	usersService.saveState = function() {
+		var state = {
+			loggedInUser: usersService.loggedInUser,
+			flatcookAPISessionKey: usersService.flatcookAPISessionKey
+		}
+		$localStorage.set('UsersService', state);
+	}
+
+
 
 	usersService.authenticateWithFacebook = function() {
 		return $cordovaFacebook.login(FACEBOOK_PERMISSIONS);
@@ -223,10 +268,12 @@ angular.module('flatcook.services', [])
 
 				usersService._facebookData = facebookData; // debugging, who knows when we'll need it
 				return user;
-			}
+		}
 
 			dfd.resolve(true);
-		});
+		}, function (error) {
+			console.error(error)
+    	});
 
 
 		subscribeToUserNotifications();
@@ -284,11 +331,4 @@ angular.module('flatcook.services', [])
 	}
 
 	return locationService;
-})
-
-.service('PopupService', function() {
-	this.something = function(){
-		console.log('hi')
-	}
-	return this
 })

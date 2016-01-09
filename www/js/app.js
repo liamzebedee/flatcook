@@ -99,12 +99,14 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     views: {
       'tab-cook': {
         template: "<ion-nav-view></ion-nav-view>",
-        // XXX TODO
-        // controller: function($state, $ionicHistory) {
-
-        //   $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: true });
-        //   $state.go('tab.cook.newMeal.intro')
-        // }
+        controller: function($state, $ionicHistory, MealsService) {
+          $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: true })
+          if(MealsService.currentlyCooking) {
+            $state.go('tab.cook.cooking')
+          } else {
+            $state.go('tab.cook.newMeal.intro')
+          }
+        }
       }
     }
   })
