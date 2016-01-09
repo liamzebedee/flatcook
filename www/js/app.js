@@ -100,7 +100,7 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
       'tab-cook': {
         template: "<ion-nav-view></ion-nav-view>",
         controller: function($state, $ionicHistory, MealsService) {
-          $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: true })
+          $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
           if(MealsService.currentlyCooking) {
             $state.go('tab.cook.cooking')
           } else {
@@ -230,7 +230,7 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
   // Facebook
   // --------
   var FB_APP_ID = '956199011086032';
-  var FB_VERSION = ""; // I don't care.
+  var FB_VERSION = "v2.5"; // I don't care.
   if (IsServingBrowserFromIonicServe) {
     window.fbAsyncInit = function() {
       $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION)
