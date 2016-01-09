@@ -66,9 +66,19 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     url: '/eat',
     views: {
       'tab-eat': {
-        template: "<ion-nav-view></ion-nav-view>"
+        template: "<ion-nav-view></ion-nav-view>",
+        controller: function($state, $ionicHistory, MealsService) {
+          $ionicHistory.nextViewOptions({ disableBack: false, disableAnimate: true, historyRoot: true })
+          
+          if(MealsService.currentMealID != null) {
+            $state.go('tab.eat.eating')
+          } else {
+            $state.go('tab.eat.mealsIndex')
+          }
+        }
       }
     }
+
   })
 
   .state('tab.eat.mealsIndex', {
