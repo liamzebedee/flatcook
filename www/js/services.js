@@ -3,8 +3,10 @@ sampleData = {
 			id: 0,
 			name: 'Spaghetti Bolognaise',
 			price: 5.50,
-			servedAt: "5pm",
+			servedAt: moment().add(4, 'h'),
 			image: 'img/example-spagbol.jpg',
+			location: [12.42141, 21.231231],
+			address: "Gumal 501",
 			chef: {
 				id: 0,
 				name: "Liam",
@@ -15,8 +17,10 @@ sampleData = {
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 				cookRating: 'Excellent',
 				friendlinessRating: 'Excellent',
+				tagline: 'Never spends a day without cooking!',
+				numberOfMeals: 5,
 
-				cookingStatus: ''
+				cookingStatus: 'Cooking!'
 			},
 			guests: [{
 				id: 0,
@@ -28,8 +32,38 @@ sampleData = {
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 				cookRating: 'N/A',
 				friendlinessRating: 'Excellent',
+				numberOfMeals: 3,
 
-				eatingStatus: ''
+				eatingStatus: 'On my way!'
+			}, 
+			{
+				id: 1,
+				name: "Bobby Testing",
+				facebookID: 312341231,
+
+				balance: 15.0,
+				paymentID: "21j9d898ahdhs",
+
+				address: "", // where the meal is hosted
+				lastLocation: [],
+				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+
+				eatingStatus: 'On my way!',
+
+				cookRating: 'N/A',
+				friendlinessRating: 'Excellent',
+				numberOfMeals: 1,
+
+				mealHistory: [
+					{
+						date: moment().subtract(14, 'd'),
+						name: 'Spaghetti',
+						cost: 7.5,
+						location: '203',
+						hostDisplayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+						guestNames: ['Georgia', 'John', 'David']
+					}
+				]
 			}],
 
 			userStatus: ''
@@ -39,7 +73,7 @@ sampleData = {
 			id: 1,
 			name: 'Pizza',
 			price: 4.10,
-			servedAt: "10pm",
+			servedAt: moment().add(4, 'h'),
 			image: 'img/example-pizza.jpeg',
 			cook: {
 				id: 0,
@@ -82,7 +116,7 @@ sampleData = {
 
 		address: "", // where the meal is hosted
 		lastLocation: [],
-		displayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+		avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 
 		cookRating: 'N/A',
 		friendlinessRating: 'Excellent',
@@ -97,8 +131,36 @@ sampleData = {
 				guestNames: ['Bobby', 'Dave', 'Patrice']
 			}
 		]
+	},
+	{
+		id: 1,
+		name: "Bobby Testing",
+		facebookID: 312341231,
+
+		balance: 15.0,
+		paymentID: "21j9d898ahdhs",
+
+		address: "", // where the meal is hosted
+		lastLocation: [],
+		avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+
+		cookRating: 'N/A',
+		friendlinessRating: 'Excellent',
+
+		mealHistory: [
+			{
+				date: moment().subtract(14, 'd'),
+				name: 'Spaghetti',
+				cost: 7.5,
+				location: '203',
+				hostDisplayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
+				guestNames: ['Georgia', 'John', 'David']
+			}
+		]
 	}],
 };
+
+
 
 // Only for testing
 // Will remove in future.
@@ -173,7 +235,7 @@ angular.module('flatcook.services', [])
 		return feignRequestingDataFromNetwork($q, guests);
 	}
 
-	mealsService.cancelAttending = function(mealID) {
+	mealsService.cancelAttending = function() {
 		mealsService.currentMealID = null;
 		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {

@@ -9,12 +9,20 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     $rootScope.$on("$stateChangeError", console.log.bind(console));
 
     // Icky hack for ui-router
-    // I have searched for 3+ hours on how to not make this a hack.
+    // I have searched for 4+ hours on how to not make this a hack.
     // This is the only alternative.
-    $rootScope.$on('$stateChangeStart', function(evt, to, params) {
-      if (to.dynamicallySelectState) {
+    $rootScope.$on('$stateChangeStart', function(evt, toState, toParams, fromState, fromParams) {
+      // if(toState.name === fromState.name) {
+      //   evt.preventDefault()
+      // }
+
+      if (toState.dynamicallySelectState) {
         evt.preventDefault();
-        $state.go(to.dynamicallySelectState(), params)
+        // get hte tab controller
+        debugger
+        toState.something()
+        
+        $state.go(toState.dynamicallySelectState(), params)
       }
     });
 
@@ -61,13 +69,13 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
   //
 
   .state('tab.eat', {
-    abstract: true,
+    abstract: false,
     url: '/eat',
     views: {
       'tab-eat': {
         template: "<ion-nav-view></ion-nav-view>",
         controller: function($state, $ionicHistory, MealsService) {
-          $ionicHistory.nextViewOptions({ disableBack: false, disableAnimate: true, historyRoot: true })
+          // $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: true })
           
           if(MealsService.currentMealID != null) {
             $state.go('tab.eat.eating')
@@ -82,11 +90,15 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
 
   .state('tab.eat.mealsIndex', {
     url: '',
-    templateUrl: 'templates/eat-mealsIndex.html',
-    controller: 'MealsIndexCtrl'
+    views: {
+      'mealsIndex@tab-eat': {
+        templateUrl: 'templates/eat-mealsIndex.html',
+        controller: 'MealsIndexCtrl',
+      }
+    }
   })
 
-  .state('tab.eat.mealDetail', {
+  .state('tab.eat.mealsIndex.detail', {
     url: '/meal/{id:[0-9]*}',
     templateUrl: 'templates/eat-mealDetail.html',
     controller: 'MealDetailCtrl'
@@ -95,7 +107,13 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
   .state('tab.eat.eating', {
     url: '/eating',
     templateUrl: 'templates/eat-eating.html',
-    controller: 'EatingCtrl'
+        controller: 'EatingCtrl',
+    // views: {
+    //   'eating@tab-eat': {
+    //     templateUrl: 'templates/eat-eating.html',
+    //     controller: 'EatingCtrl',
+    //   }
+    // }
   })
 
   //
@@ -104,6 +122,7 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
 
   .state('tab.cook', {
     abstract: false,
+    dynamicallySelectState: true,
     url: '/cook',
     views: {
       'tab-cook': {
