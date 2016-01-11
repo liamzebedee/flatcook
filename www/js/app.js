@@ -250,7 +250,7 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     };
   }
 
-
+  $urlRouterProvider.when('/s=1', '/login');
 
   if (IsServingBrowserFromIonicServe) {
     $urlRouterProvider.otherwise(function($injector, $location) {

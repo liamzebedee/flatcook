@@ -5,17 +5,6 @@ controllers.controller('AppController', function($scope, $state) {
 	// important state:
 	// - currently cooking
 	// - currently eating
-	$http({
-        method: 'GET',
-        url: 'http://localhost:50001/user',
-  	}).success(function(data){
-    	//if so, save user details and continue
-    	alert("cccc");
-  	}).error(function(){
-    	alert("error");
-    	//else, redirect to login url
-    	//		document.location.href = 'http://localhost:50001/auth/facebook';
-  	});
 })
 
 
@@ -216,6 +205,9 @@ controllers.controller('AppController', function($scope, $state) {
 
 
 .controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
+
+
+
 	$scope.loginAsTesting = function() {
 		if (IsServingBrowserFromIonicServe) {
 			UsersService.saveState()
@@ -247,4 +239,5 @@ controllers.controller('AppController', function($scope, $state) {
 			throw ex;
 		}
 	};
+	
 });
