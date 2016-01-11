@@ -267,8 +267,11 @@ angular.module('flatcook.services', [])
 				user.facebookID = data.id;
 
 				usersService._facebookData = facebookData; // debugging, who knows when we'll need it
+				
 				return user;
-		}
+			}
+
+
 
 			dfd.resolve(true);
 		}, function (error) {

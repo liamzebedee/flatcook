@@ -18,7 +18,6 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
       }
     });
 
-
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -215,6 +214,23 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
     templateUrl: 'templates/rating-chef-step2.html'
   })
 
+  // Config
+  // ------
+
+  $ionicConfigProvider.scrolling.jsScrolling(false); // more native scrolling
+  $ionicConfigProvider.views.transition("ios");
+
+
+  // Facebook
+  // --------
+  var FB_APP_ID = '969671363072130';
+  var FB_VERSION = "v2.5"; // I don't care.
+  if (IsServingBrowserFromIonicServe) {
+    window.fbAsyncInit = function() {
+      $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION)
+    };
+  }
+
 
 
   if (IsServingBrowserFromIonicServe) {
@@ -228,23 +244,6 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'f
 
   } else {
     $urlRouterProvider.otherwise('/login');
-  }
-
-  // Config
-  // ------
-
-  $ionicConfigProvider.scrolling.jsScrolling(false); // more native scrolling
-  $ionicConfigProvider.views.transition("ios");
-
-
-  // Facebook
-  // --------
-  var FB_APP_ID = '956199011086032';
-  var FB_VERSION = "v2.5"; // I don't care.
-  if (IsServingBrowserFromIonicServe) {
-    window.fbAsyncInit = function() {
-      $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION)
-    };
   }
 
 });

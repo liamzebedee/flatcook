@@ -5,6 +5,17 @@ controllers.controller('AppController', function($scope, $state) {
 	// important state:
 	// - currently cooking
 	// - currently eating
+	$http({
+        method: 'GET',
+        url: 'http://localhost:50001/user',
+  	}).success(function(data){
+    	//if so, save user details and continue
+    	alert("cccc");
+  	}).error(function(){
+    	alert("error");
+    	//else, redirect to login url
+    	//		document.location.href = 'http://localhost:50001/auth/facebook';
+  	});
 })
 
 
