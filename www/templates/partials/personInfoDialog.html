@@ -1,0 +1,37 @@
+<ion-modal-view>
+    <ion-header-bar>
+      <h1 class="title">Who's this?</h1>
+      <button ng-click="hidePersonDetail()" class='button button-icon icon ion-chevron-down'></button>
+    </ion-header-bar>
+
+    <ion-content>
+
+
+    <div class="list">
+
+
+      <!-- General personal details -->
+      <div class="item item-thumbnail-left" href="#">
+        <img ng-src="{{personDetail.avatarUrl}}">
+        <h2>{{personDetail.name}}</h2>
+        <p>{{personDetail.tagline}}</p>
+        <p ng-if='!personDetail.tagline'>no tagline!</p>
+      </div>
+
+      <!-- Meal specific details -->
+      <div class="item hero statusGradient">
+        <h3>Currently: {{personDetail.eatingStatus}} {{personDetail.cookingStatus}}</h3>
+
+        <!-- Reputation details -->
+        <span>
+          <i class='ion-icon ion-ios-heart'></i> {{personDetail.friendlinessRating}} &middot; {{personDetail.numberOfMeals}} meals
+        </span>
+      </div>
+
+    </div>
+
+    </ion-content>
+  </ion-modal-view>
+</script>
+
+

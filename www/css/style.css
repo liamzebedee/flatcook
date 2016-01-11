@@ -1,6 +1,11 @@
 /*https://css-tricks.com/design-considerations-text-images/*/
 /*https://medium.com/@erikdkennedy/7-rules-for-creating-gorgeous-ui-part-2-430de537ba96#.ecnfpwqi4*/
 
+.statusGradient {
+  background-image: url(/img/statusGradient.png);
+  height: initial!important;
+}
+
 .hero {
   height: 300px;
   background-size: cover;

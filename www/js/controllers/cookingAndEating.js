@@ -3,13 +3,49 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		$scope.$broadcast('scroll.refreshComplete');
 	}
 
+	$scope.chooseEatingStatus = function() {
+		$scope.eatingStatusChooser.show()
+	}
+	$scope.closeEatingStatusChooser = function(){
+		$scope.eatingStatusChooser.hide()
+	}
+	$scope._eatingStatusChooser = {
+		options: MealsService.VALID_GUEST_STATUSES
+	}
+
+	$ionicModal.fromTemplateUrl('templates/partials/statusChooserModal.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.eatingStatusChooser = modal;
+	});
+
+
+	$scope.showPersonDetail = function(person) {
+		$scope.personDetail = person;
+
+		$ionicModal.fromTemplateUrl('templates/partials/personInfoDialog.html', {
+			scope: $scope,
+			animation: 'slide-in-up',
+			backdropClickToClose: true
+		}).then(function(modal) {
+			$scope.personInfoDialog = modal;
+			$scope.personInfoDialog.show();
+		});
+	}
+
+	$scope.hidePersonDetail = function() {
+		$scope.personInfoDialog.hide()
+	}
+	
+
 	$scope.$on('$ionicView.enter', function(e) {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
-			console.log(meal)
 			$scope.meal = meal;
 			var numChefs = 1;
+			$scope.meal.eatingStatus = $scope.meal.eatingStatus || MealsService.VALID_GUEST_STATUSES[0];
 			$scope.meal.numberOfGuestsInWords = numberInWords(numChefs + meal.guests.length);
-			$scope.meal.servedAtFormatted = moment(meal.servedAt).format('ha')
+			$scope.meal.servedAtFormatted = moment(meal.servedAt).format('h:mma') // 5pm
 		})
 	});
 

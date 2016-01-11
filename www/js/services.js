@@ -17,8 +17,10 @@ sampleData = {
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 				cookRating: 'Excellent',
 				friendlinessRating: 'Excellent',
+				tagline: 'Never spends a day without cooking!',
+				numberOfMeals: 5,
 
-				cookingStatus: ''
+				cookingStatus: 'Cooking!'
 			},
 			guests: [{
 				id: 0,
@@ -30,8 +32,9 @@ sampleData = {
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 				cookRating: 'N/A',
 				friendlinessRating: 'Excellent',
+				numberOfMeals: 3,
 
-				eatingStatus: ''
+				eatingStatus: 'On my way!'
 			}, 
 			{
 				id: 1,
@@ -45,8 +48,11 @@ sampleData = {
 				lastLocation: [],
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 
+				eatingStatus: 'On my way!',
+
 				cookRating: 'N/A',
 				friendlinessRating: 'Excellent',
+				numberOfMeals: 1,
 
 				mealHistory: [
 					{

@@ -7,7 +7,7 @@ on-refresh="doRefresh()">
 </ion-refresher>
 
 <div class="item hero" ng-style="{'background-image':'url('+meal.image+')'}">
-  <h3>{{meal.name}}</h3>
+  <h3>{{meal.name}} (<i class='ion-icon ion-social-usd'></i>{{ meal.price }})</h3>
 
   <div class='controls'>
 
@@ -21,59 +21,34 @@ on-refresh="doRefresh()">
 
 
 <div class="list">
+  <a class="item item-icon-left" ng-click="chooseEatingStatus()">
+    <i class="icon ion-mic-a"></i>
+    Your status
+    <span class="item-note">
+      {{ meal.eatingStatus }}
+    </span>
+  </a>
+
+
   <div class="item item-divider">
     <i class='ion-icon ion-ios-people'></i> Dinner for {{ meal.numberOfGuestsInWords }} with:
   </div>
 
 
-  <div class="item item-avatar">
+  <div class="item item-avatar" ng-click="showPersonDetail(meal.chef)">
     <img ng-src="{{ meal.chef.avatarUrl }}">
     <h2><span class='label primary'>Host</span> {{ meal.chef.name }}</h2>
-    <p>{{ meal.chef.status }} &middot; {{ meal.chef.tagline }}</p>
+    <p>{{ meal.chef.tagline }}</p>
   </div>
 
-  <div class="item item-avatar" ng-repeat="guest in meal.guests">
+  <div class="item item-avatar" ng-repeat="guest in meal.guests" ng-click="showPersonDetail(guest)">
     <img ng-src="{{ guest.avatarUrl }}">
     <h2>{{ guest.name }}</h2>
-    <p>{{ guest.status }} &middot; {{ guest.tagline }}</p>
+    <p>{{ guest.tagline }}</p>
+    <p ng-if='!guest.tagline'>no tagline!</p>
   </div>
 
 </div>
-<!-- 
-<div class='list'>
-<a class="item item-icon-left" ng-click="openStatusChooser()">
-          <i class="icon ion-mic-a"></i>
-          Status
-          <span class="item-note">
-            {{ meal.userStatus }}
-          </span>
-        </a>
-<div class='card'>
-  <header class="row">
-        
-  </header>
-
-  <article class="item item-image">
-    <img ng-src="{{ meal.image }}">
-  </article>
-</div>
-
-
-
-
-
-  <footer class="item row">
-    <span class="col col-67">
-      <h3>{{ meal.name }}</h3>
-    </span>
-    <span class='col col-33' style='text-align:right!important;'>
-        <a href="#" class="subdued"><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a>
-    </span>
-
-  </footer>
-</div>
--->
-
 
 
 <button class="button button-full button-assertive icon ion-icon ion-close-circled" ng-click="confirmCancelMeal()">
