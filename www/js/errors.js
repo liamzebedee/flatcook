@@ -1,3 +1,0 @@
-// RegistrationFailed = function() {
-// 	new Error("");
-// }

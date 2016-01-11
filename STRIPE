@@ -1,0 +1,10 @@
+## STRIPE/payments
+ - We use Stripe Connect to support the marketplace aspect of the application.
+ - We create **managed accounts**, which are Accounts in Stripe that we solely manage for the user.
+ - When Payments occur between our Managed Accounts, they incur a Stripe fee and an Application Fee
+
+
+1. Open form
+2. Enter details
+3. Submit to server
+4. Server sends to Stripe. 

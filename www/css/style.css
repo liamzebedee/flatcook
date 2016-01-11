@@ -1,3 +1,60 @@
+/*https://css-tricks.com/design-considerations-text-images/*/
+/*https://medium.com/@erikdkennedy/7-rules-for-creating-gorgeous-ui-part-2-430de537ba96#.ecnfpwqi4*/
+
+.hero {
+  height: 300px;
+  background-size: cover;
+  line-height: 1.4;
+  vertical-align: middle;
+
+  display:box;       /* Display like a div      */
+  box-pack:center;   /* Pack contents to center */
+  box-align:center;  /* Align box in center     */
+}
+
+.hero .controls {
+  display: block;
+  clear: both;
+}
+
+.hero h3 {
+  font-size: 26px;
+}
+.hero span,
+.hero h3 {
+  text-align: center;
+  background-color: black;
+  color: #fff; 
+  display: block;
+
+  float:left;
+  padding: 0.5rem;
+  
+  /*-webkit-box-decoration-break: clone;*/
+  /*box-decoration-break: clone;*/
+}
+
+.label {
+  display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+.label.primary {
+      background-color: #337ab7;
+}
+
+.popup {
+  background-color: white!important; /* stop opaque popups */
+}
+
 h3 {
   /*font-family: 'Helvetica Neue';*/
   font-weight: 300!important;
