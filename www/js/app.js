@@ -1,7 +1,135 @@
 IsServingBrowserFromIonicServe = !window.cordova;
 
+function countdownTimerDirective() {
+    return {
+        restrict: 'EAC',
+        replace: false,
+        scope: {
+            countdown: "=",
+            interval: "=",
+            active: "=",
+            onZeroCallback: "="
+        },
+        template: "{{formatted}}",
+        controller: function ($scope, $attrs, $timeout) {
+            $scope.format = $attrs.outputFormat;
 
-angular.module('flatcook', ['ionic', 'angularMoment', 'flatcook.controllers', 'flatcook.services'])
+            var queueTick = function () {
+                $scope.timer = $timeout(function () {
+                    if ($scope.countdown > 0) {
+                        $scope.countdown -= 1;
+
+                        if ($scope.countdown > 0) {
+                            queueTick();
+                        } else {
+                            $scope.countdown = 0;
+                            $scope.active = false;
+                            if (!_.isUndefined($scope.onZeroCallback)) {
+                                $scope.onZeroCallback();
+                            }
+                        }
+                    }
+                }, $scope.interval);
+            };
+
+            if ($scope.active) {
+                queueTick();
+            }
+
+            $scope.$watch('active', function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    if (newValue === true) {
+                        if ($scope.countdown > 0) {
+                            queueTick();
+                        } else {
+                            $scope.active = false;
+                        }
+                    } else {
+                        $timeout.cancel($scope.timer);
+                    }
+                }
+            });
+            $scope.$watch('countdown', function () {
+                updateFormatted();
+            });
+
+            var updateFormatted = function () {
+                $scope.formatted = moment($scope.countdown * $scope.interval).format($scope.format);
+            };
+            updateFormatted();
+
+
+            $scope.$on('$destroy', function () {
+                $timeout.cancel($scope.timer);
+            });
+
+        }
+    };
+}
+
+angular.module('angularCountdownTimer', []).directive('timer', countdownTimerDirective);
+
+angular.module('l42y.moment.countdown', []).directive('momentCountdown', function (
+  $window,
+  $timeout
+) {
+  var dateTypes = [
+    'year',
+    'month',
+    'day',
+    'hour',
+    'minute',
+    'second',
+    'millisecond'
+  ];
+
+  function getDuration (time) {
+    var diff = $window.moment(time).diff();
+
+    return $window.moment.duration(diff);
+  }
+
+  function getDurationObject (time) {
+    var duration = getDuration(time);
+    var durationObject = {};
+
+    angular.forEach(dateTypes, function (type) {
+      var typeVal = duration[type + 's']();
+      if (typeVal) {
+        durationObject[type] = typeVal;
+      }
+    });
+
+    return durationObject;
+  }
+
+  return {
+    restrict: 'EA',
+    template: 'x '+this.countdown,
+    controller: function ($scope, $element, $attrs) {
+      var self = this;
+      var interval = $attrs.momentInterval || 1000;
+
+      $attrs.$observe('moment', function (time) {
+        self.countdown = getDurationObject(time);
+
+        console.log(self.countdown)
+        function countdown () {
+          $timeout(function () {
+            self.countdown = getDurationObject(time);
+
+            countdown();
+          }, interval);
+        }
+
+        countdown();
+      });
+    },
+    controllerAs: 'moment'
+  };
+});
+
+angular.module('flatcook', ['ionic', 'angularMoment', 'timer', 'flatcook.controllers', 'flatcook.services'])
 
 .run(function($ionicPlatform, $rootScope, $state) {
 
