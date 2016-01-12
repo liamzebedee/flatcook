@@ -1,7 +1,6 @@
 IsServingBrowserFromIonicServe = !window.cordova;
 
-
-angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'flatcook.controllers', 'flatcook.services'])
+angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'flatcook.controllers', 'flatcook.services'])
 
 .run(function($ionicPlatform, $rootScope, $state) {
 
@@ -242,6 +241,7 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'flatcook.con
 
   // Facebook
   // --------
+  
   var FB_APP_ID = '969671363072130';
   var FB_VERSION = "v2.5"; // I don't care.
   if (IsServingBrowserFromIonicServe) {
@@ -250,7 +250,9 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'flatcook.con
     };
   }
 
-  $urlRouterProvider.when('/s=1', '/login');
+
+  // Routing
+  // -------
 
   if (IsServingBrowserFromIonicServe) {
     $urlRouterProvider.otherwise(function($injector, $location) {
@@ -260,7 +262,6 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'flatcook.con
       debugger
     })
     $urlRouterProvider.when('', '/login');
-
   } else {
     $urlRouterProvider.otherwise('/login');
   }

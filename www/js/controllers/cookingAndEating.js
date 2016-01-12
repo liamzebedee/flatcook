@@ -8,6 +8,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	}
 	$scope.closeEatingStatusChooser = function(){
 		$scope.eatingStatusChooser.hide()
+		MealsService.updateStatus($scope.meal.eatingStatus)
 	}
 	$scope._eatingStatusChooser = {
 		options: MealsService.VALID_GUEST_STATUSES
@@ -71,10 +72,19 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 
 
 .controller('CookingCtrl', function($scope, $stateParams, $ionicModal, MealsService) {
+	$scope.meal = { servedAtDuration_ms:  0} ;
+	$scope.time = 0;
+
 	$scope.$on('$ionicView.enter', function(e) {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
-			$scope.meal.numberOfGuestsInWords = numberInWords($scope.meal.guests.length);
+			var numChefs = 1;
+			// $scope.meal.eatingStatus = $scope.meal.eatingStatus || MealsService.VALID_GUEST_STATUSES[0];
+			$scope.meal.numberOfGuestsInWords = numberInWords(numChefs + meal.guests.length);
+			$scope.meal.servedAtFormatted = moment(meal.servedAt).format('h:mma') // 5:30pm
+
+			$scope.meal.timeTillServe_seconds = Math.round(moment.duration($scope.meal.servedAt.diff(moment())).asSeconds())
+			$scope.$broadcast('timer-set-countdown', $scope.meal.timeTillServe_seconds)
 		})
 	});
 
