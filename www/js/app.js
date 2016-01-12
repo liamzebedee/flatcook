@@ -241,6 +241,7 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'timer', 'flatcook.control
 
   // Facebook
   // --------
+  
   var FB_APP_ID = '969671363072130';
   var FB_VERSION = "v2.5"; // I don't care.
   if (IsServingBrowserFromIonicServe) {
@@ -248,6 +249,10 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'timer', 'flatcook.control
       $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION)
     };
   }
+
+
+  // Routing
+  // -------
 
   if (IsServingBrowserFromIonicServe) {
     $urlRouterProvider.otherwise(function($injector, $location) {
