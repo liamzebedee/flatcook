@@ -275,7 +275,7 @@ angular.module('flatcook.services', [])
 	return mealsService
 })
 
-.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage) {
+.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies) {
 	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
 		loggedInUser: null,
@@ -330,23 +330,43 @@ angular.module('flatcook.services', [])
 
 				usersService._facebookData = facebookData; // debugging, who knows when we'll need it
 				
+				//Liam - here is the walkthrough for validation. Use these two calls as a model for other service calls as well
+				//First i set up the parameters and turn it into json data - only needed for POSTS
     			var params = new Object();
 				params.email = data.email;
 				params.facebookid = data.id;
 				params.oauth_token = facebookData.authResponse.accessToken;
 				params.oauth_verifier = facebookData.authResponse.signedRequest;
+				params.expires_in = facebookData.authResponse.expires_in;
 				params.username = data.name;
 				var jsonData = JSON.stringify(params);
 
+				//Next i post my login token to the user login endpoint
 				$http({
 			        method: 'POST',
 			        url: 'http://localhost:50001/user/login',
 			        data: jsonData,
+			        withCredentials: true,
 			        contentType: "application/json; charset=utf-8",
             		dataType: "json",
-			  	}).success(function(data){
-			    	//if so, save user details and continue
-			    	user.id = data;
+			  	}).success(function(response){
+			  		//The response i get back comes with a set-cookie (check the console>network tab)
+			    	//Now i have the user id and am logged in, but i want to verify that im logged in for 
+			    	//good so i call the user endpoint - it uses the session cookie to retrieve user data
+			    	user.id = response;
+				  	$http({
+				        method: 'GET',
+				        url: 'http://localhost:50001/user',
+				        contentType: "application/json; charset=utf-8",
+				   		withCredentials: true,
+	            		dataType: "json",
+				  	}).success(function(data){
+				  		//If this comes back success then all the user data we have in the backend should be in this response.
+				  		//curently only a few fields but easily scalable
+				    	user.id = data;
+				  	}).error(function(){
+				    	alert("error");
+				  	});
 			  	}).error(function(){
 			    	alert("error");
 			  	});
