@@ -205,6 +205,9 @@ controllers.controller('AppController', function($scope, $state) {
 
 
 .controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
+
+
+
 	$scope.loginAsTesting = function() {
 		if (IsServingBrowserFromIonicServe) {
 			UsersService.saveState()
@@ -236,4 +239,5 @@ controllers.controller('AppController', function($scope, $state) {
 			throw ex;
 		}
 	};
+	
 });

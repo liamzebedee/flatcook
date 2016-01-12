@@ -25,7 +25,6 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'timer', 'flatcook.control
       }
     });
 
-
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
@@ -233,21 +232,6 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'timer', 'flatcook.control
     templateUrl: 'templates/rating-chef-step2.html'
   })
 
-
-
-  if (IsServingBrowserFromIonicServe) {
-    $urlRouterProvider.otherwise(function($injector, $location) {
-      console.error("Navigated to a state that didn't exist - uh oh, spaghettios!");
-      console.log($injector)
-      console.log($location)
-      debugger
-    })
-    $urlRouterProvider.when('', '/login');
-
-  } else {
-    $urlRouterProvider.otherwise('/login');
-  }
-
   // Config
   // ------
 
@@ -257,12 +241,24 @@ angular.module('flatcook', ['ionic', 'angularMoment', 'timer', 'flatcook.control
 
   // Facebook
   // --------
-  var FB_APP_ID = '956199011086032';
+  var FB_APP_ID = '969671363072130';
   var FB_VERSION = "v2.5"; // I don't care.
   if (IsServingBrowserFromIonicServe) {
     window.fbAsyncInit = function() {
       $cordovaFacebookProvider.browserInit(FB_APP_ID, FB_VERSION)
     };
+  }
+
+  if (IsServingBrowserFromIonicServe) {
+    $urlRouterProvider.otherwise(function($injector, $location) {
+      console.error("Navigated to a state that didn't exist - uh oh, spaghettios!");
+      console.log($injector)
+      console.log($location)
+      debugger
+    })
+    $urlRouterProvider.when('', '/login');
+  } else {
+    $urlRouterProvider.otherwise('/login');
   }
 
 });

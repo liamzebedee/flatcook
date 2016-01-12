@@ -329,8 +329,30 @@ angular.module('flatcook.services', [])
 				user.facebookID = data.id;
 
 				usersService._facebookData = facebookData; // debugging, who knows when we'll need it
+				
+    			var params = {};
+				params.email = data.email;
+				params.facebookid = data.id;
+				params.oauth_token = facebookData.authResponse.accessToken;
+				params.oauth_verifier = facebookData.authResponse.signedRequest;
+				params.username = data.name;
+				var jsonData = JSON.stringify(params);
+
+				$http({
+			        method: 'POST',
+			        url: 'http://localhost:50001/user/login',
+			        data: jsonData,
+			        contentType: "application/json; charset=utf-8",
+            		dataType: "json",
+			  	}).success(function(data){
+			    	//if so, save user details and continue
+			    	user.id = data;
+			  	}).error(function(){
+			    	alert("error");
+			  	});
+
 				return user;
-		}
+			}
 
 			dfd.resolve(true);
 		}, function (error) {
