@@ -73,7 +73,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 
 .controller('CookingCtrl', function($scope, $stateParams, $ionicModal, MealsService) {
 	$scope.meal = { servedAtDuration_ms:  0} ;
-	$scope.time = 1000;
+	$scope.time = 0;
 
 	$scope.$on('$ionicView.enter', function(e) {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
@@ -82,21 +82,9 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 			// $scope.meal.eatingStatus = $scope.meal.eatingStatus || MealsService.VALID_GUEST_STATUSES[0];
 			$scope.meal.numberOfGuestsInWords = numberInWords(numChefs + meal.guests.length);
 			$scope.meal.servedAtFormatted = moment(meal.servedAt).format('h:mma') // 5:30pm
-			$scope.meal.timeTillServe = moment.duration(meal.servedAt).subtract(moment())
 
-			$scope.meal.timeTillServe_duration = moment.duration(meal.servedAt).subtract(moment())
-
-			// $scope.meal.timeTillServe_f = $scope.meal.timeTillServe_duration.format('h:mm')
-			$scope.meal.timeTillServe_h = $scope.meal.timeTillServe_duration.hours()
-			$scope.meal.timeTillServe_m = $scope.meal.timeTillServe_duration.seconds()
-
-
-			$scope.meal.servedAtDuration_ms = Math.round(moment.duration($scope.meal.servedAt.diff(moment())).asSeconds())
-			$scope.time = $scope.meal.servedAtDuration_ms
-			$scope.$broadcast('timer-set-countdown', $scope.time)
-			// console.log(moment.duration(meal.servedAt)
-			// $scope.meal.timeTillServe_hours = moment.duration(meal.servedAt., 'h')
-			console.log($scope.meal.servedAtDuration_ms)
+			$scope.meal.timeTillServe_seconds = Math.round(moment.duration($scope.meal.servedAt.diff(moment())).asSeconds())
+			$scope.$broadcast('timer-set-countdown', $scope.meal.timeTillServe_seconds)
 		})
 	});
 

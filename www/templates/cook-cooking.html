@@ -13,20 +13,11 @@
       on-refresh="doRefresh()">
     </ion-refresher>
 
+Cooking {{meal.name}} for {{ meal.numberOfGuestsInWords }} guests
 
-{{time}}
-
-X: <timer interval="1000" ng-attr-countdown="time" max-time-unit="'hour'">{{hours}}h:{{minutes}}m {{seconds}}</timer>
-
-<!-- Cooking {{meal.name}} for {{ meal.numberOfGuestsInWords }} guests -->
-<!-- X: <countdown duration="meal.servedAtDurationSeconds" interval=1000 active=true>{{formatted}}</countdown> -->
-
-<!-- {{meal.timeTillServe_h}}:{{meal.timeTillServe_m}} -->
+Time till arrival: <timer interval="1000" ng-attr-countdown="meal.timeTillServe_seconds" max-time-unit="'hour'">{{hours}}h:{{minutes}}m {{seconds}}</timer> ({{meal.servedAtFormatted}})
 
 
-<!-- {{ meal.timeTillServe_duration | amDifference : null : 'seconds' }} -->
-
-Time till arrival: <time></time> ({{meal.servedAtFormatted}})
 <!-- Profit: $5 &times; 4 = $20
 
 Your Y guests:
