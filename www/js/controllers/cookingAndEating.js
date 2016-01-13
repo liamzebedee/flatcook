@@ -15,10 +15,10 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	}
 
 	$scope.chooseEatingStatus = function() {
-		$scope.cookingStatusChooser.show()
+		$scope.eatingStatusChooser.show()
 	}
 	$scope.closeEatingStatusChooser = function(){
-		$scope.cookingStatusChooser.hide()
+		$scope.eatingStatusChooser.hide()
 		MealsService.updateEatingStatus($scope.meal.cookingStatus)
 	}
 	$scope._eatingStatusChooser = {
@@ -29,7 +29,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		scope: $scope,
 		animation: 'slide-in-up'
 	}).then(function(modal) {
-		$scope.cookingStatusChooser = modal;
+		$scope.eatingStatusChooser = modal;
 	});
 
 
@@ -77,6 +77,8 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 
 
 .controller('CookingCtrl', function($scope, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, $state, MealsService) {
+	$scope.time = 0;
+
 	function loadMeal() {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
@@ -90,9 +92,6 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 			$scope.$broadcast('timer-set-countdown', $scope.meal.timeTillServe_seconds)
 		})
 	}
-
-	$scope.meal = { servedAtDuration_ms: 0 };
-	$scope.time = 0;
 
 	$scope.$on('$ionicView.enter', function(e) {
 		loadMeal()
@@ -145,20 +144,19 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	$scope.confirmCancelMeal = function() {
 		var confirmPopup = $ionicPopup.confirm({
 			title: 'Confirm Cancel Meal',
-			template: 'Do you really want to cancel on your host and others?'
+			template: 'Do you really want to cancel on your guests?'
 		});
 		confirmPopup.then(function(yes) {
 			if (yes) {
-				MealsService.cancelAttending();
+				MealsService.cancelCooking();
 				$ionicHistory.nextViewOptions({ disableBack: true });
 				$state.go('tab.cook.newMeal.intro');
 			}
 		});
 	}
 
-
 	$scope.$on('$destroy', function() {
-		$scope.chefStatusChooserModal.remove();
+		$scope.cookingStatusChooser.remove();
 	});
 })
 
