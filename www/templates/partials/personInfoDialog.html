@@ -8,8 +8,6 @@
 
 
     <div class="list">
-
-
       <!-- General personal details -->
       <div class="item item-thumbnail-left" href="#">
         <img ng-src="{{personDetail.avatarUrl}}">
@@ -19,8 +17,8 @@
       </div>
 
       <!-- Meal specific details -->
-      <div class="item hero statusGradient">
-        <h3>Currently: {{personDetail.eatingStatus}} {{personDetail.cookingStatus}}</h3>
+      <div class="item cooking-hero statusGradient">
+        <h2 class='title'>Currently: {{personDetail.eatingStatus}} {{personDetail.cookingStatus}}</h2>
 
         <!-- Reputation details -->
         <span>

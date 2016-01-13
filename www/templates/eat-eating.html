@@ -1,18 +1,15 @@
 <ion-view view-title="Eating!">
 <ion-content>
+<ion-refresher on-refresh="doRefresh()"></ion-refresher>
 
-
-<ion-refresher
-on-refresh="doRefresh()">
-</ion-refresher>
-
-<div class="item hero" ng-style="{'background-image':'url('+meal.image+')'}">
-  <h3>{{meal.name}} (<i class='ion-icon ion-social-usd'></i>{{ meal.price }})</h3>
+<div class="item eating-hero" ng-style="{'background-image':'url('+meal.image+')'}">
+  <h1 class='title'>{{meal.name}} <span style="white-space: nowrap">(<i class='ion-icon ion-social-usd'></i>{{ meal.price }})</span></h1>
 
   <div class='controls'>
 
-    <span style='margin-right:0.5rem'><i class="ion-icon ion-ios-clock"></i> <time am-time-ago="meal.servedAt"></time> @ {{meal.servedAtFormatted}}</span>
-    <span><i class="ion-icon ion-location"></i> {{meal.address}}<!-- - 3.5km --></span>
+    <span><i class="ion-icon ion-ios-clock"></i> <time am-time-ago="meal.servedAt"></time> @ {{meal.servedAtFormatted}}</span>
+
+    <span><i class="ion-icon ion-location"></i> {{meal.address}}</span>
 
   </div>
 </div>
@@ -35,17 +32,19 @@ on-refresh="doRefresh()">
   </div>
 
 
-  <div class="item item-avatar" ng-click="showPersonDetail(meal.chef)">
+  <div class="item item-avatar item-icon-right" ng-click="showPersonDetail(meal.chef)">
     <img ng-src="{{ meal.chef.avatarUrl }}">
     <h2><span class='label primary'>Host</span> {{ meal.chef.name }}</h2>
     <p>{{ meal.chef.tagline }}</p>
+    <i class='icon ion-ios-information-outline'></i>
   </div>
 
-  <div class="item item-avatar" ng-repeat="guest in meal.guests" ng-click="showPersonDetail(guest)">
+  <div class="item item-avatar item-icon-right" ng-repeat="guest in meal.guests" ng-click="showPersonDetail(guest)">
     <img ng-src="{{ guest.avatarUrl }}">
     <h2>{{ guest.name }}</h2>
     <p>{{ guest.tagline }}</p>
     <p ng-if='!guest.tagline'>no tagline!</p>
+    <i class='icon ion-ios-information-outline'></i>
   </div>
 
 </div>

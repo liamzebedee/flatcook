@@ -6,50 +6,100 @@
   height: initial!important;
 }
 
-.hero {
+timer {
+  display: inline-block;
+}
+
+
+
+
+.cooking-hero {
   height: 300px;
   background-size: cover;
   line-height: 1.4;
   vertical-align: middle;
-
-  display:box;       /* Display like a div      */
-  box-pack:center;   /* Pack contents to center */
-  box-align:center;  /* Align box in center     */
 }
 
-.hero .controls {
+.cooking-hero > h3,
+.cooking-hero > h1 {
+  text-align: left;
+  background-color: black;
+  color: #fff;
+  opacity: 0.9;
+  display: inline-block;
+  clear: both;
+  padding: 0.5rem;
+  margin: 0.25rem;
+  float: left;
+}
+
+.cooking-hero > .timer {
+  font-size: 24px;
+}
+
+.cooking-hero > .title {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+}
+
+
+
+.eating-hero {
+  height: 300px;
+  background-size: cover;
+  line-height: 1.4;
+  vertical-align: middle;
+}
+
+.eating-hero .controls {
   display: block;
   clear: both;
 }
 
-.hero h3 {
-  font-size: 26px;
-}
-.hero span,
-.hero h3 {
-  text-align: center;
+.eating-hero > .controls > span,
+.eating-hero > h1 {
+  text-align: left;
   background-color: black;
   color: #fff; 
   display: block;
 
   float:left;
   padding: 0.5rem;
-  
-  /*-webkit-box-decoration-break: clone;*/
-  /*box-decoration-break: clone;*/
 }
+
+.eating-hero > .controls > span {
+  font-size: 24px;
+  margin: 0.125rem;
+}
+
+.eating-hero > .title {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: initial;
+}
+
+
+/* Idk ugly hack */
+* {
+    font-size: max(1em, 12px);
+}
+
+
+
+
 
 .label {
   display: inline;
-    padding: .2em .6em .3em;
-    font-size: 75%;
-    font-weight: 700;
-    line-height: 1;
-    color: #fff;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: .25em;
+  padding: .2em .6em .3em;
+  /*font-size: 75%;*/
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
 }
 
 .label.primary {
@@ -135,9 +185,6 @@ position: absolute;
   color: white!important;
   font-family: 'Source Sans Pro', sans-serif!important;
 }
-
-
-
 
 
 

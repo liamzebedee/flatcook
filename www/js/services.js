@@ -243,7 +243,14 @@ angular.module('flatcook.services', [])
 		});
 	}
 
-	mealsService.updateStatus = function(status) {
+	mealsService.updateEatingStatus = function(status) {
+		mealsService.saveState();
+		return feignRequestingDataFromNetwork($q, {
+			status: 'success'
+		});
+	}
+
+	mealsService.updateCookingStatus = function(status) {
 		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
