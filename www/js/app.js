@@ -212,6 +212,7 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'fla
   .state('rating', {
     abstract: true,
     url: '/rating',
+    controller: 'RatingCtrl',
     template: "<ion-nav-view></ion-nav-view>"
   })
 

@@ -195,7 +195,11 @@ angular.module('flatcook.services', [])
 
 		VALID_CHEF_STATUSES: ['Waiting on guests', 'Cooking', 'Meal ready!'],
 		VALID_GUEST_STATUSES: ['Chilling', 'On my way'],
-		VALID_COOK_RATINGS: ['Excellent', 'Pretty good', 'Bad']
+		VALID_COOK_RATINGS: [
+			{ text: 'Excellent', emoji: ['smile','smile','smile'] },
+			{ text: 'Pretty good', emoji: ['content'] }, 
+			{ text: 'Bad', emoji: ['disappointed'] }
+		]
 	};
 
 	mealsService.loadState = function(state) {

@@ -55,105 +55,25 @@ angular.module('flatcook.directives', ['angularMoment'])
   };
 })
 
-.directive('xcountdown', function($window, $interval) {
-
-  var dateTypes = [
-  'year',
-  'month',
-  'day',
-  'hour',
-  'minute',
-  'second',
-  'millisecond'
-  ];
-
-  function getDuration (time) {
-    var diff = $window.moment(time).diff();
-    return $window.moment.duration(diff);
+.directive( "emoji", function () {
+  var EMOJIIS = {
+          smile: '1F603',
+          ecstatic: '1F606',
+          content: '1F60A',
+          disappointed: '1F61E'
+        }
+  var EMOJIIS_HTML = {};
+  for(var emojiiName in EMOJIIS) {
+    EMOJIIS_HTML[emojiiName] = '&#x'+EMOJIIS[emojiiName]+';';
   }
 
-  function getDurationObject (time) {
-    var duration = getDuration(time);
-    // var durationObject = {};
-
-    // angular.forEach(dateTypes, function (type) {
-    //   var typeVal = duration[type + 's'](); // pluralise
-    //   if (typeVal) {
-    //     durationObject[type] = typeVal;
-    //   }
-    // });
-
-    return duration;
-  }
-
-return {
-  restrict: 'EAC',
-  replace: false,
-  scope: {
-    countdown: "=",
-    interval: "=",
-    active: "=",
-    onZeroCallback: "=",
-    duration: '='
-  },
-  template:"{{formatted}}",
-
-  link: function ($scope, el, $attrs) {
-    var self = this;
-    
-    var queueTick = function () {
-      $scope.timer = $interval(function () {
-        if ($scope.countdown > 0) {
-          $scope.countdown -= 1;
-          $scope.moment = getDurationObject(moment.duration($attrs.duration, 's'))
-
-          if ($scope.countdown > 0) {
-            queueTick();
-          } else {
-            $scope.countdown = 0;
-            $scope.active = false;
-            if (!_.isUndefined($scope.onZeroCallback)) {
-              $scope.onZeroCallback();
-            }
-          }
-        }
-      }, $scope.interval || 1000);
-    };
-
-    if ($scope.active) {
-      queueTick();
-    }
-
-    $scope.$watch('active', function (newValue, oldValue) {
-      if (newValue !== oldValue) {
-        if (newValue === true) {
-          if ($scope.countdown > 0) {
-            queueTick();
-          } else {
-            $scope.active = false;
-          }
-        } else {
-          $timeout.cancel($scope.timer);
-        }
+    return {
+      restrict: "E",
+      link: function ( scope, element, attributes ) {
+        return element.replaceWith(EMOJIIS_HTML[attributes.name]);
       }
-    });
-    $scope.$watch('countdown', function () {
-      updateFormatted();
-    });
-
-    var updateFormatted = function () {
-      $scope.formatted = $scope.moment.seconds()
-    };
-    updateFormatted();
-
-
-    $scope.$on('$destroy', function () {
-      $interval.cancel($scope.timer);
-    });
-
-  }
-};
-})
+    }
+  });
 
 
 

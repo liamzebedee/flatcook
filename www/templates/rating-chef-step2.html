@@ -11,7 +11,9 @@
         <small>We will listen to and read every complaint to make sure this never happens again.</small>
 
         <h3>Was it anyone in particular</h3>
-        {meal.guests}
+        <ion-list>
+          <ion-checkbox ng-repeat="guest in meal.guests">{{ guest.name }}</ion-checkbox>
+        </ion-list>
       </section>
 
       <section ng-show="rating.experience == 'Good'">

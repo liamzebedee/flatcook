@@ -39,7 +39,6 @@ The API calls will use a single function call, which will make tracking of which
 You're welcome to do whatever you want with the schema in the backend, all I care is that these API endpoints return my blobs :P.
 
 
-
 ## Random old notes on MVC
  - Ionic and Angular JS is used. The model is principally kept within the Angular controller. Only modal state that is required between different controllers is implemented in the service. 
  - The pull-to-refresh only works when the viewport is that of a mobile size. i.e. it won't appear to work in a fullscreen desktop browser

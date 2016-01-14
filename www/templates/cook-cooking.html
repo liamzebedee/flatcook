@@ -1,8 +1,9 @@
 <ion-view view-title='Cooking!'>
-<!-- 
+
 <ion-nav-buttons class="bar bar-header">
-<button class="button button-neutral" ng-click="serveMeal()">Serve</button>
-</ion-nav-buttons> -->
+  <button ng-show="meal.cookingStatus == 'Cooking'" class="button button-neutral" ng-click="serveMeal()">Serve</button>
+  <button ng-show="meal.cookingStatus == 'Meal ready!'" class="button button-neutral" ng-click="finishMeal()">Finish meal</button>
+</ion-nav-buttons>
 
 <ion-content>
 <ion-refresher on-refresh="doRefresh()"></ion-refresher>

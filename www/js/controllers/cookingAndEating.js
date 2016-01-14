@@ -1,4 +1,25 @@
 controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, MealsService) {
+	// Initial $scope vars
+	// -------------------
+	$scope._eatingStatusChooser = {
+		options: MealsService.VALID_GUEST_STATUSES
+	}
+
+	// On enter
+	// --------
+	$scope.$on('$ionicView.enter', function(e) {
+		loadMeal()
+	});
+
+	// Modals and functions
+	// --------------------
+	$ionicModal.fromTemplateUrl('templates/partials/eatingStatusChooserModal.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.eatingStatusChooser = modal;
+	});
+
 	function loadMeal() {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
@@ -9,6 +30,8 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		})
 	}
 
+	// Scope functions
+	// ---------------
 	$scope.doRefresh = function() {
 		loadMeal()
 		$scope.$broadcast('scroll.refreshComplete');
@@ -21,17 +44,6 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		$scope.eatingStatusChooser.hide()
 		MealsService.updateEatingStatus($scope.meal.cookingStatus)
 	}
-	$scope._eatingStatusChooser = {
-		options: MealsService.VALID_GUEST_STATUSES
-	}
-
-	$ionicModal.fromTemplateUrl('templates/partials/eatingStatusChooserModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.eatingStatusChooser = modal;
-	});
-
 
 	$scope.showPersonDetail = function(person) {
 		$scope.personDetail = person;
@@ -49,11 +61,6 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	$scope.hidePersonDetail = function() {
 		$scope.personInfoDialog.hide()
 	}
-	
-
-	$scope.$on('$ionicView.enter', function(e) {
-		loadMeal()
-	});
 
 	$scope.confirmCancelMeal = function() {
 		var confirmPopup = $ionicPopup.confirm({
@@ -77,7 +84,27 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 
 
 .controller('CookingCtrl', function($scope, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, $state, MealsService) {
+	// Initial $scope vars
+	// -------------------
 	$scope.time = 0;
+	$scope._cookingStatusChooser = {
+		options: MealsService.VALID_CHEF_STATUSES
+	}
+
+	// On enter
+	// --------
+	$scope.$on('$ionicView.enter', function(e) {
+		loadMeal()
+	});
+
+	// Modals and functions
+	// --------------------	
+	$ionicModal.fromTemplateUrl('templates/partials/cookingStatusChooserModal.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.cookingStatusChooser = modal;
+	});
 
 	function loadMeal() {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
@@ -93,10 +120,8 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		})
 	}
 
-	$scope.$on('$ionicView.enter', function(e) {
-		loadMeal()
-	});
-
+	// Scope functions
+	// ---------------
 	$scope.showPersonDetail = function(person) {
 		$scope.personDetail = person;
 
@@ -120,7 +145,8 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	}
 
 	$scope.finishMeal = function() {
-		$scope.ratingModal.show();
+		// TODO
+		$state.go('rating.chefs.step1');
 	}
 
 	$scope.chooseCookingStatus = function() {
@@ -130,16 +156,6 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		$scope.cookingStatusChooser.hide()
 		MealsService.updateCookingStatus($scope.meal.cookingStatus)
 	}
-	$scope._cookingStatusChooser = {
-		options: MealsService.VALID_CHEF_STATUSES
-	}
-
-	$ionicModal.fromTemplateUrl('templates/partials/cookingStatusChooserModal.html', {
-		scope: $scope,
-		animation: 'slide-in-up'
-	}).then(function(modal) {
-		$scope.cookingStatusChooser = modal;
-	});
 
 	$scope.confirmCancelMeal = function() {
 		var confirmPopup = $ionicPopup.confirm({
@@ -164,7 +180,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	$scope.rating = {
 		meal: $scope.meal,
 		date: yesterday(),
-		peopleInvolved: humanizeArray(['Dave', 'John', 'Jessie']),
+		peopleInvolved: humanizeArray($scope.meal.guests),
 		experience: MealsService.VALID_COOK_RATINGS[0]
 	}
 	$scope.experienceOptions = MealsService.VALID_COOK_RATINGS;

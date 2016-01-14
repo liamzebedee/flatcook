@@ -21,7 +21,7 @@ Chefs should be reviewed? Probably. But let's see.
         <h3 class='padding'>How was your meal <time>{{ rating.date | dateAsDaysAgo }}</time> with {{ rating.peopleInvolved }}?</h3>
 
         <ion-list>
-          <ion-radio ng-repeat="option in experienceOptions" ng-model="rating.experience" ng-value="option" ng-click="chooseExperience()">{{ option }}</ion-radio>
+          <ion-radio ng-repeat="option in experienceOptions" ng-model="rating.experience" ng-value="option.text" ng-click="chooseExperience()">{{ option.text }} <emoji ng-repeat="emoji in option.emoji track by $index" name='{{emoji}}'></emoji></ion-radio>
         </ion-list>
 
       </div>

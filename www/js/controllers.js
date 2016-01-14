@@ -164,7 +164,6 @@ controllers.controller('AppController', function($scope, $state) {
 })
 
 .controller('RatingCtrl', function($scope) {
-	$scope.something = 'dasdasd';
 })
 
 
