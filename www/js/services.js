@@ -23,7 +23,7 @@ sampleData = {
 				cookingStatus: 'Cooking!'
 			},
 			guests: [{
-				id: 0,
+				id: 82439823,
 				name: "Liam",
 				facebookID: 123123123,
 				balance: 0.0,
@@ -37,7 +37,7 @@ sampleData = {
 				eatingStatus: 'On my way!'
 			}, 
 			{
-				id: 1,
+				id: 12321312,
 				name: "Bobby Testing",
 				facebookID: 312341231,
 
@@ -283,6 +283,13 @@ angular.module('flatcook.services', [])
 		});
 	}
 
+	mealsService.postRating = function(ratingData) {
+		console.log(ratingData)
+		return feignRequestingDataFromNetwork($q, {
+			status: 'success'
+		});
+	}
+
 	return mealsService
 })
 
@@ -407,12 +414,6 @@ angular.module('flatcook.services', [])
 					// return response.user;
 				});
 		}
-	}
-
-	usersService.postRating = function(ratingData) {
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
 	}
 
 	usersService.getHistory = function() {

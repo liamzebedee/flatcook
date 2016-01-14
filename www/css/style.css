@@ -1,6 +1,11 @@
 /*https://css-tricks.com/design-considerations-text-images/*/
 /*https://medium.com/@erikdkennedy/7-rules-for-creating-gorgeous-ui-part-2-430de537ba96#.ecnfpwqi4*/
 
+textarea {
+  font-size:20px;
+  line-height:1.0;
+}
+
 .statusGradient {
   background-image: url(/img/statusGradient.png);
   height: initial!important;

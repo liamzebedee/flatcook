@@ -1,34 +1,40 @@
 <ion-view view-title="How was your meal?">
-    <ion-content>
+    <ion-content class='padding'>
 
       <section ng-show="rating.experience == 'Bad'">
-        <h2 class='padding'>What happened?</h2>
+        <h2 class=''>What happened? <emoji name='disappointed'></emoji></h2>
 
         <label class="item item-input">
-        <textarea rows=10 placeholder="What happened?" ng-model="rating.whatHappened"></textarea>
+          <textarea rows=10 placeholder="We personally listen and reply to every complaint." ng-model="rating.whatHappened"></textarea>
         </label>
         
-        <small>We will listen to and read every complaint to make sure this never happens again.</small>
 
-        <h3>Was it anyone in particular</h3>
+        <h3 class='padding' style='padding-bottom:0em'>Was it anyone in particular?</h3>
+        <p class='padding'>We use these ratings to ensure you only ever have a positive experience with Flatcook!</p>
+
         <ion-list>
-          <ion-checkbox ng-repeat="guest in meal.guests">{{ guest.name }}</ion-checkbox>
+          <ion-checkbox ng-repeat="guest in rating.people" ng-model="guest.marked">{{ guest.name }}</ion-checkbox>
         </ion-list>
       </section>
 
       <section ng-show="rating.experience == 'Good'">
-        <h2 class='padding'>What happened?</h2>
+        <h2 class='padding'>Do you have any suggestions to make it better? <emoji name='smile'></emoji></h2>
         <label class="item item-input">
-        <textarea rows=10 placeholder="Have any suggestions to make it better...?"></textarea>
+        <textarea rows=10 placeholder="We read all of these!" ng-model="rating.whatHappened"></textarea>
         </label>
       </section>
 
       <section ng-show="rating.experience == 'Excellent'">
-        <h2 class='padding'>What happened?</h2>
+        <h2 class='padding'>Anything in particular you liked about Flatcook? <emoji name='smile'></emoji></h2>
         <label class="item item-input">
-        <textarea rows=10 placeholder="Have any feedback/ideas...?"></textarea>
+        <textarea rows=10 placeholder=" - lovely guests with funny stories" ng-model="rating.whatHappened"></textarea>
         </label>
       </section>
+
+
+      <button class="button button-block button-energized icon ion-paper-airplane" ng-click='send()'>
+        Send
+      </button>
 
     </ion-content>
 </ion-view>

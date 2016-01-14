@@ -88,13 +88,14 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'fla
   })
 
   .state('tab.eat.mealsIndex', {
-    url: '',
-    views: {
-      'mealsIndex@tab-eat': {
-        templateUrl: 'templates/eat-mealsIndex.html',
+    url: '/mealsIndex',
+    templateUrl: 'templates/eat-mealsIndex.html',
         controller: 'MealsIndexCtrl',
-      }
-    }
+    // views: {
+    //   'mealsIndex@tab-eat': {
+        
+    //   }
+    // }
   })
 
   .state('tab.eat.mealsIndex.detail', {
