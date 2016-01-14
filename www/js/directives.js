@@ -15,15 +15,15 @@ function sanitizeKeyboardInput(element, pattern) {
 
 angular.module('flatcook.directives', ['angularMoment'])
 
-.filter('dateAsDaysAgo', function (amTimeAgoFilter, angularMomentConfig) {
+.filter('dateAsDaysAgo', function (amTimeAgoFilter, amLocalFilter, amEndOfFilter, angularMomentConfig) {
   function dateAsDaysAgoFilter(value) {
-    return amTimeAgoFilter(value);
-          // var val = amTimeAgoFilter(amLocalFilter(amEndOfFilter(value, 'day')));
-          // if(/hours|minutes|seconds/.test(val)) {
-          //   return ''; // TODO HACK
-          // } else {
-          //   return val;
-          // }
+    // return amTimeAgoFilter(value);
+          var val = amTimeAgoFilter(amLocalFilter(amEndOfFilter(value, 'day')));
+          if(/hours|minutes|seconds/.test(val)) {
+            return ''; // TODO HACK
+          } else {
+            return val;
+          }
         }
 
         dateAsDaysAgoFilter.$stateful = angularMomentConfig.statefulFilters;

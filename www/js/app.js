@@ -234,6 +234,18 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'fla
     templateUrl: 'templates/rating-chef-step2.html'
   })
 
+  .state('rating.guests', {
+    abstract: false,
+    url: '/guests',
+    controller: 'GuestRatingCtrl',
+    template: "<ion-nav-view></ion-nav-view>"
+  })
+
+  .state('rating.guests.step1', {
+    url: '/step1',
+    templateUrl: 'templates/rating-guest-step1.html'
+  })
+
   // Config
   // ------
 

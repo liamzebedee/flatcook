@@ -199,6 +199,9 @@ angular.module('flatcook.services', [])
 			{ text: 'Excellent', emoji: ['smile','smile','smile'] },
 			{ text: 'Pretty good', emoji: ['content'] }, 
 			{ text: 'Bad', emoji: ['disappointed'] }
+		],
+		VALID_HOW_WAS_MEAL: [
+			''
 		]
 	};
 

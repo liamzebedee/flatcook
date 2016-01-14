@@ -1,0 +1,25 @@
+<ion-view view-title="How was your meal?">
+    <ion-content>
+
+      <div class="list">
+
+
+        <h3 class='padding'>Did you like the meal that {{ meal.chef.name }} cooked <time ng-bind="rating.date | dateAsDaysAgo"></time>?</h3>
+
+        <ion-list>
+		  <ion-radio ng-model="rating.howWasMeal" ng-click="next()" ng-value="Good">Yes</ion-radio>
+		  <ion-radio ng-model="rating.howWasMeal" ng-value="Unsatisfactory">It was unsatisfactory</ion-radio>
+		</ion-list>
+		{{rating.howWasMeal}}
+
+		<div ng-show="rating.howWasMeal == 'Unsatisfactory'">
+			What was the issue?
+			<textarea></textarea>
+
+			<button>next</button>
+		</div>
+
+      </div>
+
+    </ion-content>
+</ion-view>
