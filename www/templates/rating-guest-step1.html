@@ -4,19 +4,21 @@
       <div class="list">
 
 
-        <h3 class='padding'>Did you like the meal that {{ meal.chef.name }} cooked <time ng-bind="rating.date | dateAsDaysAgo"></time>?</h3>
+        <h2 class='padding'>Did you like the meal that {{ meal.chef.name }} cooked <time>{{ rating.date | dateAsDaysAgo }}</time>?</h2>
 
         <ion-list>
-		  <ion-radio ng-model="rating.howWasMeal" ng-click="next()" ng-value="Good">Yes</ion-radio>
-		  <ion-radio ng-model="rating.howWasMeal" ng-value="Unsatisfactory">It was unsatisfactory</ion-radio>
+		  <ion-radio ng-model="rating.howWasMeal" ng-value="'Good'" ng-click="chooseExperience()">Yes <emoji name='smile'></emoji></ion-radio>
+		  <ion-radio ng-model="rating.howWasMeal" ng-value="'Unsatisfactory'">It was unsatisfactory</ion-radio>
 		</ion-list>
-		{{rating.howWasMeal}}
 
-		<div ng-show="rating.howWasMeal == 'Unsatisfactory'">
-			What was the issue?
-			<textarea></textarea>
+		<div ng-show="rating.howWasMeal == 'Unsatisfactory'" class='padding'>
+			<h4 class='title'>What was wrong? <emoji name='disappointed'></emoji></h4>
 
-			<button>next</button>
+	        <label class="item item-input">
+	          <textarea rows=6 placeholder="We personally listen and reply to every complaint." ng-model="rating.whatWentWrongWithMeal"></textarea>
+	        </label>
+
+			<a class="button button-full icon-right ion-chevron-right button-energized" ng-click="chooseExperience()">Next</a>
 		</div>
 
       </div>

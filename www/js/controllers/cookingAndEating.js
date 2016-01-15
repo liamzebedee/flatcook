@@ -257,7 +257,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	// Scope functions
 	// ---------------
 	$scope.chooseExperience = function() {
-		$state.go('rating.chefs.step2');
+		$state.go('rating.guests.step2');
 	}
 
 	$scope.send = function() {

@@ -246,6 +246,11 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'fla
     templateUrl: 'templates/rating-guest-step1.html'
   })
 
+  .state('rating.guests.step2', {
+    url: '/step2',
+    templateUrl: 'templates/rating-guest-step2.html'
+  })
+
   // Config
   // ------
 
