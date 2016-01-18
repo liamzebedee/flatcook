@@ -1,10 +1,30 @@
 <ion-view view-title="How was your meal?">
     <ion-content class='padding'>
-
-      How was the meal?
       
 
-      <section ng-show="rating.experience == 'Bad'">
+      <div class="list">
+        <h2 class='padding'>Was everyone cool?</h2>
+
+        <ion-list>
+          <ion-radio ng-modal="rating.wasEveryoneCool" ng-value="Yes">Yes</ion-radio>
+          <ion-radio ng-modal="rating.wasEveryoneCool" ng-value="No">I had issues...</ion-radio>
+        </ion-list>
+
+    <div ng-show="rating.wasEveryoneCool === false" class='padding'>
+      <h4 class='title'>What went wrong? <emoji name='disappointed'></emoji></h4>
+
+          <label class="item item-input">
+            <textarea rows=6 placeholder="We personally listen and reply to every complaint." ng-model="rating.whatWentWrongWithMeal"></textarea>
+          </label>
+
+      <a class="button button-full icon-right ion-chevron-right button-energized" ng-click="chooseExperience()">Next</a>
+    </div>
+
+      </div>
+
+
+
+<!--       <section ng-show="rating.experience == 'Bad'">
         <h2 class=''>What happened? <emoji name='disappointed'></emoji></h2>
 
         <label class="item item-input">
@@ -32,7 +52,7 @@
         <label class="item item-input">
         <textarea rows=10 placeholder=" - lovely guests with funny stories" ng-model="rating.whatHappened"></textarea>
         </label>
-      </section>
+      </section> -->
 
 
       <button class="button button-block button-energized icon ion-paper-airplane" ng-click='send()'>

@@ -228,9 +228,11 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	// Initial $scope vars
 	// -------------------
 	$scope.rating = {
-		howWasMeal: MealsService.VALID_HOW_WAS_MEAL[0]
+		howWasMeal: {
+			rating: 5
+		}
 	}
-	$scope.experienceOptions = MealsService.VALID_COOK_RATINGS;
+	
 
 	// On enter
 	// --------
@@ -248,7 +250,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 			$scope.rating.people = meal.guests.map(function(guest){ return { name: guest.name, marked: false, id: guest.id } });
 			
 			if(IsServingBrowserFromIonicServe) {
-				$scope.rating.experience = 'Bad';
+				
 				$scope.rating.date = moment().subtract(4, 'h');
 			}
 		})
@@ -256,7 +258,13 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	
 	// Scope functions
 	// ---------------
-	$scope.chooseExperience = function() {
+	$scope.rate = function() {
+		if($scope.rating.howWasMeal.rating > 4) {
+			$scope.rateExperience();
+		}
+	}
+
+	$scope.rateExperience = function() {
 		$state.go('rating.guests.step2');
 	}
 

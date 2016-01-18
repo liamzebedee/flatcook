@@ -1,6 +1,14 @@
 IsServingBrowserFromIonicServe = !window.cordova;
 
-angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'flatcook.controllers', 'flatcook.services'])
+angular.module('flatcook', 
+  ['ionic',
+   'ionic.rating',
+   'ngCookies', 
+   'angularMoment', 
+   'timer', 
+   'flatcook.controllers', 
+   'flatcook.services'
+   ])
 
 .run(function($ionicPlatform, $rootScope, $state) {
 
@@ -90,18 +98,13 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'fla
   .state('tab.eat.mealsIndex', {
     url: '/mealsIndex',
     templateUrl: 'templates/eat-mealsIndex.html',
-        controller: 'MealsIndexCtrl',
-    // views: {
-    //   'mealsIndex@tab-eat': {
-        
-    //   }
-    // }
+    controller: 'MealsIndexCtrl',
   })
 
-  .state('tab.eat.mealsIndex.detail', {
+  .state('tab.eat.mealDetail', {
     url: '/meal/{id:[0-9]*}',
     templateUrl: 'templates/eat-mealDetail.html',
-    controller: 'MealDetailCtrl'
+    controller: 'MealDetailCtrl',
   })
 
   .state('tab.eat.eating', {
@@ -122,13 +125,13 @@ angular.module('flatcook', ['ionic', 'ngCookies', 'angularMoment', 'timer', 'fla
 
   .state('tab.cook', {
     abstract: false,
-    dynamicallySelectState: true,
     url: '/cook',
     views: {
       'tab-cook': {
         template: "<ion-nav-view></ion-nav-view>",
         controller: function($state, $ionicHistory, MealsService) {
-          $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+          // $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+          
           if(MealsService.currentlyCooking) {
             $state.go('tab.cook.cooking')
           } else {

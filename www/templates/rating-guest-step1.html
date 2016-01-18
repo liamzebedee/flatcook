@@ -2,16 +2,11 @@
     <ion-content>
 
       <div class="list">
+        <h2 class='padding'>How was the meal that {{ meal.chef.name }} cooked <time>{{ rating.date | dateAsDaysAgo }}</time>?</h2>
 
+        <rating ng-model="rating.howWasMeal.rating" max="5" ng-click='rate()'></rating>
 
-        <h2 class='padding'>Did you like the meal that {{ meal.chef.name }} cooked <time>{{ rating.date | dateAsDaysAgo }}</time>?</h2>
-
-        <ion-list>
-		  <ion-radio ng-model="rating.howWasMeal" ng-value="'Good'" ng-click="chooseExperience()">Yes <emoji name='smile'></emoji></ion-radio>
-		  <ion-radio ng-model="rating.howWasMeal" ng-value="'Unsatisfactory'">It was unsatisfactory</ion-radio>
-		</ion-list>
-
-		<div ng-show="rating.howWasMeal == 'Unsatisfactory'" class='padding'>
+		<div ng-show="rating.howWasMeal.rating < 4" class='padding'>
 			<h4 class='title'>What was wrong? <emoji name='disappointed'></emoji></h4>
 
 	        <label class="item item-input">
