@@ -3,18 +3,18 @@
     <div class="welcome-banner padding">
       <header>
         <h1 ng-click="loginAsTesting()">Flatcook.</h1>
-        <p>Eat together. <i class="icon ion-ios-people"></i></p>
+        <p>Eat cheaper, together. <i class="icon ion-ios-people"></i></p>
       </header>
 
-      <button class="button button-block button-positive" ng-click="login()">
+      <button class="button button-block button-positive" ng-disabled="!login.agreedToTCs" ng-click="login()">
       Join with Facebook
     </button>
 
     <li class="item item-checkbox">
      <label class="checkbox">
-       <input type="checkbox">
+       <input type="checkbox" ng-model='login.agreedToTCs'>
      </label>
-     Agreed to T&Cs
+     Agreed to <a href='https://flatcook.com/agreement'>T&Cs</a>
   </li>
 
     </div> 

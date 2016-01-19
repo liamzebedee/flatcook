@@ -8,14 +8,25 @@ controllers.controller('AppController', function($scope, $state) {
 })
 
 .controller('TabsController', function($scope, $state, MealsService, $ionicHistory, $ionicTabsDelegate) {
-	$scope.navdEat = false;
+	$scope.navigatedAlready = {
+		eat: false,
+		cook: false,
+		profile: false
+	}
+		$scope.navdEat = false;
 	$scope.navdCook = false;
 	$scope.navdProfile = false;
+
+	// function doNav(tabName, ) {
+	// 	if(!$scope.navigatedAlready[tabName]) {
+	// 		$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+
+	// 	}
+	// }
 
 	$scope.navEat = function(){
 		
 		if(!$scope.navdEat) {
-			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
 
             var newState = '';
 
@@ -47,7 +58,19 @@ controllers.controller('AppController', function($scope, $state) {
 
             $scope.navdCook = true;
         }
-		
+	}
+	$scope.navProfile = function(){
+
+		if(!$scope.navdProfile) {
+			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+
+          var newState = '';
+
+			newState = 'tab.profile.main'
+          $state.go(newState);
+
+            $scope.navdProfile = true;
+        }
 	}
 })
 
@@ -246,35 +269,42 @@ controllers.controller('AppController', function($scope, $state) {
 
 
 .controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
-
-
+	$scope.agreedToTCs = false;
 
 	$scope.loginAsTesting = function() {
 		if (IsServingBrowserFromIonicServe) {
 			UsersService.saveState()
 			$state.go('tab.eat.mealsIndex');
 		}
-	};
+	}
+
+	$scope.cancelLoading = function() {
+		$ionicLoading.hide();
+	}
+
+	function createCancelLoading(text) {
+		$ionicLoading.show({ template: '<button class="button button-clear" style="line-height: normal; min-height: 0; min-width: 0;" ng-click="cancelLoading()"><i class="ion-close-circled"></i></button> ' + text, scope: $scope})
+	}
 
 	$scope.login = function() {
 		try {
-			$ionicLoading.show({
-				template: 'Signing in with FB...'
-			});
+			createCancelLoading('Signing in with FB...')
 
 			UsersService.authenticateWithFacebook().then(function(facebookData) {
-				$ionicLoading.show({
-					template: 'Creating your profile...'
-				});
+				createCancelLoading('Creating your profile...')
 
 				UsersService.loginOrRegister(facebookData).then(function(success) {
 					if (success) {
-						$ionicLoading.hide();
+						$scope.cancelLoading()
 						$state.go('tab.eat.mealsIndex');
+					} else {
+						$scope.cancelLoading()
 					}
 				});
 
-			}, function(err) {});
+			}, function(err) {
+				$scope.cancelLoading()
+			});
 
 		} catch (ex) {
 			throw ex;

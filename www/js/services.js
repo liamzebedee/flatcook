@@ -331,9 +331,9 @@ angular.module('flatcook.services', [])
 		$localStorage.set('UsersService', state);
 	}
 
-
-
 	usersService.authenticateWithFacebook = function() {
+		// var dfd = $q.defer();
+		// return dfd.promise
 		return $cordovaFacebook.login(FACEBOOK_PERMISSIONS);
 	}
 
