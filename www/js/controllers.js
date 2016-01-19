@@ -7,9 +7,47 @@ controllers.controller('AppController', function($scope, $state) {
 	// - currently eating
 })
 
-.controller('TabsController', function($scope, $state, MealsService, $ionicTabsDelegate) {
+.controller('TabsController', function($scope, $state, MealsService, $ionicHistory, $ionicTabsDelegate) {
+	$scope.navdEat = false;
+	$scope.navdCook = false;
+	$scope.navdProfile = false;
+
 	$scope.navEat = function(){
-		console.log('asdasd')
+		
+		if(!$scope.navdEat) {
+			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+
+            var newState = '';
+
+            if(MealsService.currentMealID != null) {
+              newState = 'tab.eat.eating'
+            } else {
+              newState = 'tab.eat.mealsIndex'
+            }
+
+          // $ionicTabsDelegate.select(0)
+            $state.go(newState);
+
+            $scope.navdEat = true;
+		}
+	}
+	$scope.navCook = function(){
+
+		if(!$scope.navdCook) {
+			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+
+          var newState = '';
+
+		if(MealsService.currentCookingMealID != null) {
+            newState = 'tab.cook.cooking'
+          } else {
+            newState = 'tab.cook.newMeal.intro'
+          }
+          $state.go(newState);
+
+            $scope.navdCook = true;
+        }
+		
 	}
 })
 

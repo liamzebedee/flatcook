@@ -88,17 +88,7 @@ angular.module('flatcook',
       'tab-eat': {
         template: "<ion-nav-view></ion-nav-view>",
         controller: function($scope, $state, $ionicHistory, MealsService) {
-            $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
 
-            var newState = '';
-
-            if(MealsService.currentMealID != null) {
-              newState = 'tab.eat.eating'
-            } else {
-              newState = 'tab.eat.mealsIndex'
-            }
-
-            $state.go(newState);
         }
       }
     }
@@ -134,19 +124,6 @@ angular.module('flatcook',
       'tab-cook': {
         template: "<ion-nav-view></ion-nav-view>",
         controller: function($scope, $state, $ionicHistory, MealsService) {
-          
-$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
-
-          var newState = '';
-
-          if(MealsService.currentCookingMealID != null) {
-            newState = 'tab.cook.cooking'
-          } else {
-            newState = 'tab.cook.newMeal.intro'
-          }
-
-          $state.go(newState);
-
         }
       }
     }
