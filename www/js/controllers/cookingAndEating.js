@@ -180,7 +180,9 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	// Initial $scope vars
 	// -------------------
 	$scope.rating = {
-		experience: MealsService.VALID_COOK_RATINGS[0]
+		experience: null,
+		description: null,
+		people: []
 	}
 	$scope.experienceOptions = MealsService.VALID_COOK_RATINGS;
 
@@ -195,12 +197,12 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	function loadMeal() {
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
+			$scope.meal.people = meal.guests.map(function(guest){ return { name: guest.name, marked: false, id: guest.id } });
 			$scope.rating.date = meal.servedAt;
 			$scope.rating.peopleInvolved = humanizeArray(meal.guests.map(function(guest){ return guest.name.split(' ')[0] }));
-			$scope.rating.people = meal.guests.map(function(guest){ return { name: guest.name, marked: false, id: guest.id } });
-			
+
 			if(IsServingBrowserFromIonicServe) {
-				$scope.rating.experience = 'Bad';
+				$scope.rating.experience = $scope.rating.experience || 'Bad';
 				$scope.rating.date = moment().subtract(4, 'h');
 			}
 		})
@@ -214,9 +216,11 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 
 	$scope.send = function() {
 		var rating = {
-			experience: $scope.rating.experience,
 			mealID: MealsService.currentMealID,
-			markedPeople: $scope.rating.people.map(function(person){ if(person.marked) { return person.id; } }).filter(function(val){ return val !== undefined })
+
+			experience: $scope.rating.experience,
+			description: $scope.rating.description,
+			markedPeople: $scope.meal.people.map(function(person){ if(person.marked) { return person.id; } }).filter(function(val){ return val !== undefined })
 		}
 		MealsService.postChefRating(rating)
 		$state.go('tab.cook.newMeal.intro')

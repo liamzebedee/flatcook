@@ -5,7 +5,7 @@
         <h2 class=''>What happened? <emoji name='disappointed'></emoji></h2>
 
         <label class="item item-input">
-          <textarea rows=10 placeholder="We personally listen and reply to every complaint." ng-model="rating.whatHappened"></textarea>
+          <textarea rows=10 placeholder="We personally listen and reply to every complaint." ng-model="rating.description"></textarea>
         </label>
         
 
@@ -13,21 +13,21 @@
         <p class='padding'>We use these ratings to ensure you only ever have a positive experience with Flatcook!</p>
 
         <ion-list>
-          <ion-checkbox ng-repeat="guest in rating.people" ng-model="guest.marked">{{ guest.name }}</ion-checkbox>
+          <ion-checkbox ng-repeat="guest in meal.people" ng-model="guest.marked">{{ guest.name }}</ion-checkbox>
         </ion-list>
       </section>
 
-      <section ng-show="rating.experience == 'Good'">
+      <section ng-show="rating.experience == 'Pretty good'">
         <h2 class='padding'>Do you have any suggestions to make it better? <emoji name='smile'></emoji></h2>
         <label class="item item-input">
-        <textarea rows=10 placeholder="We read all of these!" ng-model="rating.whatHappened"></textarea>
+        <textarea rows=10 placeholder="We read all of these!" ng-model="rating.description"></textarea>
         </label>
       </section>
 
       <section ng-show="rating.experience == 'Excellent'">
         <h2 class='padding'>Anything in particular you liked about Flatcook? <emoji name='smile'></emoji></h2>
         <label class="item item-input">
-        <textarea rows=10 placeholder=" - lovely guests with funny stories" ng-model="rating.whatHappened"></textarea>
+        <textarea rows=10 placeholder=" - lovely guests with funny stories" ng-model="rating.description"></textarea>
         </label>
       </section>
 

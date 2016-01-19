@@ -287,6 +287,7 @@ angular.module('flatcook.services', [])
 	}
 
 	mealsService.postChefRating = function(ratingData) {
+		console.log(ratingData)
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
