@@ -1,22 +1,22 @@
-<div>
+<!-- <div> -->
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
   <!-- Eat Tab -->
-  <ion-tab on-double-tap="void(0)" title="Eat" icon="ion-fork" href="#/tab/eat">
+  <ion-tab on-double-tap="void(0)" title="Eat" icon="ion-fork" on-select="navEat()">
   	<ion-nav-view name="tab-eat"></ion-nav-view>
   </ion-tab>
 
   <!-- Cook Tab -->
-  <ion-tab on-double-tap="void(0)" title="Cook" icon="ion-ios-people" href="#/tab/cook">
+  <ion-tab on-double-tap="void(0)" title="Cook" icon="ion-ios-people" on-select="navCook()">
   	<ion-nav-view name="tab-cook">
     </ion-nav-view>
   </ion-tab>
 
   <!-- Profile Tab -->
-  <ion-tab on-double-tap="void(0)" title="Profile" icon="ion-person" href="#/tab/profile">
+  <ion-tab on-double-tap="void(0)" title="Profile" icon="ion-person" on-select="navProfile()">
   	<ion-nav-view name="tab-profile"></ion-nav-view>
   </ion-tab>
 
 
 </ion-tabs>
-</div>
+<!-- </div> -->

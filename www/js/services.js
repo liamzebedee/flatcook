@@ -191,7 +191,7 @@ angular.module('flatcook.services', [])
 .factory('MealsService', function($http, $q, $localStorage) {
 	var mealsService = {
 		currentMealID: 0,
-		currentlyCooking: false,
+		currentCookingMealID: 0,
 
 		VALID_CHEF_STATUSES: ['Waiting on guests', 'Cooking', 'Meal ready!'],
 		VALID_GUEST_STATUSES: ['Chilling', 'On my way'],
@@ -265,7 +265,8 @@ angular.module('flatcook.services', [])
 	}
 
 	mealsService.createMeal = function(mealData) {
-		mealsService.currentlyCooking = true;
+		mealsService.currentCookingMealID = 0;
+		// TODO
 		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
@@ -273,6 +274,7 @@ angular.module('flatcook.services', [])
 	}
 
 	mealsService.cancelCooking = function(mealID) {
+		mealsService.currentCookingMealID = null;
 		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'

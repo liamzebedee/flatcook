@@ -107,7 +107,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	});
 
 	function loadMeal() {
-		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
+		MealsService.getMeal(MealsService.currentCookingMealID).then(function(meal) {
 			$scope.meal = meal;
 			var numChefs = 1;
 			$scope.meal.totalProfit = meal.price * meal.guests.length;

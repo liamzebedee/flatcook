@@ -20,13 +20,13 @@ angular.module('flatcook',
     // I have searched for 4+ hours on how to not make this a hack.
     // This is the only alternative.
     $rootScope.$on('$stateChangeStart', function(evt, toState, toParams, fromState, fromParams) {
-      // if(toState.name === fromState.name) {
-      //   evt.preventDefault()
-      // }
+      if(toState.name === fromState.name) {
+        evt.preventDefault()
+      }
 
       if (toState.dynamicallySelectState) {
         evt.preventDefault();
-        // get hte tab controller
+        // get the tab controller
         debugger
         toState.something()
         
@@ -59,13 +59,18 @@ angular.module('flatcook',
   // - http://robferguson.org/2015/01/07/ionics-sidemenu-template-and-nested-states/
   // - http://ionicframework.com/docs/api/directive/ionNavView/
   // 
+  //
+  // Other notes:
+  // - each state's view has one history stack associated with it
+  // The main problem stems from the fact that ui-router's concept of tabs and views is segregated from Ionic's notion of a tab
+
 
   $stateProvider
 
   // setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',
-    // controller: 'TabsController',
+    controller: 'TabsController',
     abstract: true,
     templateUrl: 'templates/tabs.html'
   })
@@ -82,14 +87,18 @@ angular.module('flatcook',
     views: {
       'tab-eat': {
         template: "<ion-nav-view></ion-nav-view>",
-        controller: function($state, $ionicHistory, MealsService) {
-          // $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: true })
-          
-          if(MealsService.currentMealID != null) {
-            $state.go('tab.eat.eating')
-          } else {
-            $state.go('tab.eat.mealsIndex')
-          }
+        controller: function($scope, $state, $ionicHistory, MealsService) {
+            $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+
+            var newState = '';
+
+            if(MealsService.currentMealID != null) {
+              newState = 'tab.eat.eating'
+            } else {
+              newState = 'tab.eat.mealsIndex'
+            }
+
+            $state.go(newState);
         }
       }
     }
@@ -111,13 +120,7 @@ angular.module('flatcook',
   .state('tab.eat.eating', {
     url: '/eating',
     templateUrl: 'templates/eat-eating.html',
-        controller: 'EatingCtrl',
-    // views: {
-    //   'eating@tab-eat': {
-    //     templateUrl: 'templates/eat-eating.html',
-    //     controller: 'EatingCtrl',
-    //   }
-    // }
+    controller: 'EatingCtrl',
   })
 
   //
@@ -130,14 +133,20 @@ angular.module('flatcook',
     views: {
       'tab-cook': {
         template: "<ion-nav-view></ion-nav-view>",
-        controller: function($state, $ionicHistory, MealsService) {
-          // $ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+        controller: function($scope, $state, $ionicHistory, MealsService) {
           
-          if(MealsService.currentlyCooking) {
-            $state.go('tab.cook.cooking')
+$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+
+          var newState = '';
+
+          if(MealsService.currentCookingMealID != null) {
+            newState = 'tab.cook.cooking'
           } else {
-            $state.go('tab.cook.newMeal.intro')
+            newState = 'tab.cook.newMeal.intro'
           }
+
+          $state.go(newState);
+
         }
       }
     }

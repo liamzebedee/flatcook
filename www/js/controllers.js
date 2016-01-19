@@ -7,6 +7,11 @@ controllers.controller('AppController', function($scope, $state) {
 	// - currently eating
 })
 
+.controller('TabsController', function($scope, $state, MealsService, $ionicTabsDelegate) {
+	$scope.navEat = function(){
+		console.log('asdasd')
+	}
+})
 
 .controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, LocationService) {
 	$scope.loadingMeals = false;
@@ -118,11 +123,9 @@ controllers.controller('AppController', function($scope, $state) {
 		$state.go('tab.cook.newMeal.step1')
 	};
 	$scope.navToStep2 = function() {
-
 		$state.go('tab.cook.newMeal.step2');
 	}
 	$scope.navToStep3 = function() {
-
 		$state.go('tab.cook.newMeal.step3');
 	}
 	$scope.submitForm = function() {
@@ -133,6 +136,7 @@ controllers.controller('AppController', function($scope, $state) {
 		confirmPopup.then(function(yes) {
 			if (yes) {
 				MealsService.createMeal($scope.formData).then(function(){
+					// TODO
 					$ionicHistory.nextViewOptions({
 				    	disableBack: true
 				    });
