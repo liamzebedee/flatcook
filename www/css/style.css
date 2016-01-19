@@ -1,6 +1,15 @@
 /*https://css-tricks.com/design-considerations-text-images/*/
 /*https://medium.com/@erikdkennedy/7-rules-for-creating-gorgeous-ui-part-2-430de537ba96#.ecnfpwqi4
 */
+
+
+.rating-guest {
+  padding:1rem 0.5rem;
+}
+
+
+
+
 /*
   Rating plugin
 */
@@ -25,6 +34,21 @@
   60% { transform: scale(0.6); opacity: 1 }
   80% { transform: scale(0.95) }
   100% { transform: scale(0.85) }
+}
+
+
+@keyframes fadein {
+  0% { opacity: 0; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.fadein {
+  animation: fadein .75s;
+}
+.fadein.ng-hide {
+  opacity: 0;
+  display: none;
 }
 
 

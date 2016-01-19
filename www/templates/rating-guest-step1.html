@@ -1,22 +1,33 @@
 <ion-view view-title="How was your meal?">
-    <ion-content>
 
-      <div class="list">
-        <h2 class='padding'>How was the meal that {{ meal.chef.name }} cooked <time>{{ rating.date | dateAsDaysAgo }}</time>?</h2>
 
-        <rating ng-model="rating.howWasMeal.rating" max="5" ng-click='rate()'></rating>
+<ion-content>
 
-		<div ng-show="rating.howWasMeal.rating < 4" class='padding'>
+<div class="list">
+
+	<center>
+		<h2 class='padding'>
+			<i class='ion-icon ion-fork'></i><i class='icon ion-knife'></i> 
+			How was the meal that {{ meal.chef.name }} cooked <time>{{ rating.date | dateAsDaysAgo }}</time>?
+		</h2>
+
+		<rating ng-model="rating.howWasMeal.rating" max="5" ng-click='rate()'></rating>
+
+		<div ng-show="rating.howWasMeal.rating !== null && rating.howWasMeal.rating < 4" class='padding'>
 			<h4 class='title'>What was wrong? <emoji name='disappointed'></emoji></h4>
 
-	        <label class="item item-input">
-	          <textarea rows=6 placeholder="We personally listen and reply to every complaint." ng-model="rating.whatWentWrongWithMeal"></textarea>
-	        </label>
+			<label class="item item-input">
+				<textarea rows=6 placeholder="We personally listen and reply to every complaint." ng-model="rating.howWasMeal.description"></textarea>
+			</label>
 
-			<a class="button button-full icon-right ion-chevron-right button-energized" ng-click="chooseExperience()">Next</a>
-		</div>
+			<button ng-disabled="rating.howWasMeal.description === null || rating.howWasMeal.description.length < 10" class="button button-block button-neutral icon-right ion-chevron-right" ng-click='rateExperience()'>
+		      Next
+		    </button>
+	</center>
 
-      </div>
+</div>
 
-    </ion-content>
+</ion-content>
+
+
 </ion-view>

@@ -1,28 +1,44 @@
 <ion-view view-title="How was your meal?">
-    <ion-content class='padding'>
-      
+<ion-content>
 
-      <div class="list">
-        <h2 class='padding'>Was everyone cool?</h2>
+<div class="list">
+  <center>
+    <h2 class='padding'>
+    <i class='ion-icon ion-ios-people'></i> 
+    Was everyone cool?</h2>
+  </center>
 
-        <ion-list>
-          <ion-radio ng-modal="rating.wasEveryoneCool" ng-value="Yes">Yes</ion-radio>
-          <ion-radio ng-modal="rating.wasEveryoneCool" ng-value="No">I had issues...</ion-radio>
-        </ion-list>
+  <ion-list>
+    <ion-radio ng-model="rating.wasEveryoneCool.cool" ng-value="true" class='' icon="">Yes</ion-radio>
+    <ion-radio ng-model="rating.wasEveryoneCool.cool" ng-value="false" class='' icon="">I had issues...</ion-radio>
+  </ion-list>
 
-    <div ng-show="rating.wasEveryoneCool === false" class='padding'>
-      <h4 class='title'>What went wrong? <emoji name='disappointed'></emoji></h4>
+  <div ng-show="rating.wasEveryoneCool.cool === false" class='padding fadein'>
+    <center><h4 class='title'>What went wrong? <emoji name='disappointed'></emoji></h4></center>
 
-          <label class="item item-input">
-            <textarea rows=6 placeholder="We personally listen and reply to every complaint." ng-model="rating.whatWentWrongWithMeal"></textarea>
-          </label>
-
-      <a class="button button-full icon-right ion-chevron-right button-energized" ng-click="chooseExperience()">Next</a>
-    </div>
-
-      </div>
+    <label class="item item-input">
+      <textarea rows=6 placeholder="We personally listen and reply to every complaint." ng-model="rating.wasEveryoneCool.description"></textarea>
+    </label>
 
 
+    <center><h4 class='title'>Anyone in particular?</h4></center>
+    <p class='padding'>We use these ratings to ensure you only ever have a positive experience with Flatcook!</p>
+
+    <ion-list>
+      <ion-checkbox ng-repeat="guest in rating.wasEveryoneCool.people" ng-model="guest.marked">{{ guest.name }}</ion-checkbox>
+    </ion-list>
+  </div>
+
+    <button ng-disabled='!(rating.wasEveryoneCool.cool === true || rating.wasEveryoneCool.description.length > 10)' class="button button-block button-neutral icon ion-paper-airplane" ng-click='send()'>
+      Send
+    </button>
+
+
+</div>
+
+
+
+</div>
 
 <!--       <section ng-show="rating.experience == 'Bad'">
         <h2 class=''>What happened? <emoji name='disappointed'></emoji></h2>
@@ -55,9 +71,6 @@
       </section> -->
 
 
-      <button class="button button-block button-energized icon ion-paper-airplane" ng-click='send()'>
-        Send
-      </button>
 
     </ion-content>
-</ion-view>
+  </ion-view>

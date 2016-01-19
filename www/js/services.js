@@ -286,8 +286,14 @@ angular.module('flatcook.services', [])
 		});
 	}
 
-	mealsService.postRating = function(ratingData) {
-		console.log(ratingData)
+	mealsService.postChefRating = function(ratingData) {
+		return feignRequestingDataFromNetwork($q, {
+			status: 'success'
+		});
+	}
+
+	// {howWasMeal: {rating: 4, description: "asdasdsd asdasd"}, wasEveryoneCool: {cool: false, description: "asdasdasd sad dasd", markedPeople: [82439823]}, mealID: 0}
+	mealsService.postGuestRating = function(ratingData) {
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});

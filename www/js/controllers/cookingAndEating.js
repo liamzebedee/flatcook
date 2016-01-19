@@ -218,7 +218,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 			mealID: MealsService.currentMealID,
 			markedPeople: $scope.rating.people.map(function(person){ if(person.marked) { return person.id; } }).filter(function(val){ return val !== undefined })
 		}
-		MealsService.postRating(rating)
+		MealsService.postChefRating(rating)
 		$state.go('tab.cook.newMeal.intro')
 	}
 })
@@ -229,7 +229,13 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	// -------------------
 	$scope.rating = {
 		howWasMeal: {
-			rating: 5
+			rating: null,
+			description: null
+		},
+		wasEveryoneCool: {
+			cool: null,
+			description: '',
+			people: null
 		}
 	}
 	
@@ -246,11 +252,10 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
 			$scope.rating.date = meal.servedAt;
-			$scope.rating.peopleInvolved = humanizeArray(meal.guests.map(function(guest){ return guest.name.split(' ')[0] }));
-			$scope.rating.people = meal.guests.map(function(guest){ return { name: guest.name, marked: false, id: guest.id } });
+
+			$scope.rating.wasEveryoneCool.people = meal.guests.map(function(guest){ return { name: guest.name, marked: false, id: guest.id } });
 			
 			if(IsServingBrowserFromIonicServe) {
-				
 				$scope.rating.date = moment().subtract(4, 'h');
 			}
 		})
@@ -259,7 +264,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	// Scope functions
 	// ---------------
 	$scope.rate = function() {
-		if($scope.rating.howWasMeal.rating > 4) {
+		if($scope.rating.howWasMeal.rating >= 4) {
 			$scope.rateExperience();
 		}
 	}
@@ -270,11 +275,19 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 
 	$scope.send = function() {
 		var rating = {
-			experience: $scope.rating.experience,
+			howWasMeal: {
+				rating: $scope.rating.howWasMeal.rating,
+				description: $scope.rating.howWasMeal.description
+			},
+			wasEveryoneCool: {
+				cool: $scope.rating.wasEveryoneCool.cool,
+				description: $scope.rating.wasEveryoneCool.description,
+				markedPeople: $scope.rating.wasEveryoneCool.people.map(function(person){ if(person.marked) { return person.id; } }).filter(function(val){ return val !== undefined })
+			},
 			mealID: MealsService.currentMealID,
-			markedPeople: $scope.rating.people.map(function(person){ if(person.marked) { return person.id; } }).filter(function(val){ return val !== undefined })
 		}
-		MealsService.postRating(rating)
+		console.log(rating)
+		MealsService.postGuestRating(rating)
 		$state.go('tab.cook.newMeal.intro')
 	}
 })
