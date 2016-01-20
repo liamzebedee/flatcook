@@ -272,10 +272,10 @@ controllers.controller('AppController', function($scope, $state) {
 	$scope.agreedToTCs = false;
 
 	$scope.loginAsTesting = function() {
-		if (IsServingBrowserFromIonicServe) {
+		// if (IsServingBrowserFromIonicServe) {
 			UsersService.saveState()
 			$state.go('tab.eat.mealsIndex');
-		}
+		// }
 	}
 
 	$scope.cancelLoading = function() {
