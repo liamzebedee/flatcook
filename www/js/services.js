@@ -7,6 +7,7 @@ sampleData = {
 			image: 'img/example-spagbol.jpg',
 			location: [12.42141, 21.231231],
 			address: "Gumal 501",
+
 			chef: {
 				id: 0,
 				name: "Liam",
@@ -80,7 +81,7 @@ sampleData = {
 				name: "Liam",
 				facebookID: 123123123,
 				balance: 0.0,
-				paymentID: "13212dcadsf3rfqr3",
+				paymentInfo: { id: "13212dcadsf3rfqr3" },
 				address: "",
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 				cookRating: 'Excellent',
@@ -93,7 +94,7 @@ sampleData = {
 				name: "Liam",
 				facebookID: 123123123,
 				balance: 0.0,
-				paymentID: "13212dcadsf3rfqr3",
+				paymentInfo: { id: "35121cadsf3rfqr3" },
 				address: "",
 				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
 				cookRating: 'N/A',
@@ -112,7 +113,7 @@ sampleData = {
 		facebookID: 123123123,
 
 		balance: 10.0,
-		paymentID: "13212dcadsf3rfqr3",
+		paymentInfo: { id: "13212dcadsf3rfqr3" },
 
 		address: "", // where the meal is hosted
 		lastLocation: [],
@@ -138,7 +139,7 @@ sampleData = {
 		facebookID: 312341231,
 
 		balance: 15.0,
-		paymentID: "21j9d898ahdhs",
+		paymentInfo: { id: "543212dcadsf3rfqr3" },
 
 		address: "", // where the meal is hosted
 		lastLocation: [],
@@ -160,6 +161,7 @@ sampleData = {
 	}],
 };
 
+var Testing = {};
 
 
 // Only for testing
@@ -188,10 +190,11 @@ angular.module('flatcook.services', [])
   }
 })
 
-.factory('MealsService', function($http, $q, $localStorage) {
+.factory('MealsService', function($http, $q, $localStorage, $rootScope) {
 	var mealsService = {
-		currentMealID: 0,
-		currentCookingMealID: 0,
+		currentMealID: null,
+		currentCookingMealID: null,
+
 
 		VALID_CHEF_STATUSES: ['Waiting on guests', 'Cooking', 'Meal ready!'],
 		VALID_GUEST_STATUSES: ['Chilling', 'On my way'],
@@ -218,7 +221,26 @@ angular.module('flatcook.services', [])
 		$localStorage.set('MealsService', state);
 	}
 
+	mealsService.hookRealtimeEvents = function() {
+		// maintain connection with server
+		// TODO
 
+		// on event
+	}
+	Testing.broadcastMealFinished = function() {
+		$rootScope.$broadcast('MealsService.mealFinished', {
+			mealID: 0
+		})
+	}
+
+	Testing.setEatingMeal = function(id) {
+		mealsService.currentMealID = id;
+		mealsService.saveState();
+	}
+	Testing.setCookingMeal = function(id) {
+		mealsService.currentCookingMealID = id;
+		mealsService.saveState();
+	}
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
 	mealsService.getMeals = function(user, currentPosition) {
@@ -289,7 +311,7 @@ angular.module('flatcook.services', [])
 	}
 
 	mealsService.postChefRating = function(ratingData) {
-		console.log(ratingData)
+		mealsService.currentCookingMealID = null;
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -297,6 +319,7 @@ angular.module('flatcook.services', [])
 
 	// {howWasMeal: {rating: 4, description: "asdasdsd asdasd"}, wasEveryoneCool: {cool: false, description: "asdasdasd sad dasd", markedPeople: [82439823]}, mealID: 0}
 	mealsService.postGuestRating = function(ratingData) {
+		mealsService.currentMealID = null;
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -305,7 +328,7 @@ angular.module('flatcook.services', [])
 	return mealsService
 })
 
-.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies) {
+.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies, $ionicModal) {
 	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
 		loggedInUser: null,
@@ -434,7 +457,33 @@ angular.module('flatcook.services', [])
 
 	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
-		return usersService.loggedInUser.paymentID == null;
+		return usersService.loggedInUser.paymentInfo !== null;
+	}
+
+	usersService.showPaymentLinkDialog = function($scope) {
+		function showDialog() {
+			$ionicModal.fromTemplateUrl('templates/partials/paymentDialog.html', {
+				scope: $scope,
+				animation: 'slide-in-up'
+			}).then(function(modal) {
+				modal.show()
+			});
+		}
+		if(IsServingBrowserFromIonicServe) {
+			var TEST_FAILURE = false;
+			var dfd = $q.defer()
+			
+			setTimeout(function() {
+				if(TEST_FAILURE) {
+					dfd.reject()
+				} else {
+					showDialog()
+					dfd.resolve()
+				}
+			}, 2000);
+
+			return dfd.promise;
+		}
 	}
 
 	return usersService;
@@ -456,6 +505,26 @@ angular.module('flatcook.services', [])
 		} else {
 			navigator.geolocation.getCurrentPosition(success, failure, geolocationOptions);
 		}
+	}
+
+	locationService.showMap = function(address, latlng) {
+		console.log('asdad')
+		function launchDirections(address) {
+		window.location.href = "maps://maps.apple.com/?daddr=" + address;
+		}	
+
+		
+		// var address=data.street+", "+data.city+", "+data.state;
+		var url='';
+		if(/*device.platform==='iOS'||device.platform==='iPhone'||*/navigator.userAgent.match(/(iPhone|iPod|iPad)/)){
+			url="http://maps.apple.com/maps?q="+encodeURIComponent(address);
+		}else if(navigator.userAgent.match(/(Android|BlackBerry|IEMobile)/)){
+			url="geo:?q="+encodeURIComponent(address);
+		}else{
+			//this will be used for browsers if we ever want to convert to a website
+			url="http://maps.google.com?q="+encodeURIComponent(address);
+		}
+		window.open(url, "_system", 'location=no');
 	}
 
 	return locationService;

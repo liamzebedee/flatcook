@@ -1,10 +1,10 @@
 <ion-view view-title="Eating!">
 
 
-<ion-nav-buttons class="bar bar-header">
+<!-- <ion-nav-buttons class="bar bar-header">
 <button class="button button-neutral button-right" ng-click="showMap()">Show map</button>
 </ion-nav-buttons>
-
+ -->
 <ion-content>
 <ion-refresher on-refresh="doRefresh()"></ion-refresher>
 
@@ -59,6 +59,12 @@
 <button class="cancel-meal-button button button-clear button-assertive icon ion-icon ion-close-circled" ng-click="confirmCancelMeal()">
   Cancel meal with others
 </button>
+<!-- 
+<br>
+
+<button ng-show="IsServingBrowserFromIonicServe === true" class="button button-clear button-balanced" ng-click="finishMeal()">
+  Finish meal
+</button> -->
 
 
 </ion-content>

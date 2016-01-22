@@ -13,7 +13,7 @@ controllers.controller('AppController', function($scope, $state) {
 		cook: false,
 		profile: false
 	}
-		$scope.navdEat = false;
+	$scope.navdEat = false;
 	$scope.navdCook = false;
 	$scope.navdProfile = false;
 
@@ -145,15 +145,20 @@ controllers.controller('AppController', function($scope, $state) {
 		confirmPopup.then(function(yes) {
 			if (yes) {
 				if (UsersService.userNeedsToLinkPaymentMethod()) {
-					// show link payment method dialog
-					// wait on auth
+
+					UsersService.showPaymentLinkDialog($scope).then(function(success) {
+						MealsService.joinMeal($scope.meal.id);
+						$ionicHistory.nextViewOptions({ disableBack: true });
+						$state.go('tab.eat.eating');
+
+					}, function(failure) {
+						return;
+					});
 				}
 
-				MealsService.joinMeal($scope.meal.id);
-				$ionicHistory.nextViewOptions({ disableBack: true });
-				$state.go('tab.eat.eating');
+				
 			} else {
-
+				return
 			}
 		});
 	};
@@ -252,7 +257,7 @@ controllers.controller('AppController', function($scope, $state) {
 	}
 
 	$scope.openPaymentDetails = function() {
-		throw new Error("Not Impl");
+		$state.go('tab.profile.payments');
 	};
 })
 

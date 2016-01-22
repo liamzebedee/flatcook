@@ -1,4 +1,4 @@
-controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, MealsService) {
+controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ionicModal, $ionicPopup, $ionicHistory, MealsService, LocationService) {
 	// Initial $scope vars
 	// -------------------
 	$scope._eatingStatusChooser = {
@@ -10,6 +10,10 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	$scope.$on('$ionicView.enter', function(e) {
 		loadMeal()
 	});
+
+	$scope.$on('MealsService.mealFinished', function() {
+		$state.go('rating.guests.step1');
+	})
 
 	// Modals and functions
 	// --------------------
@@ -24,7 +28,9 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
 			$scope.meal = meal;
 			var numChefs = 1;
-			$scope.meal.eatingStatus = $scope.meal.eatingStatus || MealsService.VALID_GUEST_STATUSES[0];
+			if($scope.meal.eatingStatus == null) {
+				$scope.meal.eatingStatus = MealsService.VALID_GUEST_STATUSES[0];
+			}
 			$scope.meal.numberOfGuestsInWords = numberInWords(numChefs + meal.guests.length);
 			$scope.meal.servedAtFormatted = moment(meal.servedAt).format('h:mma') // 5pm
 		})
@@ -36,6 +42,11 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 		loadMeal()
 		$scope.$broadcast('scroll.refreshComplete');
 	}
+
+	
+	// $scope.showMap = function() {
+	// 	LocationService.showMap($scope.meal.address, $scope.meal.latlng);
+	// }
 
 	$scope.chooseEatingStatus = function() {
 		$scope.eatingStatusChooser.show()
@@ -290,9 +301,8 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 			},
 			mealID: MealsService.currentMealID,
 		}
-		console.log(rating)
 		MealsService.postGuestRating(rating)
-		$state.go('tab.cook.newMeal.intro')
+		$state.go('tab.eat.mealsIndex')
 	}
 })
 

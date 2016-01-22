@@ -2,6 +2,7 @@
  - We use Stripe Connect to support the marketplace aspect of the application.
  - We create **managed accounts**, which are Accounts in Stripe that we solely manage for the user.
  - When Payments occur between our Managed Accounts, they incur a Stripe fee and an Application Fee
+ - Transactions fees with Stripe are 30c+2.9% every transaction
 
 Read this [Stripe recipie for an app](https://stripe.com/docs/recipes/on-demand-app) as background info.
 
@@ -57,7 +58,11 @@ Here's our proposed payments flow:
 }
 ```
 
-  5. Then they input their banking details through their Stripe.js web plugin. Then we get ther bank_account_token
+  5. Then they input their banking details through their Stripe.js web plugin. Then we get their bank_account_token
+
+"Stripe tokens can only be used once, but that doesn't mean you have to request your customer's card details for every payment. Stripe provides a Customer object type that makes it easy to save this—and other—information for later use."
+
+
 
 ```
 curl https://api.stripe.com/v1/accounts/acct_12QkqYGSOD4VcegJ \
@@ -97,8 +102,6 @@ curl https://api.stripe.com/v1/charges \
    -d source={TOKEN} \
    -d destination=acct_12QkqYGSOD4VcegJ \
    -d application_fee=200
-
-
 
 
 createToken converts sensitive card data to a single-use token which you can safely pass to your server to charge the user

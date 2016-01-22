@@ -16,21 +16,13 @@ angular.module('flatcook',
   $ionicPlatform.ready(function() {
     $rootScope.$on("$stateChangeError", console.log.bind(console));
 
+    // TODO remove it's not being used
     // Icky hack for ui-router
     // I have searched for 4+ hours on how to not make this a hack.
     // This is the only alternative.
     $rootScope.$on('$stateChangeStart', function(evt, toState, toParams, fromState, fromParams) {
       if(toState.name === fromState.name) {
         evt.preventDefault()
-      }
-
-      if (toState.dynamicallySelectState) {
-        evt.preventDefault();
-        // get the tab controller
-        debugger
-        toState.something()
-        
-        $state.go(toState.dynamicallySelectState(), params)
       }
     });
 
@@ -185,6 +177,12 @@ angular.module('flatcook',
     url: '/history',
     templateUrl: 'templates/profile-history.html',
     controller: 'ProfileHistoryCtrl'
+  })
+
+  .state('tab.profile.payments', {
+    url: '/payments',
+    templateUrl: 'templates/profile-payments.html',
+    // controller: 'ProfilePaymentsCtrl'
   })
 
 
