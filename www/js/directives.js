@@ -18,8 +18,8 @@ angular.module('flatcook.directives', ['angularMoment'])
 .filter('dateAsDaysAgo', function (amTimeAgoFilter, amLocalFilter, amEndOfFilter, angularMomentConfig) {
   function dateAsDaysAgoFilter(value) {
     // return amTimeAgoFilter(value);
-          var val = amTimeAgoFilter(amLocalFilter(amEndOfFilter(value, 'day')));
-          if(/hours|minutes|seconds/.test(val)) {
+    var val = amTimeAgoFilter(amLocalFilter(amEndOfFilter(value, 'day')));
+    if(/hours|minutes|seconds/.test(val)) {
             return ''; // TODO HACK
           } else {
             return val;
@@ -29,6 +29,18 @@ angular.module('flatcook.directives', ['angularMoment'])
         dateAsDaysAgoFilter.$stateful = angularMomentConfig.statefulFilters;
 
         return dateAsDaysAgoFilter;
+      })
+
+
+.filter('dateAsRounded', function (amTimeAgoFilter, amLocalFilter, amEndOfFilter, angularMomentConfig) {
+  function dateAsRoundedFilter(value) {
+    var intervalToRoundTo = 5; // 5 minutes
+    remainder = (intervalToRoundTo - value.minute()) % intervalToRoundTo;
+    return moment(value).add("minutes", remainder).format("h:mma");
+  }
+  dateAsRoundedFilter.$stateful = angularMomentConfig.statefulFilters;
+
+  return dateAsRoundedFilter;
 })
 
 
@@ -57,23 +69,23 @@ angular.module('flatcook.directives', ['angularMoment'])
 
 .directive( "emoji", function () {
   var EMOJIIS = {
-          smile: '1F603',
-          ecstatic: '1F606',
-          content: '1F60A',
-          disappointed: '1F61E'
-        }
+    smile: '1F603',
+    ecstatic: '1F606',
+    content: '1F60A',
+    disappointed: '1F61E'
+  }
   var EMOJIIS_HTML = {};
   for(var emojiiName in EMOJIIS) {
     EMOJIIS_HTML[emojiiName] = '&#x'+EMOJIIS[emojiiName]+';';
   }
 
-    return {
-      restrict: "E",
-      link: function ( scope, element, attributes ) {
-        return element.replaceWith(EMOJIIS_HTML[attributes.name]);
-      }
+  return {
+    restrict: "E",
+    link: function ( scope, element, attributes ) {
+      return element.replaceWith(EMOJIIS_HTML[attributes.name]);
     }
-  });
+  }
+});
 
 
 

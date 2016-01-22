@@ -14,10 +14,15 @@
 
 <ion-list>
     <div class="item item-avatar" href="#">
-      <img src="{{ user.displayPicUrl }}">
+      <img ng-src="{{ user.displayPicUrl }}">
       <h2>{{ user.name }}</h2>
       <p>${{user.balance}} - {{user.address}}</p>
     </div>
+
+  <label class="item item-input">
+    <!-- <span class="input-label">Tagline</span> -->
+    <textarea placeholder="Say something short about yourself as an intro!" ng-model="user.tagline"></textarea>
+  </label>
 
   <div class="item item-icon-left item-icon-right" ng-click="openPaymentDetails()">
     <i class='icon ion-card'></i>

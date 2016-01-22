@@ -1,0 +1,3 @@
+ - The state could be loaded from localStorage which has an old version of the cached schema/data
+ - Routing is a massive HACK. See controllers.js
+ - 

@@ -7,70 +7,51 @@ controllers.controller('AppController', function($scope, $state) {
 	// - currently eating
 })
 
+
+// This is a massive hack
+// HACK HACK HACK
+// It makes routing work how it logically should
+// BUG: on refresh in browser it always goes to the eating page. Who cares.
 .controller('TabsController', function($scope, $state, MealsService, $ionicHistory, $ionicTabsDelegate) {
 	$scope.navigatedAlready = {
 		eat: false,
 		cook: false,
 		profile: false
 	}
-	$scope.navdEat = false;
-	$scope.navdCook = false;
-	$scope.navdProfile = false;
 
-	// function doNav(tabName, ) {
-	// 	if(!$scope.navigatedAlready[tabName]) {
-	// 		$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
-
-	// 	}
-	// }
-
-	$scope.navEat = function(){
-		
-		if(!$scope.navdEat) {
-
-            var newState = '';
-
-            if(MealsService.currentMealID != null) {
-              newState = 'tab.eat.eating'
-            } else {
-              newState = 'tab.eat.mealsIndex'
-            }
-
-          // $ionicTabsDelegate.select(0)
-            $state.go(newState);
-
-            $scope.navdEat = true;
+	function doNav(tabName, logic) {
+		if(!$scope.navigatedAlready[tabName]) {
+			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
+			logic()
+			$scope.navigatedAlready[tabName] = true
 		}
 	}
-	$scope.navCook = function(){
 
-		if(!$scope.navdCook) {
-			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
-
-          var newState = '';
-
-		if(MealsService.currentCookingMealID != null) {
-            newState = 'tab.cook.cooking'
-          } else {
-            newState = 'tab.cook.newMeal.intro'
-          }
-          $state.go(newState);
-
-            $scope.navdCook = true;
-        }
+	$scope.navEat = function(){
+		doNav('eat', function(){
+            if(MealsService.currentMealID != null) {
+              $state.go('tab.eat.eating');
+            } else {
+              $state.go('tab.eat.mealsIndex');
+            }
+            
+		})
 	}
+
+	$scope.navCook = function(){
+		doNav('cook', function(){
+            if(MealsService.currentCookingMealID != null) {
+              $state.go('tab.cook.cooking');
+            } else {
+              $state.go('tab.cook.newMeal.intro');
+            }
+		})
+	}
+
 	$scope.navProfile = function(){
-
-		if(!$scope.navdProfile) {
-			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
-
-          var newState = '';
-
-			newState = 'tab.profile.main'
-          $state.go(newState);
-
-            $scope.navdProfile = true;
-        }
+		doNav('profile', function(){
+            $state.go('tab.profile.main');
+		})
 	}
 })
 

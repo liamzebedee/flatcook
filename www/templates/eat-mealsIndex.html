@@ -40,7 +40,7 @@
               <div class='col col-33' style='text-align:right!important;font-size:120%'>
                 <p>
                   <a href="#" class="subdued" style='padding-right:0'><i class='ion-icon ion-social-usd'></i> {{ meal.price }}</a> <br>
-                  <a href="#" class="subdued"><i class='ion-icon ion-ios-clock'></i> {{ meal.servedAt }}</a>
+                  <a href="#" class="subdued"><i class='ion-icon ion-ios-clock'></i> {{ meal.servedAt | dateAsRounded}}</a>
                 </p>
                 </div>
             </div>

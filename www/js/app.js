@@ -78,10 +78,7 @@ angular.module('flatcook',
     url: '/eat',
     views: {
       'tab-eat': {
-        template: "<ion-nav-view></ion-nav-view>",
-        controller: function($scope, $state, $ionicHistory, MealsService) {
-
-        }
+        template: "<ion-nav-view></ion-nav-view>"
       }
     }
 

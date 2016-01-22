@@ -206,7 +206,7 @@ controllers.controller('EatingCtrl', function($scope, $state, $stateParams, $ion
 	// Modals and functions
 	// --------------------
 	function loadMeal() {
-		MealsService.getMeal(MealsService.currentMealID).then(function(meal) {
+		MealsService.getMeal(MealsService.currentCookingMealID).then(function(meal) {
 			$scope.meal = meal;
 			$scope.meal.people = meal.guests.map(function(guest){ return { name: guest.name, marked: false, id: guest.id } });
 			$scope.rating.date = meal.servedAt;

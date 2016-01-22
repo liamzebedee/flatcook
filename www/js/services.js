@@ -74,7 +74,7 @@ sampleData = {
 			id: 1,
 			name: 'Pizza',
 			price: 4.10,
-			servedAt: moment().add(4, 'h'),
+			servedAt: moment().add(36, 'h'),
 			image: 'img/example-pizza.jpeg',
 			cook: {
 				id: 0,
@@ -114,6 +114,8 @@ sampleData = {
 
 		balance: 10.0,
 		paymentInfo: { id: "13212dcadsf3rfqr3" },
+		
+		tagline: 'Never spends a day without cooking!',
 
 		address: "", // where the meal is hosted
 		lastLocation: [],
@@ -216,7 +218,7 @@ angular.module('flatcook.services', [])
 	mealsService.saveState = function() {
 		var state = {
 			currentMealID: mealsService.currentMealID,
-			currentlyCooking: mealsService.currentlyCooking
+			currentCookingMealID: mealsService.currentCookingMealID
 		}
 		$localStorage.set('MealsService', state);
 	}
@@ -312,6 +314,7 @@ angular.module('flatcook.services', [])
 
 	mealsService.postChefRating = function(ratingData) {
 		mealsService.currentCookingMealID = null;
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -320,6 +323,7 @@ angular.module('flatcook.services', [])
 	// {howWasMeal: {rating: 4, description: "asdasdsd asdasd"}, wasEveryoneCool: {cool: false, description: "asdasdasd sad dasd", markedPeople: [82439823]}, mealID: 0}
 	mealsService.postGuestRating = function(ratingData) {
 		mealsService.currentMealID = null;
+		mealsService.saveState();
 		return feignRequestingDataFromNetwork($q, {
 			status: 'success'
 		});
@@ -342,7 +346,7 @@ angular.module('flatcook.services', [])
 	}
 
 	usersService.loadState = function(state) {
-		Object.assign(usersService, $localStorage.get('UsersService'));
+		// Object.assign(usersService, $localStorage.get('UsersService'));
 	}
 	usersService.loadState()
 
