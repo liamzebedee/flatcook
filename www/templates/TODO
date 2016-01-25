@@ -2,9 +2,31 @@ TODO
 ====
 
 Idea: make it as flexible as possible without confusing people
+Market segments:
+ - the cheap $10 / Lentils
+ - the gourmet
+ - the big feast
 
-Put in payment details before join meal
-Have map of where the meal is on the details page
+Use cases:
+ - need to talk to communicate details (Facebook, how good the meal was)
+ - flat dinners (equally split the meal)
+ - really nice gourmet meals (needs a meal description)
+ - share meal invite with others (invite by facebook message)
+ - I want to do the meal multiple tims over
+
+
+Trade-off between information specificity and the information amount that the user can handle
+As they can handle less, the information can be less specific as its more unique anyways. Conversely too.
+
+
+
+https://www.cookapp.com/en/events/new-york/cozy-winter-menu-1718
+https://itunes.apple.com/US/app/id771313730?mt=8
+https://eatfeastly.com/meals/d/19421028/brunch-filipino-hawaiian-flavors-5/?rf=fwebbrowpopu#/relatedMeals
+http://www.eatwith.com/
+https://www.kickstarter.com/projects/1280002828/air-bonsai-create-your-little-star
+
+
 
 
 Other use cases
@@ -12,17 +34,18 @@ Other use cases
 
 pickup leftovers
 flat dinners (equally split for guests, multiple cooks?)
-
-
 for first-time chefs
 
+
+
+Put in payment details before join meal
+Have map of where the meal is on the details page
 
 
 
 
 API 
 ===
-
 
 How do we detect when a meal is finished? Receive na event from the server?
 
@@ -32,9 +55,6 @@ Format time correctly
 
 How was your meal doesn't work
 
-
-
 Add chat for guests
-
 
 Add a map
