@@ -401,7 +401,7 @@ angular.module('flatcook.services', [])
 				//Next i post my login token to the user login endpoint
 				$http({
 			        method: 'POST',
-			        url: 'http://localhost:50001/user/login',
+			        url: 'https://flatcook.com/user/login',
 			        data: jsonData,
 			        withCredentials: true,
 			        contentType: "application/json; charset=utf-8",
@@ -413,7 +413,7 @@ angular.module('flatcook.services', [])
 			    	user.id = response;
 				  	$http({
 				        method: 'GET',
-				        url: 'http://localhost:50001/user',
+				        url: 'https://flatcook.com/user',
 				        contentType: "application/json; charset=utf-8",
 				   		withCredentials: true,
 	            		dataType: "json",
