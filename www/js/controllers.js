@@ -253,8 +253,43 @@ controllers.controller('AppController', function($scope, $state) {
 })
 
 
-.controller('ProfilePaymentsCtrl', function($scope) {
-	 
+.controller('ProfilePaymentsCtrl', function($scope, StripeCheckout) {
+	 $scope.openStripe = function() {
+var handlerOptions = {
+        name: 'swag',
+        description: '123abc',
+        amount: Math.floor(100),
+        // image: "img/perry.png",
+    };
+
+	 	var handler = StripeCheckout.configure({
+        name: "Swag",
+        token: function(token, args) {
+          console.log(token.id)
+        }
+    })
+
+    handler.open(handlerOptions).then(
+      function(result) {
+        var stripeToken = result[0].id;
+        if(stripeToken != undefined && stripeToken != null && stripeToken != "") {
+            //console.log("handler success - defined")
+            qToken.resolve(stripeToken);
+        } else {
+            //console.log("handler success - undefined")
+            qToken.reject("ERROR_STRIPETOKEN_UNDEFINED");
+        }
+      }, function(error) {
+        if(error == undefined) {
+            qToken.reject("ERROR_CANCEL");
+        } else {
+            qToken.reject(error);
+        }
+      } // ./ error
+    ); // ./ handler
+
+
+	 }
 })
 
 
