@@ -253,6 +253,10 @@ controllers.controller('AppController', function($scope, $state) {
 })
 
 
+.controller('ProfilePaymentsCtrl', function($scope) {
+	 
+})
+
 
 .controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
 	$scope.agreedToTCs = false;

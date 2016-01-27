@@ -3,5 +3,35 @@
 
     <div ng-include='partials/paymentDialog.html'></div>
 
+    xxx
+<button stripe-checkout="ctrl.doCheckout"
+            data-key="YOUR PUBLISHABLE STRIPE KEY"
+            data-name="Simple Example"
+            data-description="Five dollahs!"
+            data-amount="500">
+      Buy
+    </button>
+<!-- 
+<div class="list">
+  <label class="item item-input">
+    <span class="input-label">Name</span>
+    <input type="text" placeholder="Mike Brown">
+  </label>
+  <label class="item item-input">
+    <span class="input-label">Number</span>
+    <input type="text" placeholder='5555 4444 3333 1111'>
+  </label>
+  <label class="item item-input">
+	  <span class="input-label">Expiry</span>
+	  <input type="month">
+	</label>
+  <label class="item item-input">
+    <span class="input-label">CVC</span>
+    <input type="text" placeholder='5555 4444 3333 1111'>
+  </label>
+</div> -->
+
+
+
   </ion-content>
 </ion-view>

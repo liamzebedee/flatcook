@@ -7,6 +7,7 @@ angular.module('flatcook',
    'ngAnimate',
    'angularMoment', 
    'timer', 
+   'stripe.checkout',
    'flatcook.controllers', 
    'flatcook.services'
    ])
@@ -179,7 +180,7 @@ angular.module('flatcook',
   .state('tab.profile.payments', {
     url: '/payments',
     templateUrl: 'templates/profile-payments.html',
-    // controller: 'ProfilePaymentsCtrl'
+    controller: 'ProfilePaymentsCtrl'
   })
 
 
