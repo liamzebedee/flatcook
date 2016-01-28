@@ -8,6 +8,7 @@ angular.module('flatcook',
    'angularMoment', 
    'timer', 
    'stripe.checkout',
+   'ui.mask',
    'flatcook.controllers', 
    'flatcook.services'
    ])
@@ -30,8 +31,8 @@ angular.module('flatcook',
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
+      // cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      // cordova.plugins.Keyboard.disableScroll(true);
     }
     if (window.StatusBar) {
       StatusBar.styleLightContent();
@@ -40,7 +41,7 @@ angular.module('flatcook',
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider, MealsServiceProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $cordovaFacebookProvider, MealsServiceProvider, StripeCheckoutProvider) {
 
   // Routing
   // -------
@@ -65,7 +66,11 @@ angular.module('flatcook',
     url: '/tab',
     controller: 'TabsController',
     abstract: true,
-    templateUrl: 'templates/tabs.html'
+    templateUrl: 'templates/tabs.html',
+    resolve: {
+      // checkout.js isn't fetched until this is resolved.
+      stripe: StripeCheckoutProvider.load
+    }
   })
 
 
@@ -112,9 +117,7 @@ angular.module('flatcook',
     url: '/cook',
     views: {
       'tab-cook': {
-        template: "<ion-nav-view></ion-nav-view>",
-        controller: function($scope, $state, $ionicHistory, MealsService) {
-        }
+        template: "<ion-nav-view></ion-nav-view>"
       }
     }
   })
@@ -242,7 +245,6 @@ angular.module('flatcook',
 
   $ionicConfigProvider.scrolling.jsScrolling(false); // more native scrolling
   $ionicConfigProvider.views.transition("ios");
-
 
   // Facebook
   // --------

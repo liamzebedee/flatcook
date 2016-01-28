@@ -1,0 +1,38 @@
+<ion-modal-view ng-controller='LinkBankAccountCtrl'>
+	<ion-header-bar>
+      <h1 class="title">Link bank account</h1>
+      <button ng-click="hideBankAccountDialog()" class='button button-icon icon ion-close'></button>
+    </ion-header-bar>
+
+    <ion-content>
+
+<div class="list">
+   <div class='item item-image'>
+   		<img ng-src='img/stripeLogo.png' style='padding:30px'/>
+	</div>
+
+  <label class="item item-input">
+    <span class="input-label">BSB</span>
+    <input type="text" ng-model="details.bsb" ui-mask="999-999" ui-mask-placeholder ui-mask-placeholder-char="_"/>
+  </label>
+  <label class="item item-input">
+    <span class="input-label">Account #</span>
+    <input type="number" ng-model='details.accountNumber'>
+  </label>
+
+  
+
+</div>
+
+
+    </ion-content>
+
+<footer class="bar bar-footer full-width-button">
+<button class="button button-block button-balanced" ng-disabled='!(validation.bsb && validation.accountNumber)' ng-click='linkAccount()'>
+  <i class="icon ion-link"></i> Link account
+</button>
+</footer>
+
+  
+
+  </ion-modal-view>

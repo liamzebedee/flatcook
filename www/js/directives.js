@@ -34,6 +34,7 @@ angular.module('flatcook.directives', ['angularMoment'])
 
 .filter('dateAsRounded', function (amTimeAgoFilter, amLocalFilter, amEndOfFilter, angularMomentConfig) {
   function dateAsRoundedFilter(value) {
+    if(value == void(0)) return;
     var intervalToRoundTo = 5; // 5 minutes
     remainder = (intervalToRoundTo - value.minute()) % intervalToRoundTo;
     return moment(value).add("minutes", remainder).format("h:mma");

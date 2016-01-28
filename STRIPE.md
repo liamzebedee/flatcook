@@ -1,3 +1,5 @@
+https://stripe.com/docs/testing
+
 ## STRIPE/payments
  - We use Stripe Connect to support the marketplace aspect of the application.
  - We create **managed accounts**, which are Accounts in Stripe that we solely manage for the user.

@@ -61,11 +61,11 @@ controllers.controller('AppController', function($scope, $state) {
 	$scope.errorLoadingMeals = null;
 
 	$scope.$on('$ionicView.loaded', function(){
-		$scope.user = UsersService.loggedInUser;
+		$scope.user = UsersService.getCurrentUser();
 		$scope.doRefresh();
 	})
 	$scope.$on('$ionicView.beforeEnter', function(e) {
-		$scope.user = UsersService.loggedInUser;
+		$scope.user = UsersService.getCurrentUser();
 		$scope.doRefresh();
 	});
 
@@ -125,9 +125,9 @@ controllers.controller('AppController', function($scope, $state) {
 		});
 		confirmPopup.then(function(yes) {
 			if (yes) {
-				if (UsersService.userNeedsToLinkPaymentMethod()) {
-
-					UsersService.showPaymentLinkDialog($scope).then(function(success) {
+				if(UsersService.userNeedsToLinkPaymentMethod()) {
+					UsersService.showPaymentLinkDialog()
+					UsersService.showPaymentLinkDialog().then(function(success) {
 						MealsService.joinMeal($scope.meal.id);
 						$ionicHistory.nextViewOptions({ disableBack: true });
 						$state.go('tab.eat.eating');
@@ -220,7 +220,7 @@ controllers.controller('AppController', function($scope, $state) {
 
 .controller('ProfileCtrl', function($scope, $state, UsersService) {
 	$scope.$on('$ionicView.beforeEnter', function(e) {
-		$scope.user = UsersService.loggedInUser;
+		$scope.user = UsersService.getCurrentUser();
 	});
 
 	$scope.doRefresh = function() {
@@ -253,43 +253,31 @@ controllers.controller('AppController', function($scope, $state) {
 })
 
 
-.controller('ProfilePaymentsCtrl', function($scope, StripeCheckout) {
-	 $scope.openStripe = function() {
-var handlerOptions = {
-        name: 'swag',
-        description: '123abc',
-        amount: Math.floor(100),
-        // image: "img/perry.png",
-    };
+.controller('ProfilePaymentsCtrl', function($scope, UsersService) {
+	$scope.linkPaymentMethod = function() { UsersService.showPaymentLinkDialog() }
+	$scope.linkBankAccount = function(){ UsersService.showLinkBankAccountDialog($scope) };
+})
+.controller('LinkBankAccountCtrl', function($scope, UsersService) {
+	$scope.details = {
+		bsb: '',
+		accountNumber: ''
+	};
+	$scope.validation = {
+		bsb: false,
+		accountNumber: false
+	}
 
-	 	var handler = StripeCheckout.configure({
-        name: "Swag",
-        token: function(token, args) {
-          console.log(token.id)
-        }
-    })
+	$scope.$watch('details.bsb', function(val) {
+		$scope.validation.bsb = ($scope.details.bsb || '').length == 6;
+	})
+	$scope.$watch('details.accountNumber', function(val) {
+		console.log($scope.details.accountNumber);
+		$scope.validation.accountNumber = (''+$scope.details.accountNumber || '').length >= 6;
+	})
 
-    handler.open(handlerOptions).then(
-      function(result) {
-        var stripeToken = result[0].id;
-        if(stripeToken != undefined && stripeToken != null && stripeToken != "") {
-            //console.log("handler success - defined")
-            qToken.resolve(stripeToken);
-        } else {
-            //console.log("handler success - undefined")
-            qToken.reject("ERROR_STRIPETOKEN_UNDEFINED");
-        }
-      }, function(error) {
-        if(error == undefined) {
-            qToken.reject("ERROR_CANCEL");
-        } else {
-            qToken.reject(error);
-        }
-      } // ./ error
-    ); // ./ handler
-
-
-	 }
+	$scope.linkAccount = function() {
+		UsersService.linkBankAccount()
+	}
 })
 
 

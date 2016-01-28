@@ -9,8 +9,9 @@
 <ion-refresher on-refresh="doRefresh()"></ion-refresher>
 
 <div class="item cooking-hero" ng-style="{'background-image':'url('+meal.image+')'}">
-  <h1 class='title'>Cooking &ldquo;{{meal.name}}&rdquo; for ${{ meal.totalProfit }}</h1>
+  <h1 class='title'>{{meal.name}} for 3</h1>
   <h3 class='timer'>Served at {{meal.servedAtFormatted}} <i class="ion-icon ion-ios-clock"></i> <timer interval="1000" ng-attr-countdown="meal.timeTillServe_seconds" max-time-unit="'hour'">{{hours}}:{{minutes}}&middot;{{seconds}}</timer></h3>
+  <h3>${{ meal.totalProfit }}</h3>
 </div>
 
 

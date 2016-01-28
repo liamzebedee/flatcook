@@ -111,9 +111,16 @@ sampleData = {
 		id: 0,
 		name: "Test User",
 		facebookID: 123123123,
+		email: 'test.user@example.com',
 
 		balance: 10.0,
-		paymentInfo: { id: "13212dcadsf3rfqr3" },
+		paymentInfo: {
+			paymentMethodLinked: false,
+			bankAccountDetails: {
+				bsb: 231321,
+				accountNumber: 9847534334
+			}
+		},
 		
 		tagline: 'Never spends a day without cooking!',
 
@@ -332,7 +339,7 @@ angular.module('flatcook.services', [])
 	return mealsService
 })
 
-.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies, $ionicModal) {
+.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies, $ionicModal, StripeCheckout) {
 	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
 		loggedInUser: null,
@@ -345,8 +352,12 @@ angular.module('flatcook.services', [])
 		usersService.loggedInUser = sampleData.users[0];
 	}
 
+	usersService.getCurrentUser = function() {
+		return usersService.loggedInUser;
+	}
+
 	usersService.loadState = function(state) {
-		// Object.assign(usersService, $localStorage.get('UsersService'));
+		Object.assign(usersService, $localStorage.get('UsersService'));
 	}
 	usersService.loadState()
 
@@ -368,6 +379,14 @@ angular.module('flatcook.services', [])
 		var dfd = $q.defer();
 		dfd.resolve(true);
 		return dfd.promise;
+	}
+
+	usersService.linkBankAccount = function(accountData) {
+		// bsb, accountNumber
+	}
+
+	usersService.linkPaymentMethod = function(stripeData) {
+
 	}
 
 	usersService.loginOrRegister = function(facebookData) {
@@ -461,33 +480,46 @@ angular.module('flatcook.services', [])
 
 	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
-		return usersService.loggedInUser.paymentInfo !== null;
+		return !usersService.loggedInUser.paymentInfo.paymentMethodLinked;
 	}
 
-	usersService.showPaymentLinkDialog = function($scope) {
-		function showDialog() {
-			$ionicModal.fromTemplateUrl('templates/partials/paymentDialog.html', {
-				scope: $scope,
-				animation: 'slide-in-up'
-			}).then(function(modal) {
-				modal.show()
-			});
-		}
-		if(IsServingBrowserFromIonicServe) {
-			var TEST_FAILURE = false;
-			var dfd = $q.defer()
-			
-			setTimeout(function() {
-				if(TEST_FAILURE) {
-					dfd.reject()
-				} else {
-					showDialog()
-					dfd.resolve()
-				}
-			}, 2000);
+	usersService.showPaymentLinkDialog = function() {
+		var dfd = $q.defer();
 
-			return dfd.promise;
-		}
+		var handlerOptions = {
+	        name: 'Flatcook',
+	        description: 'Eating together',
+	    	  amount:      "0.00",
+			  currency:    "aud",
+			  email:       usersService.getCurrentUser().email,
+			  key:         "pk_test_6pRNASCoBOKtIshFeQd4XMUh",
+			  panelLabel:  "Link account",
+	    };
+
+		var handler = StripeCheckout.configure({
+	        token: function(stripeData) {
+	        	usersService.linkPaymentMethod(stripeData)
+	        	dfd.resolve()
+	        }
+	    })
+
+	    handler.open(handlerOptions).then(function(a, b){
+	    });
+
+	    return dfd.promise;
+	}
+
+	usersService.showLinkBankAccountDialog = function($scope) {
+		$ionicModal.fromTemplateUrl('templates/partials/linkBankAccountDialog.html', {
+			scope: $scope,
+			animation: 'slide-in-up'
+		}).then(function(modal) {
+			$scope.linkBankAccountDialog = modal;
+			$scope.linkBankAccountDialog.show()
+			$scope.hideBankAccountDialog = function() {
+				$scope.linkBankAccountDialog.hide();
+			}
+		});
 	}
 
 	return usersService;

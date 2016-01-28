@@ -1,40 +1,14 @@
 <ion-view view-title="Payments">
   <ion-content>
 
-    <div ng-include='partials/paymentDialog.html'></div>
+<div class='vertical-horizontal-align'>
 
-    xxx
-<button stripe-checkout="ctrl.doCheckout"
-            data-key="pk_test_6pRNASCoBOKtIshFeQd4XMUh"
-            data-name="Simple Example"
-            data-description="Five dollahs!"
-            data-amount="500">
-      Buy
-    </button>
+<div>
+    <button ng-click="linkPaymentMethod()">Link payment method</button>
+    <button ng-click="linkBankAccount()">Link bank account</button>
+</div>
 
-
-    <button ng-click="openStripe()">Buy</button>
-<!-- 
-<div class="list">
-  <label class="item item-input">
-    <span class="input-label">Name</span>
-    <input type="text" placeholder="Mike Brown">
-  </label>
-  <label class="item item-input">
-    <span class="input-label">Number</span>
-    <input type="text" placeholder='5555 4444 3333 1111'>
-  </label>
-  <label class="item item-input">
-	  <span class="input-label">Expiry</span>
-	  <input type="month">
-	</label>
-  <label class="item item-input">
-    <span class="input-label">CVC</span>
-    <input type="text" placeholder='5555 4444 3333 1111'>
-  </label>
-</div> -->
-
-
+</div>
 
   </ion-content>
 </ion-view>

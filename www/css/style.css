@@ -3,9 +3,25 @@
 */
 
 
+footer.full-width-button {
+  padding: 0px 0px;
+}
 
-/*Stripe checkout*/
+footer.full-width-button > button {
+  margin: 0px 0px!important;
+  border: none;
+}
 
+.vertical-horizontal-align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.vertical-horizontal-align > * {
+  max-width: 75%;
+}
 
 
 
