@@ -186,7 +186,52 @@ function feignRequestingDataFromNetwork($q, data) {
 	return dfd.promise;
 }
 
+
+
 angular.module('flatcook.services', [])
+
+.service('API', function($http) {
+	var FLATCOOK_API_PREFIX = "https://flatcook.com";
+
+	this.get = function(endpoint, params) {
+		return flatcookAPI('GET', endpoint, params)
+	}
+
+	this.post = function(endpoint, params) {
+		return flatcookAPI('POST', endpoint, params)
+	}
+
+	// endpoint is like /user/login
+	// returns thing that can do .success(response) and .error(response)
+	function flatcookAPI(method, endpoint, params) {
+		return $http({
+			method: method,
+			url: FLATCOOK_API_PREFIX + endpoint,
+			data: JSON.stringify(params),
+	    	withCredentials: true,
+	    	contentType: "application/json; charset=utf-8",
+			dataType: "json",
+		});
+	}
+
+})
+
+.service('UI', function($ionicLoading) {
+
+	this.showLoading = function($scope, text) {
+		var scope = $scope.$new()
+
+		scope.cancelLoading = function() {
+			$ionicLoading.hide();
+		}
+		$ionicLoading.show({ template: '<button class="button button-clear" style="line-height: normal; min-height: 0; min-width: 0;" ng-click="cancelLoading()"><i class="ion-close-circled"></i></button> ' + text, scope: scope})
+	}
+
+	this.hideLoading = function() {
+		$ionicLoading.hide()
+	}
+
+})
 
 .factory('$localStorage', function($window) {
   return {
@@ -339,7 +384,7 @@ angular.module('flatcook.services', [])
 	return mealsService
 })
 
-.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies, $ionicModal, StripeCheckout) {
+.factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies, $ionicModal, StripeCheckout, API, UI) {
 	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
 	var usersService = {
 		loggedInUser: null,
@@ -376,17 +421,14 @@ angular.module('flatcook.services', [])
 	}
 
 	usersService.signOut = function() {
+		usersService.loggedInUser = null
+		usersService.flatcookAPISessionKey = null
+		usersService._facebookData = null
+		usersService.saveState()
+
 		var dfd = $q.defer();
 		dfd.resolve(true);
 		return dfd.promise;
-	}
-
-	usersService.linkBankAccount = function(accountData) {
-		// bsb, accountNumber
-	}
-
-	usersService.linkPaymentMethod = function(stripeData) {
-
 	}
 
 	usersService.loginOrRegister = function(facebookData) {
@@ -406,37 +448,24 @@ angular.module('flatcook.services', [])
 
 				usersService._facebookData = facebookData; // debugging, who knows when we'll need it
 				
-				//Liam - here is the walkthrough for validation. Use these two calls as a model for other service calls as well
-				//First i set up the parameters and turn it into json data - only needed for POSTS
-    			var params = new Object();
-				params.email = data.email;
-				params.facebookid = data.id;
-				params.oauth_token = facebookData.authResponse.accessToken;
-				params.oauth_verifier = facebookData.authResponse.signedRequest;
-				params.expires_in = facebookData.authResponse.expires_in;
-				params.username = data.name;
-				var jsonData = JSON.stringify(params);
-
-				//Next i post my login token to the user login endpoint
-				$http({
-			        method: 'POST',
-			        url: 'https://flatcook.com/user/login',
-			        data: jsonData,
-			        withCredentials: true,
-			        contentType: "application/json; charset=utf-8",
-            		dataType: "json",
-			  	}).success(function(response){
-			  		//The response i get back comes with a set-cookie (check the console>network tab)
-			    	//Now i have the user id and am logged in, but i want to verify that im logged in for 
-			    	//good so i call the user endpoint - it uses the session cookie to retrieve user data
+    			var params = {
+    				email: data.email,
+    				facebookid: data.id,
+    				oauth_token: facebookData.authResponse.accessToken,
+					oauth_verifier: facebookData.authResponse.signedRequest,
+					expires_in: facebookData.authResponse.expires_in,
+					username: data.name
+    			}
+    			
+    			API.post('/user/login', params)
+				.success(function(response){
+			  		// The response i get back comes with a set-cookie (check the console>network tab)
+			    	// Now i have the user id and am logged in, but i want to verify that im logged in for 
+			    	// good so i call the user endpoint - it uses the session cookie to retrieve user data
 			    	user.id = response;
-				  	$http({
-				        method: 'GET',
-				        url: 'https://flatcook.com/user',
-				        contentType: "application/json; charset=utf-8",
-				   		withCredentials: true,
-	            		dataType: "json",
-				  	}).success(function(data){
+			    	
+			    	API.get('/user', {})
+					.success(function(data){
 				  		//If this comes back success then all the user data we have in the backend should be in this response.
 				  		//curently only a few fields but easily scalable
 				    	user.id = data;
@@ -467,10 +496,7 @@ angular.module('flatcook.services', [])
 		if (userID == usersService.loggedInUser.id) {
 			return usersService.loggedInUser; // TODO
 		} else {
-			$.getJSON('http://localhost:52509/user/id/' + userID)
-				.success(function(response) {
-					// return response.user;
-				});
+			
 		}
 	}
 
@@ -481,6 +507,14 @@ angular.module('flatcook.services', [])
 	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
 		return !usersService.loggedInUser.paymentInfo.paymentMethodLinked;
+	}
+
+	usersService.linkBankAccount = function(accountData) {
+		// bsb, accountNumber
+	}
+
+	usersService.linkPaymentMethod = function(stripeData) {
+
 	}
 
 	usersService.showPaymentLinkDialog = function() {
@@ -498,8 +532,8 @@ angular.module('flatcook.services', [])
 
 		var handler = StripeCheckout.configure({
 	        token: function(stripeData) {
+	        	
 	        	usersService.linkPaymentMethod(stripeData)
-	        	dfd.resolve()
 	        }
 	    })
 

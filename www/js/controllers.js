@@ -126,7 +126,6 @@ controllers.controller('AppController', function($scope, $state) {
 		confirmPopup.then(function(yes) {
 			if (yes) {
 				if(UsersService.userNeedsToLinkPaymentMethod()) {
-					UsersService.showPaymentLinkDialog()
 					UsersService.showPaymentLinkDialog().then(function(success) {
 						MealsService.joinMeal($scope.meal.id);
 						$ionicHistory.nextViewOptions({ disableBack: true });
@@ -281,7 +280,7 @@ controllers.controller('AppController', function($scope, $state) {
 })
 
 
-.controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService) {
+.controller('LoginCtrl', function($scope, $state, $ionicLoading, UsersService, UI) {
 	$scope.agreedToTCs = false;
 
 	$scope.loginAsTesting = function() {
@@ -291,24 +290,16 @@ controllers.controller('AppController', function($scope, $state) {
 		// }
 	}
 
-	$scope.cancelLoading = function() {
-		$ionicLoading.hide();
-	}
-
-	function createCancelLoading(text) {
-		$ionicLoading.show({ template: '<button class="button button-clear" style="line-height: normal; min-height: 0; min-width: 0;" ng-click="cancelLoading()"><i class="ion-close-circled"></i></button> ' + text, scope: $scope})
-	}
-
 	$scope.login = function() {
 		try {
-			createCancelLoading('Signing in with FB...')
+			UI.showLoading($scope, 'Signing in with FB...')
 
 			UsersService.authenticateWithFacebook().then(function(facebookData) {
-				createCancelLoading('Creating your profile...')
+				UI.showLoading($scope, 'Creating your profile...')
 
 				UsersService.loginOrRegister(facebookData).then(function(success) {
 					if (success) {
-						$scope.cancelLoading()
+						UI.hideLoading()
 						$state.go('tab.eat.mealsIndex');
 					} else {
 						$scope.cancelLoading()
@@ -316,7 +307,7 @@ controllers.controller('AppController', function($scope, $state) {
 				});
 
 			}, function(err) {
-				$scope.cancelLoading()
+				UI.hideLoading()
 			});
 
 		} catch (ex) {

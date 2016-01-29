@@ -1,4 +1,5 @@
-IsServingBrowserFromIonicServe = !window.cordova;
+// IsServingBrowserFromIonicServe = !window.cordova;
+IsServingBrowserFromIonicServe = true;
 
 angular.module('flatcook', 
   ['ionic',

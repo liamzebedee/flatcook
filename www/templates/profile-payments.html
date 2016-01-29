@@ -1,14 +1,28 @@
 <ion-view view-title="Payments">
   <ion-content>
 
-<div class='vertical-horizontal-align'>
+<ion-list>
+  <div class="item item-icon-left item-icon-right" ng-click="linkPaymentMethod()">
+    <i class='icon ion-card'></i>
+    Link payment method
+    <i class='icon ion-ios-arrow-right'></i>
+  </div>
+
+  <div class="item item-icon-left item-icon-right" ng-click="linkBankAccount()">
+    <i class='icon ion-ios-list-outline'></i>
+    Link bank account
+    <i class='icon ion-ios-arrow-right'></i>
+  </div>
+</ion-list>
+
+<!-- <div class='vertical-horizontal-align'>
 
 <div>
     <button ng-click="linkPaymentMethod()">Link payment method</button>
     <button ng-click="linkBankAccount()">Link bank account</button>
 </div>
 
-</div>
+</div> -->
 
   </ion-content>
 </ion-view>

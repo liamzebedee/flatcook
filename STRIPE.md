@@ -1,4 +1,7 @@
-https://stripe.com/docs/testing
+https://stripe.com/docs/testing  
+4242424242424242  
+https://chema.ga/preventing-fraud-on-stripe/
+
 
 ## STRIPE/payments
  - We use Stripe Connect to support the marketplace aspect of the application.
