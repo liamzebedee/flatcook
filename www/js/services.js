@@ -1,175 +1,3 @@
-sampleData = {
-	meals: [{
-			id: 0,
-			name: 'Spaghetti Bolognaise',
-			price: 5.50,
-			servedAt: moment().add(4, 'h'),
-			image: 'img/example-spagbol.jpg',
-			location: [12.42141, 21.231231],
-			address: "Gumal 501",
-
-			chef: {
-				id: 0,
-				name: "Liam",
-				facebookID: 123123123,
-				balance: 0.0,
-				paymentID: "13212dcadsf3rfqr3",
-				address: "",
-				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-				cookRating: 'Excellent',
-				friendlinessRating: 'Excellent',
-				tagline: 'Never spends a day without cooking!',
-				numberOfMeals: 5,
-
-				cookingStatus: 'Cooking!'
-			},
-			guests: [{
-				id: 82439823,
-				name: "Liam",
-				facebookID: 123123123,
-				balance: 0.0,
-				paymentID: "13212dcadsf3rfqr3",
-				address: "",
-				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-				cookRating: 'N/A',
-				friendlinessRating: 'Excellent',
-				numberOfMeals: 3,
-
-				eatingStatus: 'On my way!'
-			}, 
-			{
-				id: 12321312,
-				name: "Bobby Testing",
-				facebookID: 312341231,
-
-				balance: 15.0,
-				paymentID: "21j9d898ahdhs",
-
-				address: "", // where the meal is hosted
-				lastLocation: [],
-				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-
-				eatingStatus: 'On my way!',
-
-				cookRating: 'N/A',
-				friendlinessRating: 'Excellent',
-				numberOfMeals: 1,
-
-				mealHistory: [
-					{
-						date: moment().subtract(14, 'd'),
-						name: 'Spaghetti',
-						cost: 7.5,
-						location: '203',
-						hostDisplayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-						guestNames: ['Georgia', 'John', 'David']
-					}
-				]
-			}],
-
-			userStatus: ''
-		},
-
-		{
-			id: 1,
-			name: 'Pizza',
-			price: 4.10,
-			servedAt: moment().add(36, 'h'),
-			image: 'img/example-pizza.jpeg',
-			cook: {
-				id: 0,
-				name: "Liam",
-				facebookID: 123123123,
-				balance: 0.0,
-				paymentInfo: { id: "13212dcadsf3rfqr3" },
-				address: "",
-				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-				cookRating: 'Excellent',
-				friendlinessRating: 'Excellent',
-
-				cookingStatus: ''
-			},
-			guests: [{
-				id: 0,
-				name: "Liam",
-				facebookID: 123123123,
-				balance: 0.0,
-				paymentInfo: { id: "35121cadsf3rfqr3" },
-				address: "",
-				avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-				cookRating: 'N/A',
-				friendlinessRating: 'Excellent',
-
-				eatingStatus: ''
-			}],
-
-			userStatus: ''
-		}
-	],
-
-	users: [{
-		id: 0,
-		name: "Test User",
-		facebookID: 123123123,
-		email: 'test.user@example.com',
-
-		balance: 10.0,
-		paymentInfo: {
-			paymentMethodLinked: false,
-			bankAccountDetails: {
-				bsb: 231321,
-				accountNumber: 9847534334
-			}
-		},
-		
-		tagline: 'Never spends a day without cooking!',
-
-		address: "", // where the meal is hosted
-		lastLocation: [],
-		avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-
-		cookRating: 'N/A',
-		friendlinessRating: 'Excellent',
-
-		mealHistory: [
-			{
-				date: moment().subtract(2, 'd'),
-				name: 'Pizza',
-				cost: 7.5,
-				location: '501',
-				hostDisplayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-				guestNames: ['Bobby', 'Dave', 'Patrice']
-			}
-		]
-	},
-	{
-		id: 1,
-		name: "Bobby Testing",
-		facebookID: 312341231,
-
-		balance: 15.0,
-		paymentInfo: { id: "543212dcadsf3rfqr3" },
-
-		address: "", // where the meal is hosted
-		lastLocation: [],
-		avatarUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-
-		cookRating: 'N/A',
-		friendlinessRating: 'Excellent',
-
-		mealHistory: [
-			{
-				date: moment().subtract(14, 'd'),
-				name: 'Spaghetti',
-				cost: 7.5,
-				location: '203',
-				hostDisplayPicUrl: 'http://ionicframework.com/img/docs/venkman.jpg',
-				guestNames: ['Georgia', 'John', 'David']
-			}
-		]
-	}],
-};
-
 var Testing = {};
 
 
@@ -385,17 +213,12 @@ angular.module('flatcook.services', [])
 })
 
 .factory('UsersService', function($http, $q, $cordovaFacebook, $localStorage, $cookies, $ionicModal, StripeCheckout, API, UI) {
-	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends"];
+	var FACEBOOK_PERMISSIONS = ["public_profile", "email", "user_friends", "user_birthday"];
 	var usersService = {
 		loggedInUser: null,
 		flatcookAPISessionKey: null,
 		_facebookData: null
 	};
-
-	if (IsServingBrowserFromIonicServe) {
-		usersService.flatcookAPISessionKey = 'TESTING123';
-		usersService.loggedInUser = sampleData.users[0];
-	}
 
 	usersService.getCurrentUser = function() {
 		return usersService.loggedInUser;
@@ -403,6 +226,10 @@ angular.module('flatcook.services', [])
 
 	usersService.loadState = function(state) {
 		Object.assign(usersService, $localStorage.get('UsersService'));
+		if (IsServingBrowserFromIonicServe) {
+			usersService.flatcookAPISessionKey = 'TESTING123';
+			usersService.loggedInUser = sampleData.users[0];
+		}
 	}
 	usersService.loadState()
 
@@ -506,15 +333,26 @@ angular.module('flatcook.services', [])
 
 	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
-		return !usersService.loggedInUser.paymentInfo.paymentMethodLinked;
+		return !usersService.getCurrentUser().paymentInfo.paymentMethodLinked;
+	}
+
+	usersService.userNeedsToLinkBankAccount = function() {
+		return !usersService.getCurrentUser().paymentInfo.bankAccountDetails.linked;
 	}
 
 	usersService.linkBankAccount = function(accountData) {
 		// bsb, accountNumber
+		var info = usersService.loggedInUser.paymentInfo.bankAccountDetails
+		info.linked = true
+		info.bsb = accountData.bsb
+		info.accountNumber = accountData.accountNumber
+		// TODO
 	}
 
 	usersService.linkPaymentMethod = function(stripeData) {
-
+		var info = usersService.loggedInUser.paymentInfo
+		info.paymentMethodLinked = true
+		// TODO
 	}
 
 	usersService.showPaymentLinkDialog = function() {
@@ -530,14 +368,14 @@ angular.module('flatcook.services', [])
 			  panelLabel:  "Link account",
 	    };
 
-		var handler = StripeCheckout.configure({
-	        token: function(stripeData) {
-	        	
-	        	usersService.linkPaymentMethod(stripeData)
-	        }
-	    })
+		var handler = StripeCheckout.configure({})
 
-	    handler.open(handlerOptions).then(function(a, b){
+	    handler.open(handlerOptions).then(function success(stripeData) {
+	    	usersService.linkPaymentMethod(stripeData)
+	    	dfd.resolve()
+
+	    }, function closedWithoutLinking() {
+	    	dfd.reject()
 	    });
 
 	    return dfd.promise;
@@ -577,25 +415,25 @@ angular.module('flatcook.services', [])
 		}
 	}
 
-	locationService.showMap = function(address, latlng) {
-		console.log('asdad')
-		function launchDirections(address) {
-		window.location.href = "maps://maps.apple.com/?daddr=" + address;
-		}	
+	// locationService.showMap = function(address, latlng) {
+	// 	console.log('asdad')
+	// 	function launchDirections(address) {
+	// 	window.location.href = "maps://maps.apple.com/?daddr=" + address;
+	// 	}	
 
 		
-		// var address=data.street+", "+data.city+", "+data.state;
-		var url='';
-		if(/*device.platform==='iOS'||device.platform==='iPhone'||*/navigator.userAgent.match(/(iPhone|iPod|iPad)/)){
-			url="http://maps.apple.com/maps?q="+encodeURIComponent(address);
-		}else if(navigator.userAgent.match(/(Android|BlackBerry|IEMobile)/)){
-			url="geo:?q="+encodeURIComponent(address);
-		}else{
-			//this will be used for browsers if we ever want to convert to a website
-			url="http://maps.google.com?q="+encodeURIComponent(address);
-		}
-		window.open(url, "_system", 'location=no');
-	}
+	// 	// var address=data.street+", "+data.city+", "+data.state;
+	// 	var url='';
+	// 	if(/*device.platform==='iOS'||device.platform==='iPhone'||*/navigator.userAgent.match(/(iPhone|iPod|iPad)/)){
+	// 		url="http://maps.apple.com/maps?q="+encodeURIComponent(address);
+	// 	}else if(navigator.userAgent.match(/(Android|BlackBerry|IEMobile)/)){
+	// 		url="geo:?q="+encodeURIComponent(address);
+	// 	}else{
+	// 		//this will be used for browsers if we ever want to convert to a website
+	// 		url="http://maps.google.com?q="+encodeURIComponent(address);
+	// 	}
+	// 	window.open(url, "_system", 'location=no');
+	// }
 
 	return locationService;
 })

@@ -124,22 +124,25 @@ controllers.controller('AppController', function($scope, $state) {
 			template: 'Are you sure you can commit to coming?'
 		});
 		confirmPopup.then(function(yes) {
-			if (yes) {
-				if(UsersService.userNeedsToLinkPaymentMethod()) {
-					UsersService.showPaymentLinkDialog().then(function(success) {
-						MealsService.joinMeal($scope.meal.id);
-						$ionicHistory.nextViewOptions({ disableBack: true });
-						$state.go('tab.eat.eating');
+			if(!yes) return;
+			
+			if(UsersService.userNeedsToLinkPaymentMethod()) {
+				UsersService.showPaymentLinkDialog().then(function(success) {
+					goToJoinMeal()
 
-					}, function(failure) {
-						return;
-					});
-				}
-
-				
+				}, function(failure) {
+					return
+				});
 			} else {
-				return
+				goToJoinMeal()
 			}
+
+			function goToJoinMeal() {
+				MealsService.joinMeal($scope.meal.id);
+				$ionicHistory.nextViewOptions({ disableBack: true });
+				$state.go('tab.eat.eating');
+			}
+			
 		});
 	};
 })
@@ -253,9 +256,15 @@ controllers.controller('AppController', function($scope, $state) {
 
 
 .controller('ProfilePaymentsCtrl', function($scope, UsersService) {
+	$scope.user = UsersService.getCurrentUser()
+	
+	$scope.bankAccountLinked = !UsersService.userNeedsToLinkBankAccount()
+	$scope.balance = UsersService.getCurrentUser().paymentInfo.balanceReadyForTransfer;
+
 	$scope.linkPaymentMethod = function() { UsersService.showPaymentLinkDialog() }
 	$scope.linkBankAccount = function(){ UsersService.showLinkBankAccountDialog($scope) };
 })
+
 .controller('LinkBankAccountCtrl', function($scope, UsersService) {
 	$scope.details = {
 		bsb: '',

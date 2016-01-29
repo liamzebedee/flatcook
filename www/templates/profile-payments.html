@@ -2,17 +2,47 @@
   <ion-content>
 
 <ion-list>
-  <div class="item item-icon-left item-icon-right" ng-click="linkPaymentMethod()">
-    <i class='icon ion-card'></i>
-    Link payment method
-    <i class='icon ion-ios-arrow-right'></i>
-  </div>
 
-  <div class="item item-icon-left item-icon-right" ng-click="linkBankAccount()">
+<header class="item item-divider">
+    	Paying
+</header>
+
+<div ng-switch on="user.paymentInfo.paymentMethodLinked">
+
+	<div ng-switch-when='false' class="item item-icon-left" ng-click="linkPaymentMethod()">
+	    <i class='icon ion-alert-circled'></i>
+	    Link payment method
+	</div>
+
+	<div ng-switch-when='true' class='item item-icon-right'>
+		<i class='icon ion-checkmark-circled'></i>
+		Linked!
+	</div>
+
+	<div ng-switch-when='true' class="item item-icon-left" ng-click="linkPaymentMethod()">
+	    <i class='icon ion-card'></i>
+	    Update payment method
+	</div>
+
+</div>
+
+
+<header class="item item-divider">
+	Getting paid
+</header>
+
+	<a class="item item-icon-left" href="#">
+	    <i class="icon ion-cash"></i>
+	    Your profits
+	    <span class="badge">${{ balance }}</span>
+	  </a>
+
+  <div class="item item-icon-left" ng-click="linkBankAccount()">
     <i class='icon ion-ios-list-outline'></i>
     Link bank account
-    <i class='icon ion-ios-arrow-right'></i>
   </div>
+
+
 </ion-list>
 
 <!-- <div class='vertical-horizontal-align'>
