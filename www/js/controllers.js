@@ -103,7 +103,7 @@ controllers.controller('AppController', function($scope, $state) {
 
 
 
-.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, MealsService, UsersService) {
+.controller('MealDetailCtrl', function($scope, $state, $stateParams, $ionicLoading, $ionicPopup, $ionicHistory, MealsService, UsersService, UI) {
 
 	$scope.$on('$ionicView.beforeEnter', function(e) {
 		MealsService.getMeal($stateParams.id).then(function(meal) {
@@ -116,6 +116,13 @@ controllers.controller('AppController', function($scope, $state) {
 			$scope.meal = meal;
 			$scope.$broadcast('scroll.refreshComplete');
 		});
+	}
+
+	$scope.share = function() {
+		UI.shareDialog()
+		// Facebook
+		// SMS
+		// Whatsapp
 	}
 
 	$scope.joinMeal = function() {
@@ -248,7 +255,7 @@ controllers.controller('AppController', function($scope, $state) {
 	$scope.humanizeArray = humanizeArray;
 
 	$scope.$on('$ionicView.beforeEnter', function(e) {
-		UsersService.getHistory().then(function(history){
+		UsersService.getMealHistory().then(function(history){
 			$scope.mealHistory = history;
 		})
 	});

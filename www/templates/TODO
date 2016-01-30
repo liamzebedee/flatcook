@@ -1,6 +1,23 @@
 TODO
 ====
 
+choose image dialog for meal
+refine new meal
+finish login T&Cs
+refine rating dialog 
+
+payments:
+
+Instead of Stripe Connect
+Have guests pay cash directly to us
+Then we pay the chefs minus a cut
+
+
+
+
+
+
+Error: Cannot find plugin.xml for plugin 'phonegap-facebook-plugin'. Please try
 http://ionicframework.com/docs/cli/icon-splashscreen.html
 
 Idea: make it as flexible as possible without confusing people

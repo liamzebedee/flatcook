@@ -32,20 +32,25 @@ angular.module('flatcook.services', [])
 	// endpoint is like /user/login
 	// returns thing that can do .success(response) and .error(response)
 	function flatcookAPI(method, endpoint, params) {
-		return $http({
+		var req = {
 			method: method,
 			url: FLATCOOK_API_PREFIX + endpoint,
-			data: JSON.stringify(params),
 	    	withCredentials: true,
 	    	contentType: "application/json; charset=utf-8",
 			dataType: "json",
-		});
+		};
+		if(method === 'GET' && params != null) {
+			req.params = params;
+		} else { req.data = JSON.stringify(params); }
+
+		return $http(req);
 	}
+
+	Testing.apiGet = this.get;
 
 })
 
-.service('UI', function($ionicLoading) {
-
+.service('UI', function($ionicLoading, $ionicActionSheet, $cordovaSocialSharing) {
 	this.showLoading = function($scope, text) {
 		var scope = $scope.$new()
 
@@ -57,6 +62,53 @@ angular.module('flatcook.services', [])
 
 	this.hideLoading = function() {
 		$ionicLoading.hide()
+	}
+
+	this.shareDialog = function(info) {
+		var img = null;
+		var url = '';
+
+		var buttons = [
+			{ 
+				text: 'Messenger', 
+				callback: function() {
+					$cordovaSocialSharing.shareViaFacebook('Message via Facebook', img, url, function success(){}, function(error){alert(errormsg)}) 
+				}
+			},
+	       	{
+	       		text: 'SMS',
+	       		callback: function() {
+	       			$cordovaSocialSharing.shareViaSMS('My cool message', null /* phone nums */, function(msg) {console.log('ok: ' + msg)}, function(msg) {alert('error: ' + msg)})
+	       		}
+	       	},
+	       	{
+	       		text: 'Whatsapp',
+	       		callback: function() {
+	       			$cordovaSocialSharing.shareViaWhatsApp('Message via WhatsApp', img, url, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+	       		}
+	       	}
+		];
+
+		var hideSheet = $ionicActionSheet.show({
+	     buttons: buttons,
+	     titleText: 'Invite others',
+	     cancelText: 'Cancel',
+	     cancel: function() {
+	          // add cancel code..
+	        },
+	     buttonClicked: function(index) {
+	     	buttons[index].callback()
+	     }	
+	   });
+
+		// $cordovaSocialSharing
+	 //    .share(null, null, null, 'http://share.flatcook.com/meal/123') // Share via native share sheet
+	 //    .then(function(result) {
+	 //      // Success!
+	 //    }, function(err) {
+	 //      // An error occured. Show a message to the user
+	 //    });
+
 	}
 
 })
@@ -72,11 +124,10 @@ angular.module('flatcook.services', [])
   }
 })
 
-.factory('MealsService', function($http, $q, $localStorage, $rootScope) {
+.factory('MealsService', function($http, $q, $localStorage, $rootScope, API) {
 	var mealsService = {
 		currentMealID: null,
 		currentCookingMealID: null,
-
 
 		VALID_CHEF_STATUSES: ['Waiting on guests', 'Cooking', 'Meal ready!'],
 		VALID_GUEST_STATUSES: ['Chilling', 'On my way'],
@@ -92,6 +143,13 @@ angular.module('flatcook.services', [])
 
 	mealsService.loadState = function(state) {
 		Object.assign(mealsService, $localStorage.get('MealsService'));
+
+		API.get('/meals/currentState').then(function(res){
+			mealsService.currentMealID = res.currentMealID
+			mealsService.currentCookingMealID = res.currentCookingMealID
+			$rootScope.broadcast('MealsService.currentStateUpdated')
+			mealsService.saveState()
+		})
 	}
 	mealsService.loadState()
 
@@ -106,15 +164,12 @@ angular.module('flatcook.services', [])
 	mealsService.hookRealtimeEvents = function() {
 		// maintain connection with server
 		// TODO
-
-		// on event
 	}
 	Testing.broadcastMealFinished = function() {
 		$rootScope.$broadcast('MealsService.mealFinished', {
 			mealID: 0
 		})
 	}
-
 	Testing.setEatingMeal = function(id) {
 		mealsService.currentMealID = id;
 		mealsService.saveState();
@@ -124,89 +179,137 @@ angular.module('flatcook.services', [])
 		mealsService.saveState();
 	}
 
+
+
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
+	/*
+	    alert('Latitude: '          + position.coords.latitude          + '\n' +
+          'Longitude: '         + position.coords.longitude         + '\n' +
+          'Altitude: '          + position.coords.altitude          + '\n' +
+          'Accuracy: '          + position.coords.accuracy          + '\n' +
+          'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+          'Heading: '           + position.coords.heading           + '\n' +
+          'Speed: '             + position.coords.speed             + '\n' +
+          'Timestamp: '         + position.timestamp                + '\n');
+	*/
 	mealsService.getMeals = function(user, currentPosition) {
-		return feignRequestingDataFromNetwork($q, sampleData.meals);
+		if(FCTesting) return feignRequestingDataFromNetwork($q, sampleData.meals);
+
+		return API.get('/meals', { currentPosition: currentPosition })
 	}
 
 	mealsService.getMeal = function(mealID) {
-		return feignRequestingDataFromNetwork($q, sampleData.meals[parseInt(mealID)]);
+		if(FCTesting) return feignRequestingDataFromNetwork($q, sampleData.meals[parseInt(mealID)]);
+
+		return API.get('/meal', { id: mealID })
 	}
 
 	mealsService.joinMeal = function(mealID) {
 		mealsService.currentMealID = mealID;
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+
+
+		if(FCTesting) return feignRequestingDataFromNetwork($q, { status: 'success' });
+
+		return API.post('/meals/joinMeal', { id: mealID })
 	}
 
-	mealsService.getGuestStatuses = function(mealID) {
-		var guests = sampleData.meals[parseInt(mealID)].guests;
-		return feignRequestingDataFromNetwork($q, guests);
-	}
+	// mealsService.getGuestStatuses = function(mealID) {
+	// 	var guests = sampleData.meals[parseInt(mealID)].guests;
+	// 	return feignRequestingDataFromNetwork($q, guests);
+	// }
 
 	mealsService.cancelAttending = function() {
 		mealsService.currentMealID = null;
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+
+		if(FCTesting) return feignRequestingDataFromNetwork($q, { status: 'success' });
+
+		return API.post('/meals/cancelAttending')
 	}
 
 	mealsService.updateEatingStatus = function(status) {
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+	
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/meals/updateEatingStatus', { status: status })
 	}
 
 	mealsService.updateCookingStatus = function(status) {
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/meals/updateCookingStatus', { status: status })
 	}
 
 	mealsService.createMeal = function(mealData) {
 		mealsService.currentCookingMealID = 0;
 		// TODO
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/meals/create', mealData)
 	}
 
-	mealsService.cancelCooking = function(mealID) {
+	mealsService.cancelCooking = function() {
 		mealsService.currentCookingMealID = null;
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/meals/cancelCooking')
 	}
 
 	mealsService.serveMeal = function(mealID) {
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/meals/serveMeal')
 	}
 
 	mealsService.postChefRating = function(ratingData) {
 		mealsService.currentCookingMealID = null;
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/ratings/newChefRating', ratingData)
 	}
 
 	// {howWasMeal: {rating: 4, description: "asdasdsd asdasd"}, wasEveryoneCool: {cool: false, description: "asdasdasd sad dasd", markedPeople: [82439823]}, mealID: 0}
 	mealsService.postGuestRating = function(ratingData) {
 		mealsService.currentMealID = null;
 		mealsService.saveState();
-		return feignRequestingDataFromNetwork($q, {
-			status: 'success'
-		});
+		if(FCTesting) {
+			return feignRequestingDataFromNetwork($q, {
+				status: 'success'
+			});
+		}
+
+		return API.post('/ratings/newGuestRating', ratingData)
 	}
 
 	return mealsService
@@ -226,9 +329,15 @@ angular.module('flatcook.services', [])
 
 	usersService.loadState = function(state) {
 		Object.assign(usersService, $localStorage.get('UsersService'));
-		if (IsServingBrowserFromIonicServe) {
+		if (FCTesting) {
 			usersService.flatcookAPISessionKey = 'TESTING123';
 			usersService.loggedInUser = sampleData.users[0];
+		} else {
+			API.get('/users/currentState').then(function(res){
+				usersService.loggedInUser = res.loggedInUser
+				$rootScope.broadcast('UsersService.currentStateUpdated')
+				usersService.saveState()
+			})
 		}
 	}
 	usersService.loadState()
@@ -242,8 +351,6 @@ angular.module('flatcook.services', [])
 	}
 
 	usersService.authenticateWithFacebook = function() {
-		// var dfd = $q.defer();
-		// return dfd.promise
 		return $cordovaFacebook.login(FACEBOOK_PERMISSIONS);
 	}
 
@@ -286,21 +393,20 @@ angular.module('flatcook.services', [])
     			
     			API.post('/user/login', params)
 				.success(function(response){
-			  		// The response i get back comes with a set-cookie (check the console>network tab)
-			    	// Now i have the user id and am logged in, but i want to verify that im logged in for 
-			    	// good so i call the user endpoint - it uses the session cookie to retrieve user data
-			    	user.id = response;
+					// Response comes with Set-Cookie HTTP header
+					// Now we are logged in. We further verify this by calling the user endpoint,
+					// which uses this session cookie to retrieve user data
+					user.id = response;
 			    	
 			    	API.get('/user', {})
 					.success(function(data){
-				  		//If this comes back success then all the user data we have in the backend should be in this response.
-				  		//curently only a few fields but easily scalable
 				    	user.id = data;
+				    	debugger
 				  	}).error(function(){
-				    	alert("error");
+				    	throw new Error('User wasn\'t logged in successfully')
 				  	});
 			  	}).error(function(){
-			    	alert("error");
+				    throw new Error('User wasn\'t logged in successfully')
 			  	});
 
 				return user;
@@ -311,27 +417,23 @@ angular.module('flatcook.services', [])
 			console.error(error)
     	});
 
-
-		subscribeToUserNotifications();
-
-		function subscribeToUserNotifications() {}
-
 		return dfd.promise;
 	}
 
 	usersService.getUser = function(userID) {
-		if (userID == usersService.loggedInUser.id) {
-			return usersService.loggedInUser; // TODO
+		if (userID === usersService.loggedInUser.id) {
+			return usersService.loggedInUser;
 		} else {
-			
+			return API.get('/users/'+userID)
 		}
 	}
 
-	usersService.getHistory = function() {
-		return feignRequestingDataFromNetwork($q, sampleData.users[0].mealHistory);
+	usersService.getMealHistory = function() {
+		var dfd = $q.defer();
+		dfd.resolve(usersService.getCurrentUser().mealHistory)
+		return dfd.promise;
 	}
 
-	// Non-API mappings.
 	usersService.userNeedsToLinkPaymentMethod = function() {
 		return !usersService.getCurrentUser().paymentInfo.paymentMethodLinked;
 	}
