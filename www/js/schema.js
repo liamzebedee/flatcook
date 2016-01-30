@@ -14,7 +14,7 @@ var User = schema({
 
 	tagline: String,
 	address: String,
-	location: Array.of(Number).length(2),
+	location: Array.of(2, Number),
 	avatarUrl: String,
 
 	cookRating: [String, null],
@@ -40,7 +40,7 @@ var Meal = schema({
 	price: Number.min(0).max(100),
 	servedAt: moment(),
 	image: String,
-	location: Array,
+	location: Array.of(2, Number),
 	address: String,
 
 	chef: Chef,

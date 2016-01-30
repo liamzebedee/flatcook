@@ -237,13 +237,13 @@ h3 {
     ),
     url(/img/flatdinner.jpg);
   background-size: cover;
-      background-position-x: -93px;
-    background-position-y: 0em;
+  background-position-x: -93px;
+  background-position-y: 0em;
 }
 
 .welcome-banner {
   /* horizontally and vertically  */
-position: absolute;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

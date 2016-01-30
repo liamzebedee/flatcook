@@ -72,6 +72,7 @@ controllers.controller('AppController', function($scope, $state) {
 	};
 
 	$scope.doRefresh = function() {
+		if($scope.loadingMeals) return;
 		$scope.loadingMeals = true;
 
 		var position = LocationService.getCurrentPosition(
