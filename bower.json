@@ -15,7 +15,8 @@
     "ionic-rating": "~0.2.0",
     "humanize-duration": "~3.5.0",
     "angular-stripe-checkout": "~4.0.0",
-    "angular-ui-mask": "~1.7.1"
+    "angular-ui-mask": "~1.7.1",
+    "js-schema": "~1.0.1"
   },
   "resolutions": {
     "angular": "1.4.3",

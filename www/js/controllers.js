@@ -64,10 +64,6 @@ controllers.controller('AppController', function($scope, $state) {
 		$scope.user = UsersService.getCurrentUser();
 		$scope.doRefresh();
 	})
-	$scope.$on('$ionicView.beforeEnter', function(e) {
-		$scope.user = UsersService.getCurrentUser();
-		$scope.doRefresh();
-	});
 
 	$scope.selectMeal = function(id) {
 		$state.go('tab.eat.mealDetail', {
