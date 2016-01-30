@@ -46,7 +46,7 @@ angular.module('flatcook.services', [])
 		return $http(req);
 	}
 
-	Testing.apiGet = this.get;
+	Testing.API = this;
 
 })
 
@@ -140,6 +140,7 @@ angular.module('flatcook.services', [])
 			''
 		]
 	};
+	Testing.MealsService = mealsService
 
 	mealsService.loadState = function(state) {
 		Object.assign(mealsService, $localStorage.get('MealsService'));
@@ -169,14 +170,6 @@ angular.module('flatcook.services', [])
 		$rootScope.$broadcast('MealsService.mealFinished', {
 			mealID: 0
 		})
-	}
-	Testing.setEatingMeal = function(id) {
-		mealsService.currentMealID = id;
-		mealsService.saveState();
-	}
-	Testing.setCookingMeal = function(id) {
-		mealsService.currentCookingMealID = id;
-		mealsService.saveState();
 	}
 
 
@@ -322,6 +315,7 @@ angular.module('flatcook.services', [])
 		flatcookAPISessionKey: null,
 		_facebookData: null
 	};
+	Testing.UsersService = usersService
 
 	usersService.getCurrentUser = function() {
 		return usersService.loggedInUser;
