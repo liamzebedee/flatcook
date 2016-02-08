@@ -3,21 +3,34 @@
 <ion-content>
 
 <div class="list">
-  <h2 class='padding'>When and where?</h2>
+  <h2 class='fc-title'>When and where?</h2>
 
   <label class="item item-input item-stacked-label">
-    <span class='input-label'>When will food be served?</span>
-    <input type="time" ng-model="formData.whenServed">
+    <span class='input-label'><i class='ion-icon ion-location'></i> Location</span>
+    <input type="text" ng-model="formData.location" placeholder="501 Gumal">
   </label>
 
-  <label class="item item-input item-stacked-label">
-    <span class='input-label'>Where should guests come to?</span>
-    <input type="text" ng-model="formData.location" placeholder="e.g. 501 Gumal">
-  </label>
+
+  <div class='item newMeal-servedBetween'>
+  	<div class='row'>Served between</div>
+  	<div class='row split-row'>
+  		<div class="col">
+	      <input type="time" ng-model="formData.whenServedStart">
+	    </div>
+
+	    <div class='col' style='text-align:center'> and </div>
+
+	    <div class='col'>
+	      <input type="time" ng-model="formData.whenServedEnd" style='text-align: right;'>
+	    </div>
+  	</div>
+  </div>
+
+
+  
 </div>
 
-<!-- Senecha -->
-<a class="button button-full icon-right button-energized" style="margin-top:3em" ng-click="submitForm()">Post meal invite!</a>
+<div class='padding'><button class="button button-block button-rounded button-energized icon icon-left ion-paper-airplane" style="margin-top:3em" ng-click="submitForm()">Post meal invite!</button></div>
 
 </ion-content>
 </ion-view>

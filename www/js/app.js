@@ -68,11 +68,7 @@ angular.module('flatcook',
     url: '/tab',
     controller: 'TabsController',
     abstract: true,
-    templateUrl: 'templates/tabs.html',
-    resolve: {
-      // checkout.js isn't fetched until this is resolved.
-      stripe: StripeCheckoutProvider.load
-    }
+    templateUrl: 'templates/tabs.html'
   })
 
 
@@ -167,6 +163,10 @@ angular.module('flatcook',
       'tab-profile': {
         template: "<ion-nav-view></ion-nav-view>"
       }
+    },
+    resolve: {
+      // checkout.js isn't fetched until this is resolved.
+      stripe: StripeCheckoutProvider.load
     }
   })
 

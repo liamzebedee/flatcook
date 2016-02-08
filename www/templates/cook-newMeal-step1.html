@@ -1,28 +1,36 @@
 <ion-view view-title='New meal (1/3)'>
 
+<ion-nav-buttons side="secondary">
+
+  <button class="button button-clear icon ion-arrow-right-c" ng-click="navToStep2()"></button>
+
+</ion-nav-buttons>
+
+
 <ion-content>
 
-<div class="list">
-  <div class='padding' style='padding-bottom: 2em'>
-	  <h2>What are you going to cook?</h2>
-	  <p>e.g. <strong>Spaghetti Bolognaise (veggies + cheese) and wine</strong></p>
-  </div>
+<h2 class='fc-title'>What are you serving?</h2>
 
-  <div class='padding text-positive'>
-  	<small ng-show="formData.description.length >= 20 && formData.description.length < 35">keep going</small>
-  	<small ng-show="formData.description.length >= 35 && formData.description.length < 50">nearly done</small>
-  	<small ng-show="formData.description.length >= 50 && formData.description.length < 80">that's about right</small>
-  	<small ng-show="formData.description.length >= 80">you've written too much!</small>
-  </div>
+<ion-list>
+  <label class="item item-input item-stacked-label">
+    <span class="input-label">Meal Name</span>
+    <input type="text" placeholder="Spaghetti Bolognaise with Veggies etc.">
+  </label>
+</ion-list>
 
-  <label class="item item-input">
-    <textarea placeholder="Describe here" maxlength=90 rows=5 ng-model='formData.description'></textarea>
+  
+
+
+<ion-list>
+
+  <label class="item item-input item-stacked-label">
+    <span class="input-label">Additional info.</span>
+    <textarea placeholder="House rules, specific ingredients, vegan etc."></textarea>
   </label>
 
 
-<!-- Senecha -->
-<a class="button button-full icon-right ion-chevron-right button-energized" ng-click="navToStep2()">How much?</a>
-</div>
+</ion-list>
+
 
 </ion-content>
 

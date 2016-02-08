@@ -159,9 +159,8 @@ controllers.controller('AppController', function($scope, $state) {
 	$scope.formData = {
 		description: "",
 
-		numberOfMeals: 0,
-		costPerMeal: 0.0,
-		totalCost: 0.0,
+		numberOfMeals: 5,
+		costPerMeal: 6.5,
 
 		whenServed: null,
 		location: ""
@@ -172,7 +171,11 @@ controllers.controller('AppController', function($scope, $state) {
 		maxLengthOfDescription: 120
 	}
 
-	$scope.step2 = {}
+	$scope.step2 = {
+		mealProfit: -1
+	}
+
+	$scope.mealProfit = 10;
 
 	$scope.startForm = function() {
 		$scope.formData = {};
@@ -204,22 +207,17 @@ controllers.controller('AppController', function($scope, $state) {
 		});
 	}
 
-	$scope.$watch('formData.numberOfMeals', recalcTotalCost);
-	$scope.$watch('formData.costPerMeal', recalcTotalCost);
-	$scope.$watch('formData.totalCost', recalcCostPerMeal);
-
-	function recalcCostPerMeal(newVal, oldVal) {
-		if (newVal == oldVal) return;
-		$scope.formData.costPerMeal = ($scope.formData.totalCost / $scope.formData.numberOfMeals) || 0;
+	function recalcProfit(newVal, oldVal) {
+		$scope.step2.mealProfit = MealsService.getProfitForMeal(+$scope.formData.costPerMeal, +$scope.formData.numberOfMeals) || 0;
 	}
 
-	function recalcTotalCost(newVal, oldVal) {
-		if (newVal == oldVal) return;
-		$scope.formData.totalCost = ($scope.formData.costPerMeal * $scope.formData.numberOfMeals) || 0;
-	}
+	$scope.$watch('formData.numberOfMeals', recalcProfit);
+	$scope.$watch('formData.costPerMeal', recalcProfit);
+	$scope.$watch('formData.totalCost', recalcProfit);
+
 
 	$scope.$on('$ionicView.enter', function(e) {
-		recalcTotalCost();
+		recalcProfit();
 	});
 })
 

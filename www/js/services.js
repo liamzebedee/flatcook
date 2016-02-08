@@ -172,7 +172,20 @@ angular.module('flatcook.services', [])
 		})
 	}
 
+	mealsService.getProfitForMeal = function(costPerMeal, numMeals) {
+		var servingMealForFree = costPerMeal == 0;
+		if(servingMealForFree) return 0;
 
+		var STRIPE_FIXED_FEE = 0.30;
+		var STRIPE_VARIABLE_FEE = 1.75 / 100;
+		var FC_FIXED_FEE = 0.30;
+		var FC_VARIABLE_FEE = 0;
+
+
+		var revenue = costPerMeal * numMeals;
+		var profit = revenue - FC_FIXED_FEE - STRIPE_FIXED_FEE;
+		return profit.toFixed(2);
+	}
 
 	// currentPosition is documented at https://github.com/apache/cordova-plugin-geolocation
 	/*
