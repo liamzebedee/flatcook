@@ -1,6 +1,11 @@
 flatcook
 ========
 
+http://thenextweb.com/dd/2012/02/14/googles-custom-search-api-now-supports-image-only-results/
+http://www.programmableweb.com/api/ookaboo
+https://developers.google.com/custom-search/json-api/v1/reference/
+https://github.com/afklm/ng-lazy-image
+
 Frontend app for Flatcook. 
 
 Copyright 2015 Liam Edwards-Playne and Nathan Wilson (when he adds the code he's written).

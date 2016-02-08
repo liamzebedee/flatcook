@@ -2,6 +2,10 @@
 /*https://medium.com/@erikdkennedy/7-rules-for-creating-gorgeous-ui-part-2-430de537ba96#.ecnfpwqi4
 */
 
+button.rounded {
+  border-radius: 12px;
+}
+
 
 footer.full-width-button {
   padding: 0px 0px;

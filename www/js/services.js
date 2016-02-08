@@ -453,26 +453,26 @@ angular.module('flatcook.services', [])
 
 	usersService.showPaymentLinkDialog = function() {
 		var dfd = $q.defer();
+dfd.resolve()
+		// var handlerOptions = {
+	 //        name: 'Flatcook',
+	 //        description: 'Eating together',
+	 //    	  amount:      "0.00",
+		// 	  currency:    "aud",
+		// 	  email:       usersService.getCurrentUser().email,
+		// 	  key:         "pk_test_6pRNASCoBOKtIshFeQd4XMUh",
+		// 	  panelLabel:  "Link account",
+	 //    };
 
-		var handlerOptions = {
-	        name: 'Flatcook',
-	        description: 'Eating together',
-	    	  amount:      "0.00",
-			  currency:    "aud",
-			  email:       usersService.getCurrentUser().email,
-			  key:         "pk_test_6pRNASCoBOKtIshFeQd4XMUh",
-			  panelLabel:  "Link account",
-	    };
+		// var handler = StripeCheckout.configure({})
 
-		var handler = StripeCheckout.configure({})
+	 //    handler.open(handlerOptions).then(function success(stripeData) {
+	 //    	usersService.linkPaymentMethod(stripeData)
+	 //    	dfd.resolve()
 
-	    handler.open(handlerOptions).then(function success(stripeData) {
-	    	usersService.linkPaymentMethod(stripeData)
-	    	dfd.resolve()
-
-	    }, function closedWithoutLinking() {
-	    	dfd.reject()
-	    });
+	 //    }, function closedWithoutLinking() {
+	 //    	dfd.reject()
+	 //    });
 
 	    return dfd.promise;
 	}

@@ -82,7 +82,7 @@ angular.module('flatcook',
   //
 
   .state('tab.eat', {
-    abstract: false,
+    abstract: true,
     url: '/eat',
     views: {
       'tab-eat': {
@@ -115,7 +115,7 @@ angular.module('flatcook',
   //
 
   .state('tab.cook', {
-    abstract: false,
+    abstract: true,
     url: '/cook',
     views: {
       'tab-cook': {

@@ -21,38 +21,41 @@ controllers.controller('AppController', function($scope, $state) {
 
 	function doNav(tabName, logic) {
 		if(!$scope.navigatedAlready[tabName]) {
-			$ionicHistory.nextViewOptions({ disableBack: true, disableAnimate: true, historyRoot: false })
-			logic()
+			$ionicHistory.nextViewOptions({  historyRoot: true })
 			$scope.navigatedAlready[tabName] = true
+			logic()
 		}
+	}
+
+	function go(stateName) {
+		$state.go(stateName, null, { location: 'replace' });
 	}
 
 	$scope.navEat = function(){
 		doNav('eat', function(){
             if(MealsService.currentMealID != null) {
-              $state.go('tab.eat.eating');
+              go('tab.eat.eating');
             } else {
-              $state.go('tab.eat.mealsIndex');
-            }
-            
-		})
-	}
-
-	$scope.navCook = function(){
-		doNav('cook', function(){
-            if(MealsService.currentCookingMealID != null) {
-              $state.go('tab.cook.cooking');
-            } else {
-              $state.go('tab.cook.newMeal.intro');
+              go('tab.eat.mealsIndex');
             }
 		})
 	}
 
-	$scope.navProfile = function(){
-		doNav('profile', function(){
-            $state.go('tab.profile.main');
-		})
-	}
+	// $scope.navCook = function(){
+	// 	doNav('cook', function(){
+ //            if(MealsService.currentCookingMealID != null) {
+ //              $state.go('tab.cook.cooking');
+ //            } else {
+ //              $state.go('tab.cook.newMeal.intro');
+ //            }
+	// // 	})
+	// // }
+
+	// // $scope.navProfile = function(){
+	// // 	doNav('profile', function(){
+ //            $state.go('tab.profile.main');
+	// 	})
+	// }
 })
 
 .controller('MealsIndexCtrl', function($scope, $state, MealsService, UsersService, LocationService) {
