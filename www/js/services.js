@@ -50,7 +50,8 @@ angular.module('flatcook.services', [])
 
 })
 
-.service('UI', function($ionicLoading, $ionicActionSheet, $cordovaSocialSharing) {
+.service('UI', function($ionicLoading, $ionicActionSheet, $cordovaSocialSharing, $ionicPopup) {
+	var self = this;
 	this.showLoading = function($scope, text) {
 		var scope = $scope.$new()
 
@@ -64,52 +65,62 @@ angular.module('flatcook.services', [])
 		$ionicLoading.hide()
 	}
 
-	this.shareDialog = function(info) {
-		var img = null;
-		var url = '';
-
-		var buttons = [
-			{ 
-				text: 'Messenger', 
-				callback: function() {
-					$cordovaSocialSharing.shareViaFacebook('Message via Facebook', img, url, function success(){}, function(error){alert(errormsg)}) 
-				}
-			},
-	       	{
-	       		text: 'SMS',
-	       		callback: function() {
-	       			$cordovaSocialSharing.shareViaSMS('My cool message', null /* phone nums */, function(msg) {console.log('ok: ' + msg)}, function(msg) {alert('error: ' + msg)})
-	       		}
-	       	},
-	       	{
-	       		text: 'Whatsapp',
-	       		callback: function() {
-	       			$cordovaSocialSharing.shareViaWhatsApp('Message via WhatsApp', img, url, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
-	       		}
-	       	}
-		];
-
-		var hideSheet = $ionicActionSheet.show({
-	     buttons: buttons,
-	     titleText: 'Invite others',
-	     cancelText: 'Cancel',
-	     cancel: function() {
-	          // add cancel code..
-	        },
-	     buttonClicked: function(index) {
-	     	buttons[index].callback()
-	     }	
+	this.showError = function(errorMsg) {
+		var alertPopup = $ionicPopup.alert({
+	     title: 'Error',
+	     template: errorMsg
 	   });
 
-		// $cordovaSocialSharing
-	 //    .share(null, null, null, 'http://share.flatcook.com/meal/123') // Share via native share sheet
-	 //    .then(function(result) {
-	 //      // Success!
-	 //    }, function(err) {
-	 //      // An error occured. Show a message to the user
-	 //    });
-
+	   alertPopup.then(function(res) {
+	   });
 	}
+
+	this.shareDialog = function(info) {
+		// var img = null;
+		var url = 'http://share.flatcook.com/meal/123';
+		var messageAndLink = null;
+
+	 	$cordovaSocialSharing
+	    .share(messageAndLink, null, null, url) // Share via native share sheet
+	    .then(function(result) {
+	    	
+	    }, function(err) {
+	    	self.showError("Couldn't show the share dialog.")
+	    });
+	}
+
+		// var buttons = [
+		// 	{ 
+		// 		text: 'Messenger', 
+		// 		callback: function() {
+		// 			$cordovaSocialSharing.shareViaFacebook('Message via Facebook', img, url, function success(){}, function(error){alert(errormsg)}) 
+		// 		}
+		// 	},
+	 //       	{
+	 //       		text: 'SMS',
+	 //       		callback: function() {
+	 //       			$cordovaSocialSharing.shareViaSMS('My cool message', '' /* phone nums */, function(msg) {console.log('ok: ' + msg)}, function(msg) {alert('error: ' + msg)})
+	 //       		}
+	 //       	},
+	 //       	{
+	 //       		text: 'Whatsapp',
+	 //       		callback: function() {
+	 //       			$cordovaSocialSharing.shareViaWhatsApp('Message via WhatsApp', img, url, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})
+	 //       		}
+	 //       	}
+		// ];
+
+		// var hideSheet = $ionicActionSheet.show({
+	 //     buttons: buttons,
+	 //     titleText: 'Invite others',
+	 //     cancelText: 'Cancel',
+	 //     cancel: function() {
+	 //          // add cancel code..
+	 //        },
+	 //     buttonClicked: function(index) {
+	 //     	buttons[index].callback()
+	 //     }	
+	 //   });
 
 })
 
